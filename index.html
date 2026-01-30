@@ -176,14 +176,15 @@
     
     .top-tag {
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(10px, 1.5vw, 12px);
-      letter-spacing: 0.5em;
+      font-size: clamp(9px, 1.2vw, 11px);
+      letter-spacing: 0.4em;
       color: var(--gray);
       margin-bottom: 48px;
       opacity: 0;
       transform: translateY(20px);
       animation: slideUp 0.8s ease forwards;
       animation-delay: 0.3s;
+      line-height: 2.2;
     }
     
     h1 {
@@ -465,14 +466,17 @@
     <div class="nav-inner">
       <div class="logo">PRSTUDIOS</div>
       <div class="nav-right">
-        <a href="mailto:prstudios.works@gmail.com" class="contact-btn">CONTACT</a>
+        <a href="/cdn-cgi/l/email-protection#78080a0b0c0d1c11170b560f170a130b381f15191114561b1715" class="contact-btn">CONTACT</a>
       </div>
     </div>
   </nav>
   
   <section class="hero">
     <div class="hero-content">
-      <div class="top-tag">BERKLEE COLLEGE OF MUSIC • COMPOSITION '27</div>
+      <div class="top-tag">
+        BERKLEE COLLEGE OF MUSIC • COMPOSITION<br>
+        BRITISH INSTITUTE OF MODERN MUSIC • SOUND DESIGN & ELECTRONIC MUSIC PRODUCTION
+      </div>
       <h1>
         <span class="line">VISION</span>
         <span class="line small">FINDS ITS</span>
@@ -530,7 +534,7 @@
     <div class="contact-inner">
       <div class="contact-label">GET IN TOUCH</div>
       <h3 class="contact-title">LET'S <span class="outline">CREATE</span></h3>
-      <a href="mailto:prstudios.works@gmail.com" class="contact-email">PRSTUDIOS.WORKS@GMAIL.COM</a>
+      <a href="/cdn-cgi/l/email-protection#f8888a8b8c8d9c91978bd68f978a938bb89f95999194d69b9795" class="contact-email"><span class="__cf_email__" data-cfemail="623230313637262b2d314c352d30293122252f232b2e4c212d2f">[email&#160;protected]</span></a>
       <div class="social">
         <a href="#">INSTAGRAM</a>
         <a href="#">TWITTER</a>
@@ -544,7 +548,7 @@
     <span>PARIS, FRANCE</span>
   </footer>
   
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // Custom cursor
     const cursor = document.querySelector('.cursor');
     
@@ -557,12 +561,4 @@
     const hoverElements = document.querySelectorAll('a, button, .project');
     hoverElements.forEach(el => {
       el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-    });
-    
-    // Click state
-    document.addEventListener('mousedown', () => cursor.classList.add('click'));
-    document.addEventListener('mouseup', () => cursor.classList.remove('click'));
-  </script>
-</body>
-</html>
+ 
