@@ -20,41 +20,148 @@
       overflow-x: hidden;
     }
     
-    /* CUSTOM CURSOR */
+    /* ========================================
+       CURSOR - Small, refined
+       ======================================== */
     .cursor {
-      width: 12px;
-      height: 12px;
-      border: 1px solid var(--white);
+      width: 8px;
+      height: 8px;
+      background: var(--white);
       border-radius: 50%;
       position: fixed;
       pointer-events: none;
-      z-index: 99999;
-      transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+      z-index: 100000;
       transform: translate(-50%, -50%);
       mix-blend-mode: difference;
+      transition: transform 0.2s ease, width 0.3s ease, height 0.3s ease;
     }
     .cursor.hover {
       width: 48px;
       height: 48px;
+      background: transparent;
+      border: 1px solid var(--white);
+    }
+    
+    /* ========================================
+       ALTERNATE WORLD LAYER
+       Revealed by cursor - inverted, deconstructed
+       ======================================== */
+    .alt-world {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      clip-path: circle(0px at 50% 50%);
+      transition: clip-path 0.1s ease-out;
+    }
+    
+    .alt-world-inner {
+      position: absolute;
+      inset: 0;
       background: var(--white);
+      overflow: hidden;
     }
-    .cursor.click {
-      transform: translate(-50%, -50%) scale(0.8);
+    
+    /* Chromatic aberration layers */
+    .alt-world .chroma-r,
+    .alt-world .chroma-g,
+    .alt-world .chroma-b {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
     }
+    
+    .alt-world .chroma-r {
+      color: #ff0040;
+      mix-blend-mode: multiply;
+      transform: translate(-3px, -1px);
+    }
+    .alt-world .chroma-g {
+      color: #00ff40;
+      mix-blend-mode: multiply;
+      transform: translate(0px, 2px);
+    }
+    .alt-world .chroma-b {
+      color: #0040ff;
+      mix-blend-mode: multiply;
+      transform: translate(3px, -1px);
+    }
+    
+    .alt-world .alt-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--black);
+      padding: 32px;
+    }
+    
+    .alt-world .alt-headline {
+      font-weight: 900;
+      font-size: clamp(5rem, 25vw, 22rem);
+      line-height: 0.82;
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+      text-align: center;
+      position: relative;
+    }
+    
+    .alt-world .alt-line {
+      display: block;
+    }
+    
+    .alt-world .alt-line.outline {
+      -webkit-text-stroke: 1.5px var(--black);
+      color: transparent;
+    }
+    
+    .alt-world .alt-line.small {
+      font-size: clamp(1.5rem, 6vw, 5rem);
+      letter-spacing: 0.05em;
+      opacity: 0.4;
+      margin: 16px 0;
+    }
+    
+    .alt-world .alt-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      color: var(--black);
+      margin-top: 48px;
+    }
+    
+    /* Noise overlay on alt world */
+    .alt-world::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.08;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+    
     @media (max-width: 768px) {
-      .cursor { display: none; }
+      .cursor, .alt-world { display: none; }
       * { cursor: auto; }
     }
     
-    /* HEAVY AUTHENTIC FILM GRAIN */
+    /* ========================================
+       FILM GRAIN
+       ======================================== */
     .grain {
       position: fixed;
       inset: -100%;
       width: 300%;
       height: 300%;
       pointer-events: none;
-      z-index: 10000;
-      opacity: 0.5;
+      z-index: 10001;
+      opacity: 0.4;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
       animation: grainShift 0.08s steps(6) infinite;
       mix-blend-mode: overlay;
@@ -81,7 +188,7 @@
       background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 0%, rgba(0,0,0,0.6) 100%);
     }
     
-    /* ANIMATED WAVEFORM */
+    /* Waveform */
     .waveform {
       position: fixed;
       bottom: 48px;
@@ -110,7 +217,9 @@
     }
     @media (max-width: 768px) { .waveform { display: none; } }
     
-    /* Navigation */
+    /* ========================================
+       NAVIGATION
+       ======================================== */
     nav {
       position: fixed;
       top: 0;
@@ -131,13 +240,7 @@
       font-size: 16px;
       letter-spacing: 0.2em;
       opacity: 0;
-      animation: fadeIn 0.6s ease forwards;
-      animation-delay: 0.2s;
-    }
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 24px;
+      animation: fadeIn 0.6s ease forwards 0.2s;
     }
     .contact-btn {
       font-family: 'JetBrains Mono', monospace;
@@ -149,16 +252,16 @@
       border: 1px solid rgba(232,228,220,0.3);
       transition: all 0.3s ease;
       opacity: 0;
-      animation: fadeIn 0.6s ease forwards;
-      animation-delay: 0.4s;
-      position: relative;
+      animation: fadeIn 0.6s ease forwards 0.4s;
     }
     .contact-btn:hover {
       background: var(--white);
       color: var(--black);
     }
     
-    /* Hero */
+    /* ========================================
+       HERO
+       ======================================== */
     .hero {
       min-height: 100vh;
       display: flex;
@@ -180,11 +283,10 @@
       letter-spacing: 0.4em;
       color: var(--gray);
       margin-bottom: 48px;
+      line-height: 2.2;
       opacity: 0;
       transform: translateY(20px);
-      animation: slideUp 0.8s ease forwards;
-      animation-delay: 0.3s;
-      line-height: 2.2;
+      animation: slideUp 0.8s ease forwards 0.3s;
     }
     
     h1 {
@@ -210,20 +312,13 @@
     .line.small {
       font-size: clamp(1.5rem, 6vw, 5rem);
       letter-spacing: 0.05em;
-      opacity: 0;
       margin: 16px 0;
     }
-    .line.small { animation: slideUpFade 0.8s ease forwards; animation-delay: 0.5s; }
+    .line.small { animation: slideUpFade 0.8s ease forwards 0.5s; }
     
-    @keyframes slideUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes slideUpFade {
-      to { opacity: 0.4; transform: translateY(0); }
-    }
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
+    @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideUpFade { to { opacity: 0.4; transform: translateY(0); } }
+    @keyframes fadeIn { to { opacity: 1; } }
     
     .subtitle {
       margin-top: 64px;
@@ -232,8 +327,7 @@
       letter-spacing: 0.4em;
       color: var(--white);
       opacity: 0;
-      animation: fadeIn 0.8s ease forwards;
-      animation-delay: 0.8s;
+      animation: fadeIn 0.8s ease forwards 0.8s;
     }
     
     .services {
@@ -243,8 +337,7 @@
       letter-spacing: 0.3em;
       color: var(--gray);
       opacity: 0;
-      animation: fadeIn 0.8s ease forwards;
-      animation-delay: 0.9s;
+      animation: fadeIn 0.8s ease forwards 0.9s;
     }
     
     .scroll-hint {
@@ -262,8 +355,7 @@
       gap: 16px;
       text-decoration: none;
       opacity: 0;
-      animation: fadeIn 0.8s ease forwards;
-      animation-delay: 1.2s;
+      animation: fadeIn 0.8s ease forwards 1.2s;
     }
     .scroll-line {
       width: 1px;
@@ -276,7 +368,9 @@
       50% { opacity: 0.5; transform: scaleY(0.8); }
     }
     
-    /* Work Section */
+    /* ========================================
+       WORK SECTION
+       ======================================== */
     .work {
       padding: 120px 48px;
       position: relative;
@@ -303,7 +397,6 @@
       color: var(--gray);
     }
     
-    /* Projects with hover preview */
     .project {
       display: block;
       padding: 48px 0;
@@ -313,9 +406,7 @@
       transition: all 0.4s ease;
       position: relative;
     }
-    .project:hover {
-      padding-left: 32px;
-    }
+    .project:hover { padding-left: 32px; }
     .project-title {
       font-weight: 900;
       font-size: clamp(28px, 8vw, 72px);
@@ -337,15 +428,12 @@
       letter-spacing: 0.2em;
       color: var(--gray);
     }
-    
-    /* Project hover indicator */
     .project-arrow {
       position: absolute;
       right: 0;
       top: 50%;
       transform: translateY(-50%) translateX(10px);
       opacity: 0;
-      font-family: 'JetBrains Mono', monospace;
       font-size: 20px;
       transition: all 0.4s ease;
     }
@@ -364,7 +452,9 @@
       color: rgba(232,228,220,0.1);
     }
     
-    /* Contact */
+    /* ========================================
+       CONTACT
+       ======================================== */
     .contact {
       padding: 120px 48px;
       text-align: center;
@@ -445,13 +535,31 @@
   </style>
 </head>
 <body>
-  <!-- Custom Cursor -->
+  
+  <!-- ========================================
+       ALTERNATE WORLD - Revealed by cursor
+       Inverted colors, chromatic aberration
+       ======================================== -->
+  <div class="alt-world">
+    <div class="alt-world-inner">
+      <div class="alt-content">
+        <div class="alt-headline">
+          <span class="alt-line">VISION</span>
+          <span class="alt-line small">FINDS ITS</span>
+          <span class="alt-line outline">VOICE</span>
+        </div>
+        <div class="alt-tag">PHILÉAS RENOULT</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Cursor -->
   <div class="cursor"></div>
   
   <div class="grain"></div>
   <div class="vignette"></div>
   
-  <!-- Ambient Waveform -->
+  <!-- Waveform -->
   <div class="waveform">
     <div class="waveform-bar"></div>
     <div class="waveform-bar"></div>
@@ -465,9 +573,7 @@
   <nav>
     <div class="nav-inner">
       <div class="logo">PRSTUDIOS</div>
-      <div class="nav-right">
-        <a href="/cdn-cgi/l/email-protection#78080a0b0c0d1c11170b560f170a130b381f15191114561b1715" class="contact-btn">CONTACT</a>
-      </div>
+      <a href="mailto:prstudios.works@gmail.com" class="contact-btn">CONTACT</a>
     </div>
   </nav>
   
@@ -534,7 +640,7 @@
     <div class="contact-inner">
       <div class="contact-label">GET IN TOUCH</div>
       <h3 class="contact-title">LET'S <span class="outline">CREATE</span></h3>
-      <a href="/cdn-cgi/l/email-protection#f8888a8b8c8d9c91978bd68f978a938bb89f95999194d69b9795" class="contact-email"><span class="__cf_email__" data-cfemail="623230313637262b2d314c352d30293122252f232b2e4c212d2f">[email&#160;protected]</span></a>
+      <a href="mailto:prstudios.works@gmail.com" class="contact-email">PRSTUDIOS.WORKS@GMAIL.COM</a>
       <div class="social">
         <a href="#">INSTAGRAM</a>
         <a href="#">TWITTER</a>
@@ -548,17 +654,79 @@
     <span>PARIS, FRANCE</span>
   </footer>
   
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    // Custom cursor
-    const cursor = document.querySelector('.cursor');
+  <script>
+    // ========================================
+    // DECONSTRUCTION EFFECT
+    // Cursor reveals alternate inverted world
+    // ========================================
     
+    const cursor = document.querySelector('.cursor');
+    const altWorld = document.querySelector('.alt-world');
+    
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let currentX = mouseX;
+    let currentY = mouseY;
+    let radius = 120;
+    let targetRadius = 120;
+    
+    // Smooth animation loop
+    function animate() {
+      // Smooth follow
+      currentX += (mouseX - currentX) * 0.12;
+      currentY += (mouseY - currentY) * 0.12;
+      radius += (targetRadius - radius) * 0.15;
+      
+      // Update cursor
+      cursor.style.left = mouseX + 'px';
+      cursor.style.top = mouseY + 'px';
+      
+      // Update clip-path to reveal alternate world
+      altWorld.style.clipPath = `circle(${radius}px at ${currentX}px at ${currentY}px)`;
+      altWorld.style.clipPath = `circle(${radius}px at ${currentX}px ${currentY}px)`;
+      
+      requestAnimationFrame(animate);
+    }
+    animate();
+    
+    // Track mouse
     document.addEventListener('mousemove', (e) => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
+      mouseX = e.clientX;
+      mouseY = e.clientY;
     });
     
-    // Hover states for cursor
+    // Hover states - expand reveal radius
     const hoverElements = document.querySelectorAll('a, button, .project');
     hoverElements.forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
- 
+      el.addEventListener('mouseenter', () => {
+        cursor.classList.add('hover');
+        targetRadius = 180;
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.classList.remove('hover');
+        targetRadius = 120;
+      });
+    });
+    
+    // Click - pulse effect
+    document.addEventListener('mousedown', () => {
+      targetRadius = 200;
+    });
+    document.addEventListener('mouseup', () => {
+      targetRadius = cursor.classList.contains('hover') ? 180 : 120;
+    });
+    
+    // Hide on touch
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      cursor.style.display = 'none';
+      altWorld.style.display = 'none';
+    }
+    
+    // Update alt world position on scroll
+    window.addEventListener('scroll', () => {
+      const content = altWorld.querySelector('.alt-content');
+      content.style.transform = `translateY(${-window.scrollY}px)`;
+    });
+  </script>
+</body>
+</html>
