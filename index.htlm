@@ -20,16 +20,32 @@
       overflow-x: hidden;
     }
     
-    /* THE VOID - All effects render here */
-    #singularity {
+    /* Main content wrapper - this gets "eaten" */
+    #content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* The void canvas - renders destruction */
+    #void {
       position: fixed;
       inset: 0;
       z-index: 99999;
       pointer-events: none;
     }
     
+    /* Hidden canvas for sampling page pixels */
+    #sampler {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0;
+    }
+    
     @media (max-width: 768px) {
-      #singularity { display: none; }
+      #void, #sampler { display: none; }
       * { cursor: auto; }
     }
     
@@ -41,7 +57,7 @@
       height: 200%;
       pointer-events: none;
       z-index: 100000;
-      opacity: 0.25;
+      opacity: 0.2;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       animation: grain 0.08s steps(4) infinite;
       mix-blend-mode: overlay;
@@ -58,7 +74,7 @@
       inset: 0;
       pointer-events: none;
       z-index: 2;
-      background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 0%, rgba(0,0,0,0.65) 100%);
+      background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 0%, rgba(0,0,0,0.6) 100%);
     }
     
     /* Waveform */
@@ -138,7 +154,6 @@
       justify-content: center;
       padding: 120px 32px 160px;
       position: relative;
-      z-index: 10;
     }
     .hero-content {
       text-align: center;
@@ -235,7 +250,6 @@
     .work {
       padding: 120px 48px;
       position: relative;
-      z-index: 10;
     }
     .work-inner { max-width: 1000px; margin: 0 auto; }
     
@@ -317,7 +331,6 @@
       padding: 120px 48px;
       text-align: center;
       position: relative;
-      z-index: 10;
     }
     .contact-inner { max-width: 900px; margin: 0 auto; }
     .contact-label {
@@ -394,7 +407,8 @@
 </head>
 <body>
   
-  <canvas id="singularity"></canvas>
+  <canvas id="void"></canvas>
+  <canvas id="sampler"></canvas>
   
   <div class="grain"></div>
   <div class="vignette"></div>
@@ -403,97 +417,103 @@
     <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
   </div>
   
-  <nav>
-    <div class="nav-inner">
-      <div class="logo">PRSTUDIOS</div>
-      <a href="mailto:prstudios.works@gmail.com" class="contact-btn">CONTACT</a>
-    </div>
-  </nav>
-  
-  <section class="hero">
-    <div class="hero-content">
-      <div class="top-tag">
-        BERKLEE COLLEGE OF MUSIC • COMPOSITION<br>
-        BIMM • SOUND DESIGN & ELECTRONIC MUSIC PRODUCTION
+  <div id="content">
+    <nav>
+      <div class="nav-inner">
+        <div class="logo">PRSTUDIOS</div>
+        <a href="mailto:prstudios.works@gmail.com" class="contact-btn">CONTACT</a>
       </div>
-      <h1>
-        <span class="line">VISION</span>
-        <span class="line small">FINDS ITS</span>
-        <span class="line outline">VOICE</span>
-      </h1>
-      <p class="subtitle">PHILÉAS RENOULT</p>
-      <p class="services">SOUND DESIGN • MUSIC COMPOSITION • SFX</p>
-    </div>
-    <a href="#work" class="scroll-hint">
-      <span>SCROLL</span>
-      <div class="scroll-line"></div>
-    </a>
-  </section>
-  
-  <section class="work" id="work">
-    <div class="work-inner">
-      <div class="section-header">
-        <h2 class="section-title">WORK</h2>
-        <span class="section-count">(03)</span>
+    </nav>
+    
+    <section class="hero">
+      <div class="hero-content">
+        <div class="top-tag">
+          BERKLEE COLLEGE OF MUSIC • COMPOSITION<br>
+          BIMM • SOUND DESIGN & ELECTRONIC MUSIC PRODUCTION
+        </div>
+        <h1>
+          <span class="line">VISION</span>
+          <span class="line small">FINDS ITS</span>
+          <span class="line outline">VOICE</span>
+        </h1>
+        <p class="subtitle">PHILÉAS RENOULT</p>
+        <p class="services">SOUND DESIGN • MUSIC COMPOSITION • SFX</p>
       </div>
-      
-      <a href="https://f.io/fCmaVdqs" target="_blank" class="project">
-        <div class="project-title">THE DAILY MAIL</div>
-        <div class="project-meta">
-          <span>SFX & MUSIC SYNC</span>
-          <span>2024</span>
-        </div>
-        <span class="project-arrow">→</span>
+      <a href="#work" class="scroll-hint">
+        <span>SCROLL</span>
+        <div class="scroll-line"></div>
       </a>
-      
-      <a href="https://www.youtube.com/watch?v=ZMTjOdJJbbM" target="_blank" class="project">
-        <div class="project-title">BANG X AMP</div>
-        <div class="project-meta">
-          <span>MUSIC COMPOSITION</span>
-          <span>2024</span>
+    </section>
+    
+    <section class="work" id="work">
+      <div class="work-inner">
+        <div class="section-header">
+          <h2 class="section-title">WORK</h2>
+          <span class="section-count">(03)</span>
         </div>
-        <span class="project-arrow">→</span>
-      </a>
-      
-      <a href="https://www.youtube.com/watch?v=_xQbW_aJ1XY" target="_blank" class="project">
-        <div class="project-title">ELDEN RING</div>
-        <div class="project-meta">
-          <span>KAI CENAT</span>
-          <span>SFX & SCORE</span>
-          <span>2024</span>
-        </div>
-        <span class="project-arrow">→</span>
-      </a>
-    </div>
-  </section>
-  
-  <div class="divider">• • •</div>
-  
-  <section class="contact">
-    <div class="contact-inner">
-      <div class="contact-label">GET IN TOUCH</div>
-      <h3 class="contact-title">LET'S <span class="outline">CREATE</span></h3>
-      <a href="mailto:prstudios.works@gmail.com" class="contact-email">PRSTUDIOS.WORKS@GMAIL.COM</a>
-      <div class="social">
-        <a href="#">INSTAGRAM</a>
-        <a href="#">TWITTER</a>
-        <a href="#">LINKEDIN</a>
+        
+        <a href="https://f.io/fCmaVdqs" target="_blank" class="project">
+          <div class="project-title">THE DAILY MAIL</div>
+          <div class="project-meta">
+            <span>SFX & MUSIC SYNC</span>
+            <span>2024</span>
+          </div>
+          <span class="project-arrow">→</span>
+        </a>
+        
+        <a href="https://www.youtube.com/watch?v=ZMTjOdJJbbM" target="_blank" class="project">
+          <div class="project-title">BANG X AMP</div>
+          <div class="project-meta">
+            <span>MUSIC COMPOSITION</span>
+            <span>2024</span>
+          </div>
+          <span class="project-arrow">→</span>
+        </a>
+        
+        <a href="https://www.youtube.com/watch?v=_xQbW_aJ1XY" target="_blank" class="project">
+          <div class="project-title">ELDEN RING</div>
+          <div class="project-meta">
+            <span>KAI CENAT</span>
+            <span>SFX & SCORE</span>
+            <span>2024</span>
+          </div>
+          <span class="project-arrow">→</span>
+        </a>
       </div>
-    </div>
-  </section>
+    </section>
+    
+    <div class="divider">• • •</div>
+    
+    <section class="contact">
+      <div class="contact-inner">
+        <div class="contact-label">GET IN TOUCH</div>
+        <h3 class="contact-title">LET'S <span class="outline">CREATE</span></h3>
+        <a href="mailto:prstudios.works@gmail.com" class="contact-email">PRSTUDIOS.WORKS@GMAIL.COM</a>
+        <div class="social">
+          <a href="#">INSTAGRAM</a>
+          <a href="#">TWITTER</a>
+          <a href="#">LINKEDIN</a>
+        </div>
+      </div>
+    </section>
+    
+    <footer>
+      <span>© PRSTUDIOS 2024</span>
+      <span>PARIS, FRANCE</span>
+    </footer>
+  </div>
   
-  <footer>
-    <span>© PRSTUDIOS 2024</span>
-    <span>PARIS, FRANCE</span>
-  </footer>
-  
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <script>
     // ================================================
-    // THE SINGULARITY - A Cinematic Black Hole
+    // PIXEL DECONSTRUCTION SINGULARITY
+    // The website literally gets eaten by the cursor
     // ================================================
     
-    const canvas = document.getElementById('singularity');
-    const ctx = canvas.getContext('2d');
+    const voidCanvas = document.getElementById('void');
+    const voidCtx = voidCanvas.getContext('2d');
+    const samplerCanvas = document.getElementById('sampler');
+    const samplerCtx = samplerCanvas.getContext('2d', { willReadFrequently: true });
     
     let W, H;
     let mx = 0, my = 0;
@@ -501,29 +521,74 @@
     let speed = 0;
     let time = 0;
     let isHovering = false;
+    let pageSnapshot = null;
+    let lastSnapshotTime = 0;
     
-    // Particle systems
-    const letters = [];        // Torn letters spiraling in
-    const accretionParticles = []; // Glowing matter in the disk
-    const distortionRings = []; // Gravitational lensing rings
+    // Pixel debris from the actual page
+    const pixels = [];
+    const MAX_PIXELS = 300;
     
-    const MAX_LETTERS = 100;
-    const MAX_ACCRETION = 150;
+    // Accretion disk particles
+    const accretion = [];
+    const MAX_ACCRETION = 100;
     
     // Resize
     function resize() {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
+      W = voidCanvas.width = window.innerWidth;
+      H = voidCanvas.height = window.innerHeight;
+      samplerCanvas.width = W;
+      samplerCanvas.height = H;
+      captureSnapshot();
     }
     resize();
     window.addEventListener('resize', resize);
     
+    // Capture page snapshot for pixel sampling
+    async function captureSnapshot() {
+      const now = Date.now();
+      if (now - lastSnapshotTime < 2000) return; // Throttle captures
+      lastSnapshotTime = now;
+      
+      try {
+        const content = document.getElementById('content');
+        const canvas = await html2canvas(content, {
+          backgroundColor: '#0a0a0a',
+          scale: 0.5, // Lower res for performance
+          logging: false,
+          useCORS: true,
+        });
+        pageSnapshot = canvas;
+        samplerCtx.drawImage(canvas, 0, 0, W, H);
+      } catch(e) {
+        // Fallback: create gradient snapshot
+        createFallbackSnapshot();
+      }
+    }
+    
+    function createFallbackSnapshot() {
+      // Sample colors from actual DOM elements
+      samplerCtx.fillStyle = '#0a0a0a';
+      samplerCtx.fillRect(0, 0, W, H);
+      
+      // Draw approximations of text areas
+      const textEls = document.querySelectorAll('h1, h2, h3, p, a, span, .logo');
+      textEls.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const style = getComputedStyle(el);
+        const color = style.color || '#e8e4dc';
+        samplerCtx.fillStyle = color;
+        samplerCtx.globalAlpha = 0.8;
+        samplerCtx.fillRect(rect.left, rect.top, rect.width, rect.height);
+      });
+      samplerCtx.globalAlpha = 1;
+    }
+    
+    // Initial capture after page loads
+    setTimeout(captureSnapshot, 500);
+    
     // Mouse tracking
-    let lastMx = 0, lastMy = 0;
     document.addEventListener('mousemove', e => {
       speed = Math.hypot(e.clientX - mx, e.clientY - my);
-      lastMx = mx;
-      lastMy = my;
       mx = e.clientX;
       my = e.clientY;
     });
@@ -534,76 +599,93 @@
       el.addEventListener('mouseleave', () => isHovering = false);
     });
     
-    // Text elements to tear letters from
-    function getTextElements() {
-      return document.querySelectorAll('h1 .line, h2, h3, .project-title, .subtitle, .logo, .section-title, .contact-title');
+    // ================================================
+    // SAMPLE ACTUAL PIXELS FROM PAGE
+    // ================================================
+    function samplePixelColor(x, y) {
+      try {
+        const data = samplerCtx.getImageData(
+          Math.floor(x * 0.5), // Account for scale
+          Math.floor(y * 0.5),
+          1, 1
+        ).data;
+        return { r: data[0], g: data[1], b: data[2], a: data[3] };
+      } catch(e) {
+        return { r: 232, g: 228, b: 220, a: 255 };
+      }
     }
     
     // ================================================
-    // LETTER TEARING - Rip characters from text
+    // TEAR PIXELS FROM THE PAGE
     // ================================================
-    function tearLetters() {
-      if (letters.length >= MAX_LETTERS) return;
+    function tearPixels() {
+      if (pixels.length >= MAX_PIXELS) return;
       
-      getTextElements().forEach(el => {
-        const rect = el.getBoundingClientRect();
-        const text = el.textContent;
-        if (!text || text.length < 2) return;
+      const tearRadius = 150;
+      const tearIntensity = Math.min(speed / 10, 1) + 0.2;
+      const numToSpawn = Math.floor(3 + speed * 0.5);
+      
+      for (let i = 0; i < numToSpawn; i++) {
+        if (pixels.length >= MAX_PIXELS) break;
+        if (Math.random() > tearIntensity) continue;
         
-        const closestX = Math.max(rect.left, Math.min(mx, rect.right));
-        const closestY = Math.max(rect.top, Math.min(my, rect.bottom));
-        const dist = Math.hypot(mx - closestX, my - closestY);
+        // Random position around cursor
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 20 + Math.random() * tearRadius;
+        const px = mx + Math.cos(angle) * dist;
+        const py = my + Math.sin(angle) * dist;
         
-        // Tear probability based on distance and speed
-        const tearRadius = 180;
-        const probability = Math.pow(1 - dist / tearRadius, 2) * 0.4 * (1 + speed * 0.05);
+        // Skip if outside viewport
+        if (px < 0 || px > W || py < 0 || py > H) continue;
         
-        if (dist < tearRadius && Math.random() < probability) {
-          const char = text[Math.floor(Math.random() * text.length)];
-          if (!char.trim()) return;
-          
-          const style = getComputedStyle(el);
-          const angle = Math.atan2(cy - closestY, cx - closestX);
-          
-          letters.push({
-            char,
-            x: closestX + (Math.random() - 0.5) * 30,
-            y: closestY + (Math.random() - 0.5) * 30,
-            size: Math.min(parseFloat(style.fontSize) * (0.3 + Math.random() * 0.3), 48),
-            weight: style.fontWeight,
-            life: 1,
-            maxLife: 1,
-            angle: angle + (Math.random() - 0.5) * 0.5,
-            orbitAngle: Math.random() * Math.PI * 2,
-            orbitSpeed: 0.02 + Math.random() * 0.04,
-            orbitRadius: 60 + Math.random() * 80,
-            velocity: 0.5 + Math.random() * 1.5,
-            stretch: 1,
-            red: Math.random() > 0.7, // Some letters glow red (Hawking radiation)
-          });
+        // Sample actual pixel color from page
+        const color = samplePixelColor(px, py);
+        
+        // Skip very dark pixels (background)
+        if (color.r < 20 && color.g < 20 && color.b < 20) {
+          // Occasionally spawn dark pixels too for effect
+          if (Math.random() > 0.1) continue;
         }
-      });
+        
+        // Pixel size varies
+        const size = 2 + Math.random() * 6;
+        
+        pixels.push({
+          x: px,
+          y: py,
+          originX: px,
+          originY: py,
+          size,
+          color,
+          life: 1,
+          decay: 0.008 + Math.random() * 0.008,
+          angle: Math.atan2(cy - py, cx - px),
+          orbitAngle: Math.random() * Math.PI * 2,
+          orbitSpeed: 0.03 + Math.random() * 0.05,
+          orbitRadius: 30 + Math.random() * 60,
+          rotation: Math.random() * Math.PI * 2,
+          rotationSpeed: (Math.random() - 0.5) * 0.3,
+        });
+      }
     }
     
     // ================================================
-    // ACCRETION DISK - Swirling matter
+    // ACCRETION DISK
     // ================================================
     function spawnAccretion() {
-      if (accretionParticles.length >= MAX_ACCRETION || Math.random() > 0.3) return;
+      if (accretion.length >= MAX_ACCRETION || Math.random() > 0.4) return;
       
       const angle = Math.random() * Math.PI * 2;
-      const radius = 25 + Math.random() * 60;
+      const radius = 20 + Math.random() * 50;
       
-      accretionParticles.push({
+      accretion.push({
         angle,
         radius,
-        baseRadius: radius,
-        speed: 0.015 + Math.random() * 0.025,
+        speed: 0.02 + Math.random() * 0.03,
         size: 1 + Math.random() * 2,
         life: 1,
-        decay: 0.003 + Math.random() * 0.004,
+        decay: 0.005 + Math.random() * 0.005,
         brightness: 0.3 + Math.random() * 0.7,
-        trail: [],
       });
     }
     
@@ -613,43 +695,42 @@
     function render() {
       time += 0.016;
       
-      // Smooth cursor following
+      // Smooth cursor
       cx += (mx - cx) * 0.12;
       cy += (my - cy) * 0.12;
       
-      ctx.clearRect(0, 0, W, H);
+      voidCtx.clearRect(0, 0, W, H);
       
       const intensity = Math.min(speed / 15, 1);
-      const hoverScale = isHovering ? 1.3 : 1;
+      const hoverScale = isHovering ? 1.2 : 1;
       
       // ============================================
-      // 1. GRAVITATIONAL FIELD (Outer glow)
+      // 1. DESTRUCTION ZONE - Visual warping area
       // ============================================
-      const fieldRadius = (200 + intensity * 80) * hoverScale;
-      const fieldGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, fieldRadius);
-      fieldGrad.addColorStop(0, `rgba(232, 228, 220, ${0.06 + intensity * 0.06})`);
-      fieldGrad.addColorStop(0.2, `rgba(232, 228, 220, ${0.03 + intensity * 0.03})`);
-      fieldGrad.addColorStop(0.5, `rgba(200, 180, 160, ${0.01 + intensity * 0.02})`);
-      fieldGrad.addColorStop(1, 'transparent');
-      ctx.fillStyle = fieldGrad;
-      ctx.beginPath();
-      ctx.arc(cx, cy, fieldRadius, 0, Math.PI * 2);
-      ctx.fill();
+      const zoneRadius = (180 + intensity * 60) * hoverScale;
+      const zoneGrad = voidCtx.createRadialGradient(cx, cy, 0, cx, cy, zoneRadius);
+      zoneGrad.addColorStop(0, `rgba(0, 0, 0, ${0.3 + intensity * 0.2})`);
+      zoneGrad.addColorStop(0.3, `rgba(10, 10, 10, ${0.15 + intensity * 0.1})`);
+      zoneGrad.addColorStop(0.7, `rgba(20, 20, 20, 0.05)`);
+      zoneGrad.addColorStop(1, 'transparent');
+      voidCtx.fillStyle = zoneGrad;
+      voidCtx.beginPath();
+      voidCtx.arc(cx, cy, zoneRadius, 0, Math.PI * 2);
+      voidCtx.fill();
       
       // ============================================
       // 2. GRAVITATIONAL LENSING RINGS
       // ============================================
-      const numRings = 4 + Math.floor(intensity * 3);
-      for (let i = 0; i < numRings; i++) {
-        const ringRadius = (30 + i * 18) * hoverScale;
-        const wobble = Math.sin(time * 2 + i) * 2;
-        const alpha = (0.04 + intensity * 0.04) * (1 - i / numRings);
+      for (let i = 0; i < 5; i++) {
+        const ringRadius = (25 + i * 15) * hoverScale;
+        const wobble = Math.sin(time * 2 + i * 0.5) * 2;
+        const alpha = (0.08 - i * 0.012) * (1 + intensity * 0.5);
         
-        ctx.strokeStyle = `rgba(232, 228, 220, ${alpha})`;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.arc(cx, cy, ringRadius + wobble, 0, Math.PI * 2);
-        ctx.stroke();
+        voidCtx.strokeStyle = `rgba(232, 228, 220, ${alpha})`;
+        voidCtx.lineWidth = 1;
+        voidCtx.beginPath();
+        voidCtx.arc(cx, cy, ringRadius + wobble, 0, Math.PI * 2);
+        voidCtx.stroke();
       }
       
       // ============================================
@@ -657,183 +738,126 @@
       // ============================================
       spawnAccretion();
       
-      for (let i = accretionParticles.length - 1; i >= 0; i--) {
-        const p = accretionParticles[i];
+      for (let i = accretion.length - 1; i >= 0; i--) {
+        const p = accretion[i];
         
-        // Spiral inward
         p.angle += p.speed;
-        p.radius *= 0.997;
+        p.radius *= 0.995;
         p.life -= p.decay;
         
-        const x = cx + Math.cos(p.angle) * p.radius * hoverScale;
-        const y = cy + Math.sin(p.angle) * p.radius * hoverScale * 0.3; // Flatten for disk perspective
+        const ax = cx + Math.cos(p.angle) * p.radius * hoverScale;
+        const ay = cy + Math.sin(p.angle) * p.radius * hoverScale * 0.35;
         
-        // Store trail
-        p.trail.push({ x, y, life: p.life });
-        if (p.trail.length > 8) p.trail.shift();
-        
-        // Draw trail
-        for (let t = 0; t < p.trail.length; t++) {
-          const tp = p.trail[t];
-          const trailAlpha = (t / p.trail.length) * p.life * 0.5 * p.brightness;
-          ctx.fillStyle = `rgba(255, ${200 + Math.random() * 55}, ${150 + Math.random() * 50}, ${trailAlpha})`;
-          ctx.beginPath();
-          ctx.arc(tp.x, tp.y, p.size * (t / p.trail.length), 0, Math.PI * 2);
-          ctx.fill();
-        }
-        
-        // Draw particle
         const alpha = p.life * p.brightness;
-        const glow = ctx.createRadialGradient(x, y, 0, x, y, p.size * 3);
-        glow.addColorStop(0, `rgba(255, 230, 200, ${alpha})`);
-        glow.addColorStop(0.5, `rgba(255, 180, 100, ${alpha * 0.5})`);
+        const glow = voidCtx.createRadialGradient(ax, ay, 0, ax, ay, p.size * 4);
+        glow.addColorStop(0, `rgba(255, 240, 220, ${alpha})`);
+        glow.addColorStop(0.5, `rgba(255, 200, 150, ${alpha * 0.5})`);
         glow.addColorStop(1, 'transparent');
-        ctx.fillStyle = glow;
-        ctx.beginPath();
-        ctx.arc(x, y, p.size * 3, 0, Math.PI * 2);
-        ctx.fill();
+        voidCtx.fillStyle = glow;
+        voidCtx.beginPath();
+        voidCtx.arc(ax, ay, p.size * 4, 0, Math.PI * 2);
+        voidCtx.fill();
         
-        if (p.life <= 0 || p.radius < 8) {
-          accretionParticles.splice(i, 1);
+        if (p.life <= 0 || p.radius < 5) {
+          accretion.splice(i, 1);
         }
       }
       
       // ============================================
-      // 4. EVENT HORIZON (The black center)
+      // 4. EVENT HORIZON
       // ============================================
-      const horizonRadius = (12 + intensity * 4) * hoverScale;
+      const horizonRadius = (14 + intensity * 6) * hoverScale;
       
       // Dark void
-      const voidGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, horizonRadius * 2);
-      voidGrad.addColorStop(0, 'rgba(0, 0, 0, 0.95)');
-      voidGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0.7)');
+      const voidGrad = voidCtx.createRadialGradient(cx, cy, 0, cx, cy, horizonRadius * 2.5);
+      voidGrad.addColorStop(0, 'rgba(0, 0, 0, 0.98)');
+      voidGrad.addColorStop(0.4, 'rgba(0, 0, 0, 0.8)');
+      voidGrad.addColorStop(0.7, 'rgba(0, 0, 0, 0.4)');
       voidGrad.addColorStop(1, 'transparent');
-      ctx.fillStyle = voidGrad;
-      ctx.beginPath();
-      ctx.arc(cx, cy, horizonRadius * 2, 0, Math.PI * 2);
-      ctx.fill();
+      voidCtx.fillStyle = voidGrad;
+      voidCtx.beginPath();
+      voidCtx.arc(cx, cy, horizonRadius * 2.5, 0, Math.PI * 2);
+      voidCtx.fill();
       
-      // Bright ring at event horizon (photon sphere)
-      ctx.strokeStyle = `rgba(255, 250, 240, ${0.4 + intensity * 0.3})`;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.arc(cx, cy, horizonRadius, 0, Math.PI * 2);
-      ctx.stroke();
+      // Photon sphere ring
+      voidCtx.strokeStyle = `rgba(255, 250, 240, ${0.5 + intensity * 0.3})`;
+      voidCtx.lineWidth = 1.5;
+      voidCtx.beginPath();
+      voidCtx.arc(cx, cy, horizonRadius, 0, Math.PI * 2);
+      voidCtx.stroke();
       
-      // Inner glow
-      const innerGlow = ctx.createRadialGradient(cx, cy, horizonRadius * 0.5, cx, cy, horizonRadius);
-      innerGlow.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
-      innerGlow.addColorStop(1, 'rgba(255, 220, 180, 0.3)');
-      ctx.fillStyle = innerGlow;
-      ctx.beginPath();
-      ctx.arc(cx, cy, horizonRadius, 0, Math.PI * 2);
-      ctx.fill();
-      
-      // Core singularity
-      ctx.fillStyle = '#fff';
-      ctx.shadowColor = '#fff';
-      ctx.shadowBlur = 20 + intensity * 15;
-      ctx.beginPath();
-      ctx.arc(cx, cy, 3 * hoverScale, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.shadowBlur = 0;
+      // Core
+      voidCtx.fillStyle = '#fff';
+      voidCtx.shadowColor = '#fff';
+      voidCtx.shadowBlur = 25 + intensity * 20;
+      voidCtx.beginPath();
+      voidCtx.arc(cx, cy, 3 * hoverScale, 0, Math.PI * 2);
+      voidCtx.fill();
+      voidCtx.shadowBlur = 0;
       
       // ============================================
-      // 5. TORN LETTERS SPIRALING IN
+      // 5. PIXEL DEBRIS - Actual page being consumed
       // ============================================
-      tearLetters();
+      tearPixels();
       
-      for (let i = letters.length - 1; i >= 0; i--) {
-        const L = letters[i];
+      for (let i = pixels.length - 1; i >= 0; i--) {
+        const p = pixels[i];
         
-        const dx = cx - L.x;
-        const dy = cy - L.y;
+        const dx = cx - p.x;
+        const dy = cy - p.y;
         const dist = Math.hypot(dx, dy);
         
-        // Gravitational acceleration (stronger close to singularity)
-        const gravity = 1200 / (dist * dist + 50);
+        // Strong gravitational pull
+        const gravity = 1500 / (dist * dist + 80);
         
-        // Orbital motion
-        L.orbitAngle += L.orbitSpeed * (1 + (1 - L.life) * 2);
-        L.orbitRadius *= 0.985;
+        // Orbital spiral
+        p.orbitAngle += p.orbitSpeed * (1 + (1 - p.life) * 3);
+        p.orbitRadius *= 0.98;
         
-        const orbitOffsetX = Math.cos(L.orbitAngle) * L.orbitRadius * L.life;
-        const orbitOffsetY = Math.sin(L.orbitAngle) * L.orbitRadius * L.life * 0.5;
+        const orbitX = Math.cos(p.orbitAngle) * p.orbitRadius * p.life;
+        const orbitY = Math.sin(p.orbitAngle) * p.orbitRadius * p.life * 0.4;
         
-        // Move toward singularity with orbital spiral
-        L.x += (dx / dist) * gravity + orbitOffsetX * 0.03;
-        L.y += (dy / dist) * gravity + orbitOffsetY * 0.03;
+        p.x += (dx / dist) * gravity + orbitX * 0.025;
+        p.y += (dy / dist) * gravity + orbitY * 0.025;
         
-        // Time dilation stretch (letters stretch as they approach)
-        L.stretch = 1 + (1 - L.life) * 2;
+        p.rotation += p.rotationSpeed;
+        p.life -= p.decay;
         
-        // Decay
-        L.life -= 0.006;
-        
-        // Draw
-        if (L.life > 0 && dist > 10) {
-          const alpha = L.life * 0.9;
-          const scale = L.life;
-          const rotation = (1 - L.life) * 720;
+        // Draw pixel
+        if (p.life > 0 && dist > 8) {
+          const alpha = p.life;
+          const size = p.size * p.life;
+          const { r, g, b } = p.color;
           
-          ctx.save();
-          ctx.translate(L.x, L.y);
-          ctx.rotate(rotation * Math.PI / 180);
-          ctx.scale(1, L.stretch);
+          voidCtx.save();
+          voidCtx.translate(p.x, p.y);
+          voidCtx.rotate(p.rotation);
           
-          // Chromatic aberration for letters being torn
-          if (L.life < 0.7) {
-            ctx.fillStyle = `rgba(255, 100, 100, ${alpha * 0.3})`;
-            ctx.font = `${L.weight} ${L.size * scale}px Inter`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(L.char, -2, 0);
-            
-            ctx.fillStyle = `rgba(100, 100, 255, ${alpha * 0.3})`;
-            ctx.fillText(L.char, 2, 0);
+          // Chromatic split for fast-moving pixels
+          if (p.life < 0.6) {
+            const split = (0.6 - p.life) * 4;
+            voidCtx.fillStyle = `rgba(${Math.min(255, r + 50)}, ${g * 0.5}, ${b * 0.5}, ${alpha * 0.4})`;
+            voidCtx.fillRect(-size/2 - split, -size/2, size, size);
+            voidCtx.fillStyle = `rgba(${r * 0.5}, ${g * 0.5}, ${Math.min(255, b + 50)}, ${alpha * 0.4})`;
+            voidCtx.fillRect(-size/2 + split, -size/2, size, size);
           }
           
-          // Main letter
-          const color = L.red ? `rgba(255, ${150 + L.life * 100}, ${100 + L.life * 100}, ${alpha})` 
-                              : `rgba(232, 228, 220, ${alpha})`;
-          ctx.fillStyle = color;
-          ctx.font = `${L.weight} ${L.size * scale}px Inter`;
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText(L.char, 0, 0);
+          // Main pixel
+          voidCtx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+          voidCtx.fillRect(-size/2, -size/2, size, size);
           
-          ctx.restore();
+          // Glow for bright pixels
+          if (r > 150 || g > 150 || b > 150) {
+            voidCtx.shadowColor = `rgb(${r}, ${g}, ${b})`;
+            voidCtx.shadowBlur = 5 * alpha;
+            voidCtx.fillRect(-size/2, -size/2, size, size);
+            voidCtx.shadowBlur = 0;
+          }
+          
+          voidCtx.restore();
         } else {
-          letters.splice(i, 1);
+          pixels.splice(i, 1);
         }
-      }
-      
-      // ============================================
-      // 6. ENERGY JETS (when moving fast)
-      // ============================================
-      if (speed > 10) {
-        const jetLength = speed * 3;
-        const angle = Math.atan2(my - lastMy, mx - lastMx);
-        
-        // Jet gradient
-        const jetGrad = ctx.createLinearGradient(
-          cx, cy,
-          cx - Math.cos(angle) * jetLength,
-          cy - Math.sin(angle) * jetLength
-        );
-        jetGrad.addColorStop(0, `rgba(255, 255, 255, ${0.3 * (speed / 50)})`);
-        jetGrad.addColorStop(0.3, `rgba(200, 220, 255, ${0.15 * (speed / 50)})`);
-        jetGrad.addColorStop(1, 'transparent');
-        
-        ctx.strokeStyle = jetGrad;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(
-          cx - Math.cos(angle) * jetLength,
-          cy - Math.sin(angle) * jetLength
-        );
-        ctx.stroke();
       }
       
       requestAnimationFrame(render);
@@ -841,53 +865,57 @@
     
     // Click burst
     document.addEventListener('click', () => {
-      getTextElements().forEach(el => {
-        const rect = el.getBoundingClientRect();
-        const text = el.textContent;
-        if (!text) return;
+      // Massive pixel burst
+      for (let i = 0; i < 50; i++) {
+        if (pixels.length >= MAX_PIXELS) break;
         
-        const dist = Math.hypot(mx - (rect.left + rect.width/2), my - (rect.top + rect.height/2));
-        if (dist > 300) return;
-        
-        const style = getComputedStyle(el);
-        for (let i = 0; i < 8 && letters.length < MAX_LETTERS; i++) {
-          const char = text[Math.floor(Math.random() * text.length)];
-          if (!char.trim()) continue;
-          
-          letters.push({
-            char,
-            x: rect.left + Math.random() * rect.width,
-            y: rect.top + Math.random() * rect.height,
-            size: Math.min(parseFloat(style.fontSize) * 0.35, 40),
-            weight: style.fontWeight,
-            life: 1,
-            maxLife: 1,
-            angle: Math.atan2(cy - rect.top, cx - rect.left),
-            orbitAngle: Math.random() * Math.PI * 2,
-            orbitSpeed: 0.03 + Math.random() * 0.05,
-            orbitRadius: 80 + Math.random() * 100,
-            velocity: 1 + Math.random() * 2,
-            stretch: 1,
-            red: Math.random() > 0.5,
-          });
-        }
-      });
-      
-      // Burst of accretion particles
-      for (let i = 0; i < 20; i++) {
         const angle = Math.random() * Math.PI * 2;
-        accretionParticles.push({
-          angle,
-          radius: 30 + Math.random() * 80,
-          baseRadius: 30 + Math.random() * 80,
-          speed: 0.02 + Math.random() * 0.04,
-          size: 1.5 + Math.random() * 2.5,
+        const dist = 30 + Math.random() * 200;
+        const px = mx + Math.cos(angle) * dist;
+        const py = my + Math.sin(angle) * dist;
+        
+        if (px < 0 || px > W || py < 0 || py > H) continue;
+        
+        const color = samplePixelColor(px, py);
+        const size = 3 + Math.random() * 8;
+        
+        pixels.push({
+          x: px,
+          y: py,
+          originX: px,
+          originY: py,
+          size,
+          color,
           life: 1,
-          decay: 0.008 + Math.random() * 0.008,
-          brightness: 0.5 + Math.random() * 0.5,
-          trail: [],
+          decay: 0.01 + Math.random() * 0.01,
+          angle: Math.atan2(cy - py, cx - px),
+          orbitAngle: Math.random() * Math.PI * 2,
+          orbitSpeed: 0.04 + Math.random() * 0.06,
+          orbitRadius: 50 + Math.random() * 100,
+          rotation: Math.random() * Math.PI * 2,
+          rotationSpeed: (Math.random() - 0.5) * 0.4,
         });
       }
+      
+      // Accretion burst
+      for (let i = 0; i < 30; i++) {
+        accretion.push({
+          angle: Math.random() * Math.PI * 2,
+          radius: 25 + Math.random() * 70,
+          speed: 0.03 + Math.random() * 0.05,
+          size: 1.5 + Math.random() * 2.5,
+          life: 1,
+          decay: 0.01 + Math.random() * 0.01,
+          brightness: 0.5 + Math.random() * 0.5,
+        });
+      }
+    });
+    
+    // Recapture on scroll (throttled)
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(captureSnapshot, 300);
     });
     
     // Start
@@ -895,7 +923,8 @@
     
     // Disable on touch
     if ('ontouchstart' in window) {
-      canvas.style.display = 'none';
+      voidCanvas.style.display = 'none';
+      samplerCanvas.style.display = 'none';
     }
   </script>
 </body>
