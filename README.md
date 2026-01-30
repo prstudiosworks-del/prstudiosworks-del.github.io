@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+html<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PRSTUDIOS | Sound Design</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
@@ -17,16 +17,18 @@
       --light: #f5f2ed;
     }
     
+    html { scroll-behavior: smooth; }
+    
     body {
       background: var(--dark);
       color: var(--light);
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       overflow-x: hidden;
+      min-height: 100vh;
     }
     
-    /* Grain texture */
-    body::before {
-      content: '';
+    /* Grain texture overlay */
+    .grain {
       position: fixed;
       inset: 0;
       pointer-events: none;
@@ -35,7 +37,7 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
     
-    /* Warm glow */
+    /* Warm glow from bottom */
     .glow {
       position: fixed;
       bottom: 0;
@@ -47,7 +49,7 @@
       background: radial-gradient(ellipse 80% 50% at 50% 100%, rgba(255,61,46,0.15) 0%, rgba(255,107,61,0.08) 40%, transparent 70%);
     }
     
-    /* Waveform */
+    /* Waveform visualizer */
     .waveform {
       position: fixed;
       left: 24px;
@@ -56,70 +58,90 @@
       display: flex;
       align-items: center;
       gap: 2px;
-      z-index: 50;
+      z-index: 40;
     }
     .wave-bar {
       width: 2px;
-      border-radius: 1px;
-      background: rgba(245,242,237,0.15);
+      border-radius: 9999px;
       transition: height 0.075s ease, background 0.075s ease;
     }
+    @media (max-width: 1024px) {
+      .waveform { display: none; }
+    }
     
-    /* Nav */
+    /* Navigation */
     nav {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      z-index: 100;
-      padding: 32px 64px;
+      z-index: 50;
+      padding: 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      opacity: 0;
+      animation: fadeIn 0.7s ease forwards;
+    }
+    @media (min-width: 1024px) {
+      nav { padding: 32px 64px; }
+    }
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
     }
     .logo {
       font-size: 20px;
       font-weight: 700;
       letter-spacing: -0.5px;
+      color: var(--light);
     }
     .logo span { color: var(--primary); }
     .nav-label {
+      display: none;
       font-size: 10px;
       letter-spacing: 0.4em;
+      font-family: 'JetBrains Mono', monospace;
       color: rgba(245,242,237,0.3);
-      margin-left: 24px;
+    }
+    @media (min-width: 768px) {
+      .nav-label { display: block; }
     }
     .nav-right {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 32px;
     }
     .status {
-      display: flex;
+      display: none;
       align-items: center;
       gap: 8px;
+    }
+    @media (min-width: 768px) {
+      .status { display: flex; }
     }
     .status-dot {
       width: 8px;
       height: 8px;
       background: var(--primary);
       border-radius: 50%;
-      animation: pulse 2s infinite;
+      animation: pulse 2s ease-in-out infinite;
     }
     .status-text {
       font-size: 10px;
       letter-spacing: 0.3em;
-      color: rgba(245,242,237,0.4);
       font-family: 'JetBrains Mono', monospace;
+      color: rgba(245,242,237,0.4);
     }
     .contact-btn {
+      position: relative;
+      padding: 8px 16px;
       font-size: 12px;
       letter-spacing: 0.3em;
+      font-family: 'JetBrains Mono', monospace;
       color: rgba(245,242,237,0.6);
       text-decoration: none;
-      font-family: 'JetBrains Mono', monospace;
-      padding: 8px 16px;
-      position: relative;
       overflow: hidden;
     }
     .contact-btn::before {
@@ -132,40 +154,66 @@
       transition: transform 0.3s ease;
       z-index: -1;
     }
-    .contact-btn:hover::before { transform: scaleX(1); }
-    .contact-btn:hover { color: var(--light); }
+    .contact-btn:hover::before {
+      transform: scaleX(1);
+    }
+    .contact-btn:hover {
+      color: var(--light);
+    }
     
-    /* Hero */
+    /* Hero Section */
     .hero {
       min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: 120px 64px 80px;
+      padding: 96px 32px 80px;
       position: relative;
       z-index: 1;
     }
-    .hero-content { max-width: 1400px; }
+    @media (min-width: 1024px) {
+      .hero { padding: 96px 64px 80px; }
+    }
+    .hero-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(32px);
+      animation: slideUp 1s ease 0.2s forwards;
+    }
     .badge {
       display: inline-block;
-      padding: 10px 20px;
+      padding: 8px 16px;
       background: var(--primary);
+      color: var(--light);
       font-size: 10px;
       letter-spacing: 0.5em;
       font-family: 'JetBrains Mono', monospace;
       margin-bottom: 40px;
     }
     h1 {
-      font-size: clamp(48px, 11vw, 140px);
       font-weight: 900;
       line-height: 0.9;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.02em;
     }
-    h1 .gradient {
+    .headline-line {
+      display: block;
+      font-size: clamp(2.5rem, 11vw, 9rem);
+      color: var(--light);
+    }
+    .headline-gradient {
+      display: block;
+      font-size: clamp(2.5rem, 11vw, 9rem);
       background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--tertiary) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    h1 .accent { color: var(--primary); }
+    .headline-accent {
+      display: block;
+      font-size: clamp(2.5rem, 11vw, 9rem);
+      color: var(--primary);
+    }
     .tagline {
       display: flex;
       align-items: center;
@@ -180,8 +228,8 @@
     .tagline-text {
       font-size: 14px;
       letter-spacing: 0.2em;
-      color: rgba(245,242,237,0.4);
       font-family: 'JetBrains Mono', monospace;
+      color: rgba(245,242,237,0.4);
     }
     .cta {
       display: inline-flex;
@@ -189,10 +237,13 @@
       gap: 16px;
       margin-top: 48px;
       text-decoration: none;
-      color: rgba(245,242,237,0.4);
+    }
+    .cta-text {
       font-size: 12px;
       letter-spacing: 0.3em;
       font-family: 'JetBrains Mono', monospace;
+      color: rgba(245,242,237,0.4);
+      transition: color 0.3s;
     }
     .cta-box {
       width: 48px;
@@ -202,17 +253,42 @@
       align-items: center;
       justify-content: center;
       font-size: 18px;
+      color: rgba(245,242,237,0.5);
       position: relative;
       overflow: hidden;
       transition: border-color 0.3s;
     }
-    .cta:hover .cta-box { border-color: var(--primary); background: var(--primary); }
-    
-    /* Work section */
-    .work {
-      padding: 120px 64px;
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--primary);
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+    .cta-box span {
       position: relative;
       z-index: 1;
+    }
+    .cta:hover .cta-box::before {
+      transform: scale(1);
+    }
+    .cta:hover .cta-box {
+      border-color: var(--primary);
+    }
+    
+    /* Work Section */
+    .work {
+      padding: 128px 32px;
+      position: relative;
+      z-index: 1;
+    }
+    @media (min-width: 1024px) {
+      .work { padding: 128px 64px; }
+    }
+    .work-inner {
+      max-width: 1280px;
+      margin: 0 auto;
     }
     .work-header {
       display: flex;
@@ -224,7 +300,7 @@
     }
     .work-label {
       display: inline-block;
-      padding: 6px 12px;
+      padding: 4px 12px;
       background: var(--light);
       color: var(--dark);
       font-size: 10px;
@@ -236,14 +312,16 @@
       font-size: clamp(48px, 8vw, 100px);
       font-weight: 900;
       letter-spacing: -0.02em;
+      color: var(--light);
     }
     .work-count {
       font-size: 14px;
-      color: rgba(245,242,237,0.2);
       font-family: 'JetBrains Mono', monospace;
+      color: rgba(245,242,237,0.2);
+      padding-bottom: 8px;
     }
     
-    /* Project item */
+    /* Project Items */
     .project {
       display: grid;
       grid-template-columns: auto 1fr auto;
@@ -254,40 +332,49 @@
       text-decoration: none;
       color: var(--light);
       position: relative;
-      transition: all 0.3s;
+      overflow: hidden;
     }
     .project::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(255,61,46,0.05);
+      background: rgba(255,61,46,0.08);
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.5s ease;
     }
-    .project:hover::before { transform: scaleX(1); }
+    .project:hover::before {
+      transform: scaleX(1);
+    }
     .project-num {
-      font-size: 48px;
+      font-size: clamp(32px, 5vw, 48px);
       font-weight: 900;
       color: rgba(245,242,237,0.08);
       transition: color 0.3s;
       position: relative;
       z-index: 1;
     }
-    .project:hover .project-num { color: rgba(255,61,46,0.4); }
-    .project-info { position: relative; z-index: 1; }
+    .project:hover .project-num {
+      color: rgba(255,61,46,0.4);
+    }
+    .project-info {
+      position: relative;
+      z-index: 1;
+    }
     .project-title {
-      font-size: clamp(24px, 4vw, 40px);
+      font-size: clamp(20px, 4vw, 40px);
       font-weight: 900;
       letter-spacing: -0.01em;
       transition: color 0.3s;
     }
-    .project:hover .project-title { color: var(--primary); }
+    .project:hover .project-title {
+      color: var(--primary);
+    }
     .project-sub {
       font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
       color: rgba(245,242,237,0.3);
       margin-top: 4px;
-      font-family: 'JetBrains Mono', monospace;
     }
     .project-meta {
       display: flex;
@@ -297,15 +384,23 @@
       z-index: 1;
     }
     .project-type {
+      display: none;
       font-size: 10px;
       letter-spacing: 0.3em;
-      color: rgba(245,242,237,0.3);
       font-family: 'JetBrains Mono', monospace;
+      color: rgba(245,242,237,0.3);
+    }
+    @media (min-width: 768px) {
+      .project-type { display: block; }
     }
     .project-year {
+      display: none;
       font-size: 12px;
-      color: rgba(245,242,237,0.2);
       font-family: 'JetBrains Mono', monospace;
+      color: rgba(245,242,237,0.2);
+    }
+    @media (min-width: 768px) {
+      .project-year { display: block; }
     }
     .project-arrow {
       width: 40px;
@@ -337,40 +432,56 @@
     .marquee-text {
       font-size: 20px;
       font-weight: 800;
+      color: var(--light);
       margin: 0 32px;
-    }
-    @keyframes marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      letter-spacing: -0.01em;
     }
     
-    /* Contact */
+    /* Contact Section */
     .contact {
-      padding: 120px 64px;
+      padding: 128px 32px;
       position: relative;
       z-index: 1;
     }
-    .contact-grid {
+    @media (min-width: 1024px) {
+      .contact { padding: 128px 64px; }
+    }
+    .contact-inner {
+      max-width: 1280px;
+      margin: 0 auto;
       display: grid;
-      grid-template-columns: 1fr 1fr;
       gap: 64px;
       align-items: end;
+    }
+    @media (min-width: 1024px) {
+      .contact-inner { grid-template-columns: 1fr 1fr; }
+    }
+    .contact-left .badge {
+      margin-bottom: 32px;
     }
     .contact-title {
       font-size: clamp(48px, 7vw, 80px);
       font-weight: 900;
       letter-spacing: -0.02em;
       line-height: 1;
+      color: var(--light);
     }
-    .contact-title span { color: var(--primary); }
-    .contact-right { text-align: right; }
+    .contact-title span {
+      color: var(--primary);
+    }
+    .contact-right {
+      text-align: left;
+    }
+    @media (min-width: 1024px) {
+      .contact-right { text-align: right; }
+    }
     .contact-email {
-      font-size: 20px;
+      font-size: clamp(16px, 2vw, 20px);
+      font-family: 'JetBrains Mono', monospace;
       color: rgba(245,242,237,0.6);
       text-decoration: none;
       border-bottom: 2px solid rgba(245,242,237,0.2);
       padding-bottom: 4px;
-      font-family: 'JetBrains Mono', monospace;
       transition: all 0.3s;
     }
     .contact-email:hover {
@@ -380,57 +491,68 @@
     .social {
       display: flex;
       gap: 32px;
-      justify-content: flex-end;
-      margin-top: 24px;
+      margin-top: 32px;
+    }
+    @media (min-width: 1024px) {
+      .social { justify-content: flex-end; }
     }
     .social a {
       font-size: 12px;
       letter-spacing: 0.2em;
+      font-family: 'JetBrains Mono', monospace;
       color: rgba(245,242,237,0.3);
       text-decoration: none;
-      font-family: 'JetBrains Mono', monospace;
       transition: color 0.3s;
     }
-    .social a:hover { color: var(--light); }
+    .social a:hover {
+      color: var(--light);
+    }
     
     /* Footer */
     footer {
-      padding: 32px 64px;
+      padding: 32px;
       border-top: 1px solid rgba(245,242,237,0.05);
       display: flex;
       justify-content: space-between;
       font-size: 10px;
       letter-spacing: 0.3em;
-      color: rgba(245,242,237,0.2);
       font-family: 'JetBrains Mono', monospace;
+      color: rgba(245,242,237,0.2);
+    }
+    @media (min-width: 1024px) {
+      footer { padding: 32px 64px; }
     }
     
+    /* Animations */
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
     @keyframes pulse {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.5; }
     }
-    
-    /* Responsive */
-    @media (max-width: 768px) {
-      nav, .hero, .work, .contact, footer { padding-left: 24px; padding-right: 24px; }
-      .waveform, .nav-label, .status { display: none; }
-      .contact-grid { grid-template-columns: 1fr; }
-      .contact-right { text-align: left; }
-      .social { justify-content: flex-start; }
-      .project { grid-template-columns: 1fr; gap: 16px; }
-      .project-meta { justify-content: flex-start; }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
   </style>
 </head>
 <body>
+  <!-- Grain Texture -->
+  <div class="grain"></div>
+  
+  <!-- Warm Glow -->
   <div class="glow"></div>
   
-  <!-- Waveform -->
+  <!-- Waveform Visualizer -->
   <div class="waveform" id="waveform"></div>
   
-  <!-- Nav -->
+  <!-- Navigation -->
   <nav>
-    <div style="display:flex;align-items:center">
+    <div class="nav-left">
       <div class="logo">PR<span>STUDIOS</span></div>
       <span class="nav-label">SOUND DESIGN</span>
     </div>
@@ -448,68 +570,70 @@
     <div class="hero-content">
       <div class="badge">PHILÉAS RENOULT</div>
       <h1>
-        WHERE YOUR<br>
-        <span class="gradient">VISION</span><br>
-        FINDS ITS<br>
-        <span class="accent">VOICE</span>
+        <span class="headline-line">WHERE YOUR</span>
+        <span class="headline-gradient">VISION</span>
+        <span class="headline-line">FINDS ITS</span>
+        <span class="headline-accent">VOICE</span>
       </h1>
       <div class="tagline">
         <div class="tagline-line"></div>
         <span class="tagline-text">SOUND DESIGN • SFX • COMPOSITION</span>
       </div>
       <a href="#work" class="cta">
-        <span>EXPLORE WORK</span>
-        <div class="cta-box">↓</div>
+        <span class="cta-text">EXPLORE WORK</span>
+        <div class="cta-box"><span>↓</span></div>
       </a>
     </div>
   </section>
   
-  <!-- Work -->
+  <!-- Work Section -->
   <section class="work" id="work">
-    <div class="work-header">
-      <div>
-        <div class="work-label">SELECTED</div>
-        <h2 class="work-title">WORK</h2>
+    <div class="work-inner">
+      <div class="work-header">
+        <div>
+          <div class="work-label">SELECTED</div>
+          <h2 class="work-title">WORK</h2>
+        </div>
+        <span class="work-count">(03)</span>
       </div>
-      <span class="work-count">(03)</span>
+      
+      <a href="https://f.io/fCmaVdqs" target="_blank" class="project">
+        <span class="project-num">01</span>
+        <div class="project-info">
+          <div class="project-title">THE DAILY MAIL</div>
+        </div>
+        <div class="project-meta">
+          <span class="project-type">SFX & MUSIC SYNC</span>
+          <span class="project-year">2024</span>
+          <div class="project-arrow">→</div>
+        </div>
+      </a>
+      
+      <a href="https://www.youtube.com/watch?v=ZMTjOdJJbbM" target="_blank" class="project">
+        <span class="project-num">02</span>
+        <div class="project-info">
+          <div class="project-title">BANG X AMP</div>
+        </div>
+        <div class="project-meta">
+          <span class="project-type">MUSIC COMPOSITION</span>
+          <span class="project-year">2024</span>
+          <div class="project-arrow">→</div>
+        </div>
+      </a>
+      
+      <a href="https://www.youtube.com/watch?v=_xQbW_aJ1XY" target="_blank" class="project">
+        <span class="project-num">03</span>
+        <div class="project-info">
+          <div class="project-title">ELDEN RING MARATHON</div>
+          <div class="project-sub">KAI CENAT</div>
+        </div>
+        <div class="project-meta">
+          <span class="project-type">SFX & SCORE</span>
+          <span class="project-year">2024</span>
+          <div class="project-arrow">→</div>
+        </div>
+      </a>
     </div>
-    
-    <a href="https://www.youtube.com/watch?v=_xQbW_aJ1XY" target="_blank" class="project">
-      <span class="project-num">01</span>
-      <div class="project-info">
-        <div class="project-title">THE DAILY MAIL</div>
-      </div>
-      <div class="project-meta">
-        <span class="project-type">SFX & MUSIC SYNC</span>
-        <span class="project-year">2024</span>
-        <div class="project-arrow">→</div>
-      </div>
-    </a>
-    
-    <a href="https://www.youtube.com/watch?v=ZMTjOdJJbbM" target="_blank" class="project">
-      <span class="project-num">02</span>
-      <div class="project-info">
-        <div class="project-title">BANG X AMP</div>
-      </div>
-      <div class="project-meta">
-        <span class="project-type">MUSIC COMPOSITION</span>
-        <span class="project-year">2024</span>
-        <div class="project-arrow">→</div>
-      </div>
-    </a>
-    
-    <a href="https://www.youtube.com/watch?v=_xQbW_aJ1XY" target="_blank" class="project">
-      <span class="project-num">03</span>
-      <div class="project-info">
-        <div class="project-title">ELDEN RING MARATHON</div>
-        <div class="project-sub">KAI CENAT</div>
-      </div>
-      <div class="project-meta">
-        <span class="project-type">SFX & SCORE</span>
-        <span class="project-year">2024</span>
-        <div class="project-arrow">→</div>
-      </div>
-    </a>
   </section>
   
   <!-- Marquee -->
@@ -521,13 +645,15 @@
       <span class="marquee-text">SOUND DESIGN • COMPOSITION • SFX • MUSIC •</span>
       <span class="marquee-text">SOUND DESIGN • COMPOSITION • SFX • MUSIC •</span>
       <span class="marquee-text">SOUND DESIGN • COMPOSITION • SFX • MUSIC •</span>
+      <span class="marquee-text">SOUND DESIGN • COMPOSITION • SFX • MUSIC •</span>
+      <span class="marquee-text">SOUND DESIGN • COMPOSITION • SFX • MUSIC •</span>
     </div>
   </section>
   
   <!-- Contact -->
   <section class="contact">
-    <div class="contact-grid">
-      <div>
+    <div class="contact-inner">
+      <div class="contact-left">
         <div class="badge">START A PROJECT</div>
         <h3 class="contact-title">LET'S<br><span>CREATE</span></h3>
       </div>
@@ -542,6 +668,7 @@
     </div>
   </section>
   
+  <!-- Footer -->
   <footer>
     <span>© PRSTUDIOS 2024</span>
     <span>PARIS, FRANCE</span>
@@ -553,11 +680,12 @@
     for (let i = 0; i < 24; i++) {
       const bar = document.createElement('div');
       bar.className = 'wave-bar';
-      bar.style.height = '12px';
+      bar.style.height = '24px';
+      bar.style.background = 'rgba(245,242,237,0.15)';
       waveform.appendChild(bar);
     }
     
-    // Animate waveform
+    // Animate waveform - exact match to React version
     const bars = document.querySelectorAll('.wave-bar');
     function animateWaveform() {
       const time = Date.now() * 0.002;
