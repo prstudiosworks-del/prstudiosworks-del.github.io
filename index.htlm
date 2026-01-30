@@ -20,172 +20,45 @@
       overflow-x: hidden;
     }
     
-    /* ========================================
-       CURSOR - Small, refined
-       ======================================== */
-    .cursor {
-      width: 8px;
-      height: 8px;
-      background: var(--white);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 100000;
-      transform: translate(-50%, -50%);
-      mix-blend-mode: difference;
-      transition: transform 0.2s ease, width 0.3s ease, height 0.3s ease;
-    }
-    .cursor.hover {
-      width: 48px;
-      height: 48px;
-      background: transparent;
-      border: 1px solid var(--white);
-    }
-    
-    /* ========================================
-       ALTERNATE WORLD LAYER
-       Revealed by cursor - inverted, deconstructed
-       ======================================== */
-    .alt-world {
+    /* THE VOID - All effects render here */
+    #singularity {
       position: fixed;
       inset: 0;
-      z-index: 9999;
-      pointer-events: none;
-      clip-path: circle(0px at 50% 50%);
-      transition: clip-path 0.1s ease-out;
-    }
-    
-    .alt-world-inner {
-      position: absolute;
-      inset: 0;
-      background: var(--white);
-      overflow: hidden;
-    }
-    
-    /* Chromatic aberration layers */
-    .alt-world .chroma-r,
-    .alt-world .chroma-g,
-    .alt-world .chroma-b {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-    
-    .alt-world .chroma-r {
-      color: #ff0040;
-      mix-blend-mode: multiply;
-      transform: translate(-3px, -1px);
-    }
-    .alt-world .chroma-g {
-      color: #00ff40;
-      mix-blend-mode: multiply;
-      transform: translate(0px, 2px);
-    }
-    .alt-world .chroma-b {
-      color: #0040ff;
-      mix-blend-mode: multiply;
-      transform: translate(3px, -1px);
-    }
-    
-    .alt-world .alt-content {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--black);
-      padding: 32px;
-    }
-    
-    .alt-world .alt-headline {
-      font-weight: 900;
-      font-size: clamp(5rem, 25vw, 22rem);
-      line-height: 0.82;
-      letter-spacing: -0.05em;
-      text-transform: uppercase;
-      text-align: center;
-      position: relative;
-    }
-    
-    .alt-world .alt-line {
-      display: block;
-    }
-    
-    .alt-world .alt-line.outline {
-      -webkit-text-stroke: 1.5px var(--black);
-      color: transparent;
-    }
-    
-    .alt-world .alt-line.small {
-      font-size: clamp(1.5rem, 6vw, 5rem);
-      letter-spacing: 0.05em;
-      opacity: 0.4;
-      margin: 16px 0;
-    }
-    
-    .alt-world .alt-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.4em;
-      color: var(--black);
-      margin-top: 48px;
-    }
-    
-    /* Noise overlay on alt world */
-    .alt-world::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: 0.08;
-      mix-blend-mode: multiply;
+      z-index: 99999;
       pointer-events: none;
     }
     
     @media (max-width: 768px) {
-      .cursor, .alt-world { display: none; }
+      #singularity { display: none; }
       * { cursor: auto; }
     }
     
-    /* ========================================
-       FILM GRAIN
-       ======================================== */
+    /* Film Grain */
     .grain {
       position: fixed;
-      inset: -100%;
-      width: 300%;
-      height: 300%;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
       pointer-events: none;
-      z-index: 10001;
-      opacity: 0.4;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
-      animation: grainShift 0.08s steps(6) infinite;
+      z-index: 100000;
+      opacity: 0.25;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      animation: grain 0.08s steps(4) infinite;
       mix-blend-mode: overlay;
     }
-    @keyframes grainShift {
-      0%, 100% { transform: translate(0, 0); }
-      10% { transform: translate(-2%, -2%); }
-      20% { transform: translate(2%, 1%); }
-      30% { transform: translate(-1%, 2%); }
-      40% { transform: translate(1%, -1%); }
-      50% { transform: translate(-2%, 1%); }
-      60% { transform: translate(2%, -2%); }
-      70% { transform: translate(0, 2%); }
-      80% { transform: translate(-1%, -1%); }
-      90% { transform: translate(1%, 0); }
+    @keyframes grain {
+      0% { transform: translate(0); }
+      25% { transform: translate(-1%, 1%); }
+      50% { transform: translate(1%, -1%); }
+      75% { transform: translate(-1%, -1%); }
     }
     
-    /* Vignette */
     .vignette {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 2;
-      background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 0%, rgba(0,0,0,0.6) 100%);
+      background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 0%, rgba(0,0,0,0.65) 100%);
     }
     
     /* Waveform */
@@ -197,29 +70,27 @@
       align-items: center;
       gap: 3px;
       z-index: 20;
-      opacity: 0.3;
+      opacity: 0.2;
     }
-    .waveform-bar {
+    .waveform span {
       width: 2px;
       background: var(--white);
       animation: wave 1.2s ease-in-out infinite;
     }
-    .waveform-bar:nth-child(1) { height: 8px; animation-delay: 0s; }
-    .waveform-bar:nth-child(2) { height: 16px; animation-delay: 0.1s; }
-    .waveform-bar:nth-child(3) { height: 12px; animation-delay: 0.2s; }
-    .waveform-bar:nth-child(4) { height: 20px; animation-delay: 0.3s; }
-    .waveform-bar:nth-child(5) { height: 8px; animation-delay: 0.4s; }
-    .waveform-bar:nth-child(6) { height: 14px; animation-delay: 0.5s; }
-    .waveform-bar:nth-child(7) { height: 10px; animation-delay: 0.6s; }
+    .waveform span:nth-child(1) { height: 8px; }
+    .waveform span:nth-child(2) { height: 16px; animation-delay: 0.1s; }
+    .waveform span:nth-child(3) { height: 12px; animation-delay: 0.2s; }
+    .waveform span:nth-child(4) { height: 20px; animation-delay: 0.3s; }
+    .waveform span:nth-child(5) { height: 8px; animation-delay: 0.4s; }
+    .waveform span:nth-child(6) { height: 14px; animation-delay: 0.5s; }
+    .waveform span:nth-child(7) { height: 10px; animation-delay: 0.6s; }
     @keyframes wave {
       0%, 100% { transform: scaleY(1); }
       50% { transform: scaleY(0.4); }
     }
     @media (max-width: 768px) { .waveform { display: none; } }
     
-    /* ========================================
-       NAVIGATION
-       ======================================== */
+    /* Navigation */
     nav {
       position: fixed;
       top: 0;
@@ -259,9 +130,7 @@
       color: var(--black);
     }
     
-    /* ========================================
-       HERO
-       ======================================== */
+    /* Hero */
     .hero {
       min-height: 100vh;
       display: flex;
@@ -283,9 +152,8 @@
       letter-spacing: 0.4em;
       color: var(--gray);
       margin-bottom: 48px;
-      line-height: 2.2;
+      line-height: 2.4;
       opacity: 0;
-      transform: translateY(20px);
       animation: slideUp 0.8s ease forwards 0.3s;
     }
     
@@ -361,16 +229,9 @@
       width: 1px;
       height: 48px;
       background: linear-gradient(to bottom, var(--gray), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-    @keyframes scrollPulse {
-      0%, 100% { opacity: 1; transform: scaleY(1); }
-      50% { opacity: 0.5; transform: scaleY(0.8); }
     }
     
-    /* ========================================
-       WORK SECTION
-       ======================================== */
+    /* Work Section */
     .work {
       padding: 120px 48px;
       position: relative;
@@ -403,7 +264,7 @@
       border-bottom: 1px solid rgba(232,228,220,0.05);
       text-decoration: none;
       color: var(--white);
-      transition: all 0.4s ease;
+      transition: padding 0.4s ease;
       position: relative;
     }
     .project:hover { padding-left: 32px; }
@@ -442,7 +303,6 @@
       transform: translateY(-50%) translateX(0);
     }
     
-    /* Divider */
     .divider {
       padding: 32px 0;
       text-align: center;
@@ -452,9 +312,7 @@
       color: rgba(232,228,220,0.1);
     }
     
-    /* ========================================
-       CONTACT
-       ======================================== */
+    /* Contact */
     .contact {
       padding: 120px 48px;
       text-align: center;
@@ -536,38 +394,13 @@
 </head>
 <body>
   
-  <!-- ========================================
-       ALTERNATE WORLD - Revealed by cursor
-       Inverted colors, chromatic aberration
-       ======================================== -->
-  <div class="alt-world">
-    <div class="alt-world-inner">
-      <div class="alt-content">
-        <div class="alt-headline">
-          <span class="alt-line">VISION</span>
-          <span class="alt-line small">FINDS ITS</span>
-          <span class="alt-line outline">VOICE</span>
-        </div>
-        <div class="alt-tag">PHILÉAS RENOULT</div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Cursor -->
-  <div class="cursor"></div>
+  <canvas id="singularity"></canvas>
   
   <div class="grain"></div>
   <div class="vignette"></div>
   
-  <!-- Waveform -->
   <div class="waveform">
-    <div class="waveform-bar"></div>
-    <div class="waveform-bar"></div>
-    <div class="waveform-bar"></div>
-    <div class="waveform-bar"></div>
-    <div class="waveform-bar"></div>
-    <div class="waveform-bar"></div>
-    <div class="waveform-bar"></div>
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
   </div>
   
   <nav>
@@ -581,7 +414,7 @@
     <div class="hero-content">
       <div class="top-tag">
         BERKLEE COLLEGE OF MUSIC • COMPOSITION<br>
-        BRITISH INSTITUTE OF MODERN MUSIC • SOUND DESIGN & ELECTRONIC MUSIC PRODUCTION
+        BIMM • SOUND DESIGN & ELECTRONIC MUSIC PRODUCTION
       </div>
       <h1>
         <span class="line">VISION</span>
@@ -655,78 +488,415 @@
   </footer>
   
   <script>
-    // ========================================
-    // DECONSTRUCTION EFFECT
-    // Cursor reveals alternate inverted world
-    // ========================================
+    // ================================================
+    // THE SINGULARITY - A Cinematic Black Hole
+    // ================================================
     
-    const cursor = document.querySelector('.cursor');
-    const altWorld = document.querySelector('.alt-world');
+    const canvas = document.getElementById('singularity');
+    const ctx = canvas.getContext('2d');
     
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let currentX = mouseX;
-    let currentY = mouseY;
-    let radius = 120;
-    let targetRadius = 120;
+    let W, H;
+    let mx = 0, my = 0;
+    let cx = 0, cy = 0;
+    let speed = 0;
+    let time = 0;
+    let isHovering = false;
     
-    // Smooth animation loop
-    function animate() {
-      // Smooth follow
-      currentX += (mouseX - currentX) * 0.12;
-      currentY += (mouseY - currentY) * 0.12;
-      radius += (targetRadius - radius) * 0.15;
-      
-      // Update cursor
-      cursor.style.left = mouseX + 'px';
-      cursor.style.top = mouseY + 'px';
-      
-      // Update clip-path to reveal alternate world
-      altWorld.style.clipPath = `circle(${radius}px at ${currentX}px at ${currentY}px)`;
-      altWorld.style.clipPath = `circle(${radius}px at ${currentX}px ${currentY}px)`;
-      
-      requestAnimationFrame(animate);
+    // Particle systems
+    const letters = [];        // Torn letters spiraling in
+    const accretionParticles = []; // Glowing matter in the disk
+    const distortionRings = []; // Gravitational lensing rings
+    
+    const MAX_LETTERS = 100;
+    const MAX_ACCRETION = 150;
+    
+    // Resize
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
     }
-    animate();
+    resize();
+    window.addEventListener('resize', resize);
     
-    // Track mouse
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+    // Mouse tracking
+    let lastMx = 0, lastMy = 0;
+    document.addEventListener('mousemove', e => {
+      speed = Math.hypot(e.clientX - mx, e.clientY - my);
+      lastMx = mx;
+      lastMy = my;
+      mx = e.clientX;
+      my = e.clientY;
     });
     
-    // Hover states - expand reveal radius
-    const hoverElements = document.querySelectorAll('a, button, .project');
-    hoverElements.forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursor.classList.add('hover');
-        targetRadius = 180;
-      });
-      el.addEventListener('mouseleave', () => {
-        cursor.classList.remove('hover');
-        targetRadius = 120;
-      });
+    // Hover detection
+    document.querySelectorAll('a, button, .project').forEach(el => {
+      el.addEventListener('mouseenter', () => isHovering = true);
+      el.addEventListener('mouseleave', () => isHovering = false);
     });
     
-    // Click - pulse effect
-    document.addEventListener('mousedown', () => {
-      targetRadius = 200;
-    });
-    document.addEventListener('mouseup', () => {
-      targetRadius = cursor.classList.contains('hover') ? 180 : 120;
-    });
-    
-    // Hide on touch
-    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-      cursor.style.display = 'none';
-      altWorld.style.display = 'none';
+    // Text elements to tear letters from
+    function getTextElements() {
+      return document.querySelectorAll('h1 .line, h2, h3, .project-title, .subtitle, .logo, .section-title, .contact-title');
     }
     
-    // Update alt world position on scroll
-    window.addEventListener('scroll', () => {
-      const content = altWorld.querySelector('.alt-content');
-      content.style.transform = `translateY(${-window.scrollY}px)`;
+    // ================================================
+    // LETTER TEARING - Rip characters from text
+    // ================================================
+    function tearLetters() {
+      if (letters.length >= MAX_LETTERS) return;
+      
+      getTextElements().forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const text = el.textContent;
+        if (!text || text.length < 2) return;
+        
+        const closestX = Math.max(rect.left, Math.min(mx, rect.right));
+        const closestY = Math.max(rect.top, Math.min(my, rect.bottom));
+        const dist = Math.hypot(mx - closestX, my - closestY);
+        
+        // Tear probability based on distance and speed
+        const tearRadius = 180;
+        const probability = Math.pow(1 - dist / tearRadius, 2) * 0.4 * (1 + speed * 0.05);
+        
+        if (dist < tearRadius && Math.random() < probability) {
+          const char = text[Math.floor(Math.random() * text.length)];
+          if (!char.trim()) return;
+          
+          const style = getComputedStyle(el);
+          const angle = Math.atan2(cy - closestY, cx - closestX);
+          
+          letters.push({
+            char,
+            x: closestX + (Math.random() - 0.5) * 30,
+            y: closestY + (Math.random() - 0.5) * 30,
+            size: Math.min(parseFloat(style.fontSize) * (0.3 + Math.random() * 0.3), 48),
+            weight: style.fontWeight,
+            life: 1,
+            maxLife: 1,
+            angle: angle + (Math.random() - 0.5) * 0.5,
+            orbitAngle: Math.random() * Math.PI * 2,
+            orbitSpeed: 0.02 + Math.random() * 0.04,
+            orbitRadius: 60 + Math.random() * 80,
+            velocity: 0.5 + Math.random() * 1.5,
+            stretch: 1,
+            red: Math.random() > 0.7, // Some letters glow red (Hawking radiation)
+          });
+        }
+      });
+    }
+    
+    // ================================================
+    // ACCRETION DISK - Swirling matter
+    // ================================================
+    function spawnAccretion() {
+      if (accretionParticles.length >= MAX_ACCRETION || Math.random() > 0.3) return;
+      
+      const angle = Math.random() * Math.PI * 2;
+      const radius = 25 + Math.random() * 60;
+      
+      accretionParticles.push({
+        angle,
+        radius,
+        baseRadius: radius,
+        speed: 0.015 + Math.random() * 0.025,
+        size: 1 + Math.random() * 2,
+        life: 1,
+        decay: 0.003 + Math.random() * 0.004,
+        brightness: 0.3 + Math.random() * 0.7,
+        trail: [],
+      });
+    }
+    
+    // ================================================
+    // MAIN RENDER LOOP
+    // ================================================
+    function render() {
+      time += 0.016;
+      
+      // Smooth cursor following
+      cx += (mx - cx) * 0.12;
+      cy += (my - cy) * 0.12;
+      
+      ctx.clearRect(0, 0, W, H);
+      
+      const intensity = Math.min(speed / 15, 1);
+      const hoverScale = isHovering ? 1.3 : 1;
+      
+      // ============================================
+      // 1. GRAVITATIONAL FIELD (Outer glow)
+      // ============================================
+      const fieldRadius = (200 + intensity * 80) * hoverScale;
+      const fieldGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, fieldRadius);
+      fieldGrad.addColorStop(0, `rgba(232, 228, 220, ${0.06 + intensity * 0.06})`);
+      fieldGrad.addColorStop(0.2, `rgba(232, 228, 220, ${0.03 + intensity * 0.03})`);
+      fieldGrad.addColorStop(0.5, `rgba(200, 180, 160, ${0.01 + intensity * 0.02})`);
+      fieldGrad.addColorStop(1, 'transparent');
+      ctx.fillStyle = fieldGrad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, fieldRadius, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // ============================================
+      // 2. GRAVITATIONAL LENSING RINGS
+      // ============================================
+      const numRings = 4 + Math.floor(intensity * 3);
+      for (let i = 0; i < numRings; i++) {
+        const ringRadius = (30 + i * 18) * hoverScale;
+        const wobble = Math.sin(time * 2 + i) * 2;
+        const alpha = (0.04 + intensity * 0.04) * (1 - i / numRings);
+        
+        ctx.strokeStyle = `rgba(232, 228, 220, ${alpha})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(cx, cy, ringRadius + wobble, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      
+      // ============================================
+      // 3. ACCRETION DISK
+      // ============================================
+      spawnAccretion();
+      
+      for (let i = accretionParticles.length - 1; i >= 0; i--) {
+        const p = accretionParticles[i];
+        
+        // Spiral inward
+        p.angle += p.speed;
+        p.radius *= 0.997;
+        p.life -= p.decay;
+        
+        const x = cx + Math.cos(p.angle) * p.radius * hoverScale;
+        const y = cy + Math.sin(p.angle) * p.radius * hoverScale * 0.3; // Flatten for disk perspective
+        
+        // Store trail
+        p.trail.push({ x, y, life: p.life });
+        if (p.trail.length > 8) p.trail.shift();
+        
+        // Draw trail
+        for (let t = 0; t < p.trail.length; t++) {
+          const tp = p.trail[t];
+          const trailAlpha = (t / p.trail.length) * p.life * 0.5 * p.brightness;
+          ctx.fillStyle = `rgba(255, ${200 + Math.random() * 55}, ${150 + Math.random() * 50}, ${trailAlpha})`;
+          ctx.beginPath();
+          ctx.arc(tp.x, tp.y, p.size * (t / p.trail.length), 0, Math.PI * 2);
+          ctx.fill();
+        }
+        
+        // Draw particle
+        const alpha = p.life * p.brightness;
+        const glow = ctx.createRadialGradient(x, y, 0, x, y, p.size * 3);
+        glow.addColorStop(0, `rgba(255, 230, 200, ${alpha})`);
+        glow.addColorStop(0.5, `rgba(255, 180, 100, ${alpha * 0.5})`);
+        glow.addColorStop(1, 'transparent');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(x, y, p.size * 3, 0, Math.PI * 2);
+        ctx.fill();
+        
+        if (p.life <= 0 || p.radius < 8) {
+          accretionParticles.splice(i, 1);
+        }
+      }
+      
+      // ============================================
+      // 4. EVENT HORIZON (The black center)
+      // ============================================
+      const horizonRadius = (12 + intensity * 4) * hoverScale;
+      
+      // Dark void
+      const voidGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, horizonRadius * 2);
+      voidGrad.addColorStop(0, 'rgba(0, 0, 0, 0.95)');
+      voidGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0.7)');
+      voidGrad.addColorStop(1, 'transparent');
+      ctx.fillStyle = voidGrad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, horizonRadius * 2, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Bright ring at event horizon (photon sphere)
+      ctx.strokeStyle = `rgba(255, 250, 240, ${0.4 + intensity * 0.3})`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, horizonRadius, 0, Math.PI * 2);
+      ctx.stroke();
+      
+      // Inner glow
+      const innerGlow = ctx.createRadialGradient(cx, cy, horizonRadius * 0.5, cx, cy, horizonRadius);
+      innerGlow.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
+      innerGlow.addColorStop(1, 'rgba(255, 220, 180, 0.3)');
+      ctx.fillStyle = innerGlow;
+      ctx.beginPath();
+      ctx.arc(cx, cy, horizonRadius, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Core singularity
+      ctx.fillStyle = '#fff';
+      ctx.shadowColor = '#fff';
+      ctx.shadowBlur = 20 + intensity * 15;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 3 * hoverScale, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      
+      // ============================================
+      // 5. TORN LETTERS SPIRALING IN
+      // ============================================
+      tearLetters();
+      
+      for (let i = letters.length - 1; i >= 0; i--) {
+        const L = letters[i];
+        
+        const dx = cx - L.x;
+        const dy = cy - L.y;
+        const dist = Math.hypot(dx, dy);
+        
+        // Gravitational acceleration (stronger close to singularity)
+        const gravity = 1200 / (dist * dist + 50);
+        
+        // Orbital motion
+        L.orbitAngle += L.orbitSpeed * (1 + (1 - L.life) * 2);
+        L.orbitRadius *= 0.985;
+        
+        const orbitOffsetX = Math.cos(L.orbitAngle) * L.orbitRadius * L.life;
+        const orbitOffsetY = Math.sin(L.orbitAngle) * L.orbitRadius * L.life * 0.5;
+        
+        // Move toward singularity with orbital spiral
+        L.x += (dx / dist) * gravity + orbitOffsetX * 0.03;
+        L.y += (dy / dist) * gravity + orbitOffsetY * 0.03;
+        
+        // Time dilation stretch (letters stretch as they approach)
+        L.stretch = 1 + (1 - L.life) * 2;
+        
+        // Decay
+        L.life -= 0.006;
+        
+        // Draw
+        if (L.life > 0 && dist > 10) {
+          const alpha = L.life * 0.9;
+          const scale = L.life;
+          const rotation = (1 - L.life) * 720;
+          
+          ctx.save();
+          ctx.translate(L.x, L.y);
+          ctx.rotate(rotation * Math.PI / 180);
+          ctx.scale(1, L.stretch);
+          
+          // Chromatic aberration for letters being torn
+          if (L.life < 0.7) {
+            ctx.fillStyle = `rgba(255, 100, 100, ${alpha * 0.3})`;
+            ctx.font = `${L.weight} ${L.size * scale}px Inter`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(L.char, -2, 0);
+            
+            ctx.fillStyle = `rgba(100, 100, 255, ${alpha * 0.3})`;
+            ctx.fillText(L.char, 2, 0);
+          }
+          
+          // Main letter
+          const color = L.red ? `rgba(255, ${150 + L.life * 100}, ${100 + L.life * 100}, ${alpha})` 
+                              : `rgba(232, 228, 220, ${alpha})`;
+          ctx.fillStyle = color;
+          ctx.font = `${L.weight} ${L.size * scale}px Inter`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(L.char, 0, 0);
+          
+          ctx.restore();
+        } else {
+          letters.splice(i, 1);
+        }
+      }
+      
+      // ============================================
+      // 6. ENERGY JETS (when moving fast)
+      // ============================================
+      if (speed > 10) {
+        const jetLength = speed * 3;
+        const angle = Math.atan2(my - lastMy, mx - lastMx);
+        
+        // Jet gradient
+        const jetGrad = ctx.createLinearGradient(
+          cx, cy,
+          cx - Math.cos(angle) * jetLength,
+          cy - Math.sin(angle) * jetLength
+        );
+        jetGrad.addColorStop(0, `rgba(255, 255, 255, ${0.3 * (speed / 50)})`);
+        jetGrad.addColorStop(0.3, `rgba(200, 220, 255, ${0.15 * (speed / 50)})`);
+        jetGrad.addColorStop(1, 'transparent');
+        
+        ctx.strokeStyle = jetGrad;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(
+          cx - Math.cos(angle) * jetLength,
+          cy - Math.sin(angle) * jetLength
+        );
+        ctx.stroke();
+      }
+      
+      requestAnimationFrame(render);
+    }
+    
+    // Click burst
+    document.addEventListener('click', () => {
+      getTextElements().forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const text = el.textContent;
+        if (!text) return;
+        
+        const dist = Math.hypot(mx - (rect.left + rect.width/2), my - (rect.top + rect.height/2));
+        if (dist > 300) return;
+        
+        const style = getComputedStyle(el);
+        for (let i = 0; i < 8 && letters.length < MAX_LETTERS; i++) {
+          const char = text[Math.floor(Math.random() * text.length)];
+          if (!char.trim()) continue;
+          
+          letters.push({
+            char,
+            x: rect.left + Math.random() * rect.width,
+            y: rect.top + Math.random() * rect.height,
+            size: Math.min(parseFloat(style.fontSize) * 0.35, 40),
+            weight: style.fontWeight,
+            life: 1,
+            maxLife: 1,
+            angle: Math.atan2(cy - rect.top, cx - rect.left),
+            orbitAngle: Math.random() * Math.PI * 2,
+            orbitSpeed: 0.03 + Math.random() * 0.05,
+            orbitRadius: 80 + Math.random() * 100,
+            velocity: 1 + Math.random() * 2,
+            stretch: 1,
+            red: Math.random() > 0.5,
+          });
+        }
+      });
+      
+      // Burst of accretion particles
+      for (let i = 0; i < 20; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        accretionParticles.push({
+          angle,
+          radius: 30 + Math.random() * 80,
+          baseRadius: 30 + Math.random() * 80,
+          speed: 0.02 + Math.random() * 0.04,
+          size: 1.5 + Math.random() * 2.5,
+          life: 1,
+          decay: 0.008 + Math.random() * 0.008,
+          brightness: 0.5 + Math.random() * 0.5,
+          trail: [],
+        });
+      }
     });
+    
+    // Start
+    render();
+    
+    // Disable on touch
+    if ('ontouchstart' in window) {
+      canvas.style.display = 'none';
+    }
   </script>
 </body>
 </html>
