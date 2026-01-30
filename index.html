@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PRSTUDIOS | Sound Design</title>
+  <title>PRSTUDIOS | Sound Design & Music Composition</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -76,6 +76,19 @@
       font-size: 16px;
       letter-spacing: 0.2em;
     }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .berklee-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      color: var(--gray);
+      padding: 8px 12px;
+      border: 1px solid rgba(232,228,220,0.2);
+    }
     .contact-btn {
       font-family: 'JetBrains Mono', monospace;
       font-size: 10px;
@@ -97,13 +110,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 120px 32px;
+      padding: 120px 32px 140px;
       position: relative;
       z-index: 10;
     }
     .hero-content {
       text-align: center;
       max-width: 100%;
+      margin-bottom: 60px;
     }
     
     .year {
@@ -142,9 +156,17 @@
     }
     .subtitle span { color: var(--white); }
     
+    .services {
+      margin-top: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--gray);
+    }
+    
     .scroll-hint {
       position: absolute;
-      bottom: 48px;
+      bottom: 32px;
       left: 50%;
       transform: translateX(-50%);
       font-family: 'JetBrains Mono', monospace;
@@ -302,6 +324,16 @@
       letter-spacing: 0.2em;
       color: rgba(232,228,220,0.2);
     }
+    
+    @media (max-width: 768px) {
+      .berklee-tag { display: none; }
+      nav { padding: 24px; }
+      .hero { padding: 100px 24px 160px; }
+      .hero-content { margin-bottom: 80px; }
+      .work { padding: 80px 24px; }
+      .contact { padding: 80px 24px; }
+      footer { padding: 32px 24px; flex-direction: column; gap: 8px; }
+    }
   </style>
 </head>
 <body>
@@ -311,7 +343,10 @@
   <nav>
     <div class="nav-inner">
       <div class="logo">PRSTUDIOS</div>
-      <a href="mailto:prstudios.works@gmail.com" class="contact-btn">CONTACT</a>
+      <div class="nav-right">
+        <span class="berklee-tag">BERKLEE '27</span>
+        <a href="mailto:prstudios.works@gmail.com" class="contact-btn">CONTACT</a>
+      </div>
     </div>
   </nav>
   
@@ -323,7 +358,8 @@
         <span class="line small">FINDS ITS</span>
         <span class="line outline">VOICE</span>
       </h1>
-      <p class="subtitle"><span>PHILÉAS RENOULT</span> — SOUND DESIGN</p>
+      <p class="subtitle"><span>PHILÉAS RENOULT</span></p>
+      <p class="services">SOUND DESIGN • MUSIC COMPOSITION • SFX</p>
     </div>
     <a href="#work" class="scroll-hint">
       <span>SCROLL</span>
