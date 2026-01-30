@@ -4,88 +4,55 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PRSTUDIOS | Sound Design</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --primary: #ff3d2e;
-      --secondary: #ff6b3d;
-      --tertiary: #ffb347;
-      --dark: #0a0a0a;
-      --light: #f5f2ed;
+      --black: #0a0a0a;
+      --white: #e8e4dc;
+      --gray: #666;
     }
     html { scroll-behavior: smooth; }
     body {
-      background-color: var(--dark);
-      color: var(--light);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
       overflow-x: hidden;
-      min-height: 100vh;
     }
     
-    /* HEAVY animated grain/static texture - VHS style */
+    /* HEAVY AUTHENTIC FILM GRAIN */
     .grain {
       position: fixed;
-      inset: -50%;
-      width: 200%;
-      height: 200%;
+      inset: -100%;
+      width: 300%;
+      height: 300%;
       pointer-events: none;
-      z-index: 1000;
-      opacity: 0.35;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-      animation: grainShift 0.5s steps(10) infinite;
+      z-index: 10000;
+      opacity: 0.5;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
+      animation: grainShift 0.08s steps(6) infinite;
+      mix-blend-mode: overlay;
     }
-    
     @keyframes grainShift {
       0%, 100% { transform: translate(0, 0); }
       10% { transform: translate(-2%, -2%); }
-      20% { transform: translate(2%, 2%); }
-      30% { transform: translate(-1%, 3%); }
-      40% { transform: translate(3%, -1%); }
-      50% { transform: translate(-3%, 1%); }
-      60% { transform: translate(1%, -3%); }
-      70% { transform: translate(-2%, 2%); }
-      80% { transform: translate(2%, -2%); }
-      90% { transform: translate(-1%, 1%); }
+      20% { transform: translate(2%, 1%); }
+      30% { transform: translate(-1%, 2%); }
+      40% { transform: translate(1%, -1%); }
+      50% { transform: translate(-2%, 1%); }
+      60% { transform: translate(2%, -2%); }
+      70% { transform: translate(0, 2%); }
+      80% { transform: translate(-1%, -1%); }
+      90% { transform: translate(1%, 0); }
     }
     
-    /* Warm glow from bottom - tube amp style */
-    .glow {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 80vh;
-      pointer-events: none;
-      z-index: 1;
-      background: radial-gradient(ellipse 100% 60% at 50% 100%, rgba(255,61,46,0.2) 0%, rgba(255,107,61,0.12) 30%, rgba(255,179,71,0.05) 50%, transparent 70%);
-    }
-    
-    /* Subtle vignette */
+    /* Vignette */
     .vignette {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 2;
-      background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 0%, rgba(0,0,0,0.4) 100%);
-    }
-    
-    /* Waveform visualizer - left edge */
-    .waveform {
-      position: fixed;
-      left: 24px;
-      top: 50%;
-      transform: translateY(-50%);
-      display: none;
-      align-items: center;
-      gap: 2px;
-      z-index: 40;
-    }
-    @media (min-width: 1024px) { .waveform { display: flex; } }
-    .wave-bar {
-      width: 2px;
-      border-radius: 9999px;
-      transition: height 0.075s ease, background-color 0.075s ease;
+      background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 0%, rgba(0,0,0,0.6) 100%);
     }
     
     /* Navigation */
@@ -95,565 +62,327 @@
       left: 0;
       right: 0;
       z-index: 50;
-      padding: 32px;
+      padding: 32px 48px;
     }
-    @media (min-width: 1024px) { nav { padding: 32px 64px; } }
     .nav-inner {
-      max-width: 1280px;
+      max-width: 1400px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .nav-left { display: flex; align-items: center; gap: 24px; }
     .logo {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      color: var(--light);
-    }
-    .logo span { color: var(--primary); }
-    .nav-label {
-      display: none;
-      font-size: 10px;
-      letter-spacing: 0.4em;
-      font-family: 'JetBrains Mono', monospace;
-      color: rgba(245,242,237,0.3);
-    }
-    @media (min-width: 768px) { .nav-label { display: block; } }
-    .nav-right { display: flex; align-items: center; gap: 32px; }
-    .status { display: none; align-items: center; gap: 8px; }
-    @media (min-width: 768px) { .status { display: flex; } }
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      background-color: var(--primary);
-      border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
-      box-shadow: 0 0 12px var(--primary);
-    }
-    .status-text {
-      font-size: 10px;
-      letter-spacing: 0.3em;
-      font-family: 'JetBrains Mono', monospace;
-      color: rgba(245,242,237,0.4);
+      font-weight: 900;
+      font-size: 16px;
+      letter-spacing: 0.2em;
     }
     .contact-btn {
-      position: relative;
-      padding: 8px 16px;
-      font-size: 12px;
-      letter-spacing: 0.3em;
       font-family: 'JetBrains Mono', monospace;
-      color: rgba(245,242,237,0.6);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--white);
       text-decoration: none;
-      overflow: hidden;
-      z-index: 1;
+      padding: 12px 24px;
+      border: 1px solid rgba(232,228,220,0.3);
+      transition: all 0.3s;
     }
-    .contact-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-color: var(--primary);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s ease;
-      z-index: -1;
+    .contact-btn:hover {
+      background: var(--white);
+      color: var(--black);
     }
-    .contact-btn:hover::before { transform: scaleX(1); }
-    .contact-btn:hover { color: var(--light); }
     
     /* Hero */
     .hero {
       min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: 96px 32px 80px;
+      justify-content: center;
+      padding: 120px 32px;
       position: relative;
       z-index: 10;
     }
-    @media (min-width: 1024px) { .hero { padding: 96px 64px 80px; } }
     .hero-content {
-      max-width: 1280px;
-      margin: 0 auto;
-      width: 100%;
+      text-align: center;
+      max-width: 100%;
     }
-    .badge {
-      display: inline-block;
-      padding: 8px 16px;
-      background-color: var(--primary);
-      color: var(--light);
-      font-size: 10px;
+    
+    .year {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(12px, 2vw, 14px);
       letter-spacing: 0.5em;
+      color: var(--gray);
+      margin-bottom: 48px;
+    }
+    
+    h1 {
+      font-weight: 900;
+      font-size: clamp(5rem, 25vw, 22rem);
+      line-height: 0.82;
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+    }
+    .line { display: block; }
+    .line.outline {
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--white);
+    }
+    .line.small {
+      font-size: clamp(1.5rem, 6vw, 5rem);
+      letter-spacing: 0.05em;
+      opacity: 0.4;
+      margin: 16px 0;
+    }
+    
+    .subtitle {
+      margin-top: 64px;
       font-family: 'JetBrains Mono', monospace;
-      margin-bottom: 40px;
-      box-shadow: 0 0 30px rgba(255,61,46,0.3);
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      color: var(--gray);
     }
-    h1 { font-weight: 900; line-height: 0.9; letter-spacing: -0.02em; }
-    .headline-line {
-      display: block;
-      font-size: clamp(2.5rem, 11vw, 9rem);
-      color: var(--light);
-    }
-    .headline-gradient {
-      display: block;
-      font-size: clamp(2.5rem, 11vw, 9rem);
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--tertiary) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 0 40px rgba(255,61,46,0.3));
-    }
-    .headline-accent {
-      display: block;
-      font-size: clamp(2.5rem, 11vw, 9rem);
-      color: var(--primary);
-      text-shadow: 0 0 60px rgba(255,61,46,0.4);
-    }
-    .tagline {
+    .subtitle span { color: var(--white); }
+    
+    .scroll-hint {
+      position: absolute;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--gray);
       display: flex;
-      align-items: center;
-      gap: 24px;
-      margin-top: 48px;
-    }
-    .tagline-line {
-      width: 64px;
-      height: 1px;
-      background: linear-gradient(90deg, var(--primary), transparent);
-    }
-    .tagline-text {
-      font-size: 14px;
-      letter-spacing: 0.2em;
-      font-family: 'JetBrains Mono', monospace;
-      color: rgba(245,242,237,0.4);
-    }
-    .cta {
-      display: inline-flex;
+      flex-direction: column;
       align-items: center;
       gap: 16px;
-      margin-top: 48px;
       text-decoration: none;
     }
-    .cta-text {
-      font-size: 12px;
-      letter-spacing: 0.3em;
-      font-family: 'JetBrains Mono', monospace;
-      color: rgba(245,242,237,0.4);
-    }
-    .cta-box {
-      width: 48px;
+    .scroll-line {
+      width: 1px;
       height: 48px;
-      border: 1px solid rgba(245,242,237,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      color: rgba(245,242,237,0.5);
-      position: relative;
-      overflow: hidden;
+      background: linear-gradient(to bottom, var(--gray), transparent);
     }
-    .cta-box::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-color: var(--primary);
-      transform: scale(0);
-      transition: transform 0.3s ease;
-    }
-    .cta-box span { position: relative; z-index: 1; }
-    .cta:hover .cta-box::before { transform: scale(1); }
-    .cta:hover .cta-box { border-color: var(--primary); box-shadow: 0 0 20px rgba(255,61,46,0.4); }
     
     /* Work Section */
     .work {
-      padding: 128px 32px;
+      padding: 120px 48px;
       position: relative;
       z-index: 10;
     }
-    @media (min-width: 1024px) { .work { padding: 128px 64px; } }
-    .work-inner { max-width: 1280px; margin: 0 auto; }
-    .work-header {
+    .work-inner { max-width: 1000px; margin: 0 auto; }
+    
+    .section-header {
+      margin-bottom: 64px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(232,228,220,0.1);
       display: flex;
       justify-content: space-between;
-      align-items: flex-end;
-      padding-bottom: 24px;
-      border-bottom: 1px solid rgba(245,242,237,0.1);
-      margin-bottom: 64px;
+      align-items: baseline;
     }
-    .work-label {
-      display: inline-block;
-      padding: 4px 12px;
-      background-color: var(--light);
-      color: var(--dark);
-      font-size: 10px;
-      letter-spacing: 0.5em;
-      font-family: 'JetBrains Mono', monospace;
-      margin-bottom: 16px;
-    }
-    .work-title {
-      font-size: clamp(48px, 8vw, 100px);
+    .section-title {
       font-weight: 900;
-      letter-spacing: -0.02em;
-      color: var(--light);
+      font-size: clamp(48px, 12vw, 100px);
+      letter-spacing: -0.03em;
     }
-    .work-count {
-      font-size: 14px;
+    .section-count {
       font-family: 'JetBrains Mono', monospace;
-      color: rgba(245,242,237,0.2);
-      padding-bottom: 8px;
+      font-size: 12px;
+      color: var(--gray);
     }
     
-    /* Project Items */
+    /* Projects - Clean list */
     .project {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 32px;
-      padding: 40px 0;
-      border-bottom: 1px solid rgba(245,242,237,0.05);
+      display: block;
+      padding: 48px 0;
+      border-bottom: 1px solid rgba(232,228,220,0.05);
       text-decoration: none;
-      color: var(--light);
-      position: relative;
-      overflow: hidden;
+      color: var(--white);
+      transition: all 0.4s ease;
     }
-    .project::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-color: rgba(255,61,46,0.08);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.5s ease;
+    .project:hover {
+      padding-left: 32px;
     }
-    .project:hover::before { transform: scaleX(1); }
-    .project-num {
-      font-size: clamp(32px, 5vw, 48px);
-      font-weight: 900;
-      color: rgba(245,242,237,0.08);
-      transition: color 0.3s ease;
-      position: relative;
-      z-index: 1;
-    }
-    .project:hover .project-num { color: rgba(255,61,46,0.4); }
-    .project-info { position: relative; z-index: 1; }
     .project-title {
-      font-size: clamp(20px, 4vw, 40px);
       font-weight: 900;
-      letter-spacing: -0.01em;
-      transition: color 0.3s ease;
+      font-size: clamp(28px, 8vw, 72px);
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      line-height: 1;
+      transition: all 0.4s;
     }
-    .project:hover .project-title { color: var(--primary); text-shadow: 0 0 30px rgba(255,61,46,0.3); }
-    .project-sub {
-      font-size: 12px;
-      font-family: 'JetBrains Mono', monospace;
-      color: rgba(245,242,237,0.3);
-      margin-top: 4px;
+    .project:hover .project-title {
+      color: transparent;
+      -webkit-text-stroke: 1px var(--white);
     }
     .project-meta {
       display: flex;
-      align-items: center;
-      gap: 24px;
-      position: relative;
-      z-index: 1;
-    }
-    .project-type {
-      display: none;
+      gap: 32px;
+      margin-top: 12px;
+      font-family: 'JetBrains Mono', monospace;
       font-size: 10px;
-      letter-spacing: 0.3em;
-      font-family: 'JetBrains Mono', monospace;
-      color: rgba(245,242,237,0.3);
-    }
-    @media (min-width: 768px) { .project-type { display: block; } }
-    .project-year {
-      display: none;
-      font-size: 12px;
-      font-family: 'JetBrains Mono', monospace;
-      color: rgba(245,242,237,0.2);
-    }
-    @media (min-width: 768px) { .project-year { display: block; } }
-    .project-arrow {
-      width: 40px;
-      height: 40px;
-      border: 1px solid rgba(245,242,237,0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(245,242,237,0.3);
-      transition: all 0.3s ease;
-    }
-    .project:hover .project-arrow {
-      border-color: var(--primary);
-      background-color: var(--primary);
-      color: var(--light);
-      box-shadow: 0 0 20px rgba(255,61,46,0.4);
+      letter-spacing: 0.2em;
+      color: var(--gray);
     }
     
-    /* Marquee */
-    .marquee {
-      background-color: var(--primary);
-      padding: 16px 0;
-      overflow: hidden;
-      position: relative;
-      z-index: 10;
-      box-shadow: 0 0 60px rgba(255,61,46,0.3);
-    }
-    .marquee-track {
-      display: flex;
-      white-space: nowrap;
-      animation: marquee 20s linear infinite;
-    }
-    .marquee-text {
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--light);
-      margin: 0 32px;
-      letter-spacing: -0.01em;
+    /* Divider */
+    .divider {
+      padding: 32px 0;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.5em;
+      color: rgba(232,228,220,0.1);
     }
     
-    /* Contact Section */
+    /* Contact */
     .contact {
-      padding: 128px 32px;
+      padding: 120px 48px;
+      text-align: center;
       position: relative;
       z-index: 10;
     }
-    @media (min-width: 1024px) { .contact { padding: 128px 64px; } }
-    .contact-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      display: grid;
-      gap: 64px;
-      align-items: end;
-    }
-    @media (min-width: 1024px) { .contact-inner { grid-template-columns: 1fr 1fr; } }
-    .contact-left .badge { margin-bottom: 32px; }
-    .contact-title {
-      font-size: clamp(48px, 7vw, 80px);
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      line-height: 1;
-      color: var(--light);
-    }
-    .contact-title span { color: var(--primary); text-shadow: 0 0 40px rgba(255,61,46,0.4); }
-    .contact-right { text-align: left; }
-    @media (min-width: 1024px) { .contact-right { text-align: right; } }
-    .contact-email {
-      font-size: clamp(16px, 2vw, 20px);
+    .contact-inner { max-width: 900px; margin: 0 auto; }
+    .contact-label {
       font-family: 'JetBrains Mono', monospace;
-      color: rgba(245,242,237,0.6);
+      font-size: 10px;
+      letter-spacing: 0.5em;
+      color: var(--gray);
+      margin-bottom: 32px;
+    }
+    .contact-title {
+      font-weight: 900;
+      font-size: clamp(48px, 15vw, 140px);
+      letter-spacing: -0.04em;
+      line-height: 0.85;
+      text-transform: uppercase;
+    }
+    .contact-title .outline {
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--white);
+    }
+    .contact-email {
+      display: inline-block;
+      margin-top: 64px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(12px, 1.5vw, 16px);
+      letter-spacing: 0.1em;
+      color: var(--gray);
       text-decoration: none;
-      border-bottom: 2px solid rgba(245,242,237,0.2);
-      padding-bottom: 4px;
-      transition: color 0.3s ease, border-color 0.3s ease;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--gray);
+      transition: all 0.3s;
     }
     .contact-email:hover {
-      color: var(--primary);
-      border-color: var(--primary);
+      color: var(--white);
+      border-color: var(--white);
     }
+    
     .social {
       display: flex;
-      gap: 32px;
-      margin-top: 32px;
+      justify-content: center;
+      gap: 48px;
+      margin-top: 64px;
     }
-    @media (min-width: 1024px) { .social { justify-content: flex-end; } }
     .social a {
-      font-size: 12px;
-      letter-spacing: 0.2em;
       font-family: 'JetBrains Mono', monospace;
-      color: rgba(245,242,237,0.3);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--gray);
       text-decoration: none;
-      transition: color 0.3s ease;
+      transition: color 0.3s;
     }
-    .social a:hover { color: var(--light); }
+    .social a:hover { color: var(--white); }
     
-    /* Footer */
     footer {
-      padding: 32px;
-      border-top: 1px solid rgba(245,242,237,0.05);
+      padding: 48px;
       display: flex;
       justify-content: space-between;
-      font-size: 10px;
-      letter-spacing: 0.3em;
       font-family: 'JetBrains Mono', monospace;
-      color: rgba(245,242,237,0.2);
-      position: relative;
-      z-index: 10;
-    }
-    @media (min-width: 1024px) { footer { padding: 32px 64px; } }
-    
-    /* Animations */
-    @keyframes pulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 12px var(--primary); }
-      50% { opacity: 0.5; box-shadow: 0 0 6px var(--primary); }
-    }
-    @keyframes marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: rgba(232,228,220,0.2);
     }
   </style>
 </head>
 <body>
-  <!-- Heavy Grain/Static Texture -->
   <div class="grain"></div>
-  
-  <!-- Vignette -->
   <div class="vignette"></div>
   
-  <!-- Warm Glow from Bottom -->
-  <div class="glow"></div>
-  
-  <!-- Waveform Visualizer -->
-  <div class="waveform" id="waveform"></div>
-  
-  <!-- Navigation -->
   <nav>
     <div class="nav-inner">
-      <div class="nav-left">
-        <div class="logo">PR<span>STUDIOS</span></div>
-        <span class="nav-label">SOUND DESIGN</span>
-      </div>
-      <div class="nav-right">
-        <div class="status">
-          <div class="status-dot"></div>
-          <span class="status-text">AVAILABLE</span>
-        </div>
-        <a href="mailto:prstudios.works@gmail.com" class="contact-btn">CONTACT</a>
-      </div>
+      <div class="logo">PRSTUDIOS</div>
+      <a href="mailto:prstudios.works@gmail.com" class="contact-btn">CONTACT</a>
     </div>
   </nav>
   
-  <!-- Hero -->
   <section class="hero">
     <div class="hero-content">
-      <div class="badge">PHILÉAS RENOULT</div>
+      <div class="year">'24 TIL</div>
       <h1>
-        <span class="headline-line">WHERE YOUR</span>
-        <span class="headline-gradient">VISION</span>
-        <span class="headline-line">FINDS ITS</span>
-        <span class="headline-accent">VOICE</span>
+        <span class="line">VISION</span>
+        <span class="line small">FINDS ITS</span>
+        <span class="line outline">VOICE</span>
       </h1>
-      <div class="tagline">
-        <div class="tagline-line"></div>
-        <span class="tagline-text">SOUND DESIGN • SFX • COMPOSITION</span>
-      </div>
-      <a href="#work" class="cta">
-        <span class="cta-text">EXPLORE WORK</span>
-        <div class="cta-box"><span>↓</span></div>
-      </a>
+      <p class="subtitle"><span>PHILÉAS RENOULT</span> — SOUND DESIGN</p>
     </div>
+    <a href="#work" class="scroll-hint">
+      <span>SCROLL</span>
+      <div class="scroll-line"></div>
+    </a>
   </section>
   
-  <!-- Work Section -->
   <section class="work" id="work">
     <div class="work-inner">
-      <div class="work-header">
-        <div>
-          <div class="work-label">SELECTED</div>
-          <h2 class="work-title">WORK</h2>
-        </div>
-        <span class="work-count">(03)</span>
+      <div class="section-header">
+        <h2 class="section-title">WORK</h2>
+        <span class="section-count">(03)</span>
       </div>
       
       <a href="https://f.io/fCmaVdqs" target="_blank" class="project">
-        <span class="project-num">01</span>
-        <div class="project-info">
-          <div class="project-title">THE DAILY MAIL</div>
-        </div>
+        <div class="project-title">THE DAILY MAIL</div>
         <div class="project-meta">
-          <span class="project-type">SFX & MUSIC SYNC</span>
-          <span class="project-year">2024</span>
-          <div class="project-arrow">→</div>
+          <span>SFX & MUSIC SYNC</span>
+          <span>2024</span>
         </div>
       </a>
       
       <a href="https://www.youtube.com/watch?v=ZMTjOdJJbbM" target="_blank" class="project">
-        <span class="project-num">02</span>
-        <div class="project-info">
-          <div class="project-title">BANG X AMP</div>
-        </div>
+        <div class="project-title">BANG X AMP</div>
         <div class="project-meta">
-          <span class="project-type">MUSIC COMPOSITION</span>
-          <span class="project-year">2024</span>
-          <div class="project-arrow">→</div>
+          <span>MUSIC COMPOSITION</span>
+          <span>2024</span>
         </div>
       </a>
       
       <a href="https://www.youtube.com/watch?v=_xQbW_aJ1XY" target="_blank" class="project">
-        <span class="project-num">03</span>
-        <div class="project-info">
-          <div class="project-title">ELDEN RING MARATHON</div>
-          <div class="project-sub">KAI CENAT</div>
-        </div>
+        <div class="project-title">ELDEN RING</div>
         <div class="project-meta">
-          <span class="project-type">SFX & SCORE</span>
-          <span class="project-year">2024</span>
-          <div class="project-arrow">→</div>
+          <span>KAI CENAT</span>
+          <span>SFX & SCORE</span>
+          <span>2024</span>
         </div>
       </a>
     </div>
   </section>
   
-  <!-- Marquee -->
-  <section class="marquee">
-    <div class="marquee-track">
-      <span class="marquee-text">SOUND DESIGN • COMPOSITION • SFX • MUSIC •</span>
-      <span class="marquee-text">SOUND DESIGN • COMPOSITION • SFX • MUSIC •</span>
-      <span class="marquee-text">SOUND DESIGN • COMPOSITION • SFX • MUSIC •</span>
-      <span class="marquee-text">SOUND DESIGN • COMPOSITION • SFX • MUSIC •</span>
-      <span class="marquee-text">SOUND DESIGN • COMPOSITION • SFX • MUSIC •</span>
-      <span class="marquee-text">SOUND DESIGN • COMPOSITION • SFX • MUSIC •</span>
-      <span class="marquee-text">SOUND DESIGN • COMPOSITION • SFX • MUSIC •</span>
-      <span class="marquee-text">SOUND DESIGN • COMPOSITION • SFX • MUSIC •</span>
-    </div>
-  </section>
+  <div class="divider">• • •</div>
   
-  <!-- Contact -->
   <section class="contact">
     <div class="contact-inner">
-      <div class="contact-left">
-        <div class="badge">START A PROJECT</div>
-        <h3 class="contact-title">LET'S<br><span>CREATE</span></h3>
-      </div>
-      <div class="contact-right">
-        <a href="mailto:prstudios.works@gmail.com" class="contact-email">prstudios.works@gmail.com</a>
-        <div class="social">
-          <a href="#">INSTAGRAM</a>
-          <a href="#">TWITTER</a>
-          <a href="#">LINKEDIN</a>
-        </div>
+      <div class="contact-label">GET IN TOUCH</div>
+      <h3 class="contact-title">LET'S <span class="outline">CREATE</span></h3>
+      <a href="mailto:prstudios.works@gmail.com" class="contact-email">PRSTUDIOS.WORKS@GMAIL.COM</a>
+      <div class="social">
+        <a href="#">INSTAGRAM</a>
+        <a href="#">TWITTER</a>
+        <a href="#">LINKEDIN</a>
       </div>
     </div>
   </section>
   
-  <!-- Footer -->
   <footer>
     <span>© PRSTUDIOS 2024</span>
     <span>PARIS, FRANCE</span>
   </footer>
-  
-  <!-- Waveform Animation -->
-  <script>
-    // Create waveform bars
-    const waveform = document.getElementById('waveform');
-    for (let i = 0; i < 24; i++) {
-      const bar = document.createElement('div');
-      bar.className = 'wave-bar';
-      bar.style.height = '24px';
-      bar.style.backgroundColor = 'rgba(245,242,237,0.15)';
-      waveform.appendChild(bar);
-    }
-    
-    // Animate waveform
-    const bars = document.querySelectorAll('.wave-bar');
-    function animateWaveform() {
-      const time = Date.now() * 0.002;
-      bars.forEach((bar, i) => {
-        const value = 0.3 + Math.sin(time + i * 0.3) * 0.25 + Math.sin(time * 1.3 + i * 0.5) * 0.15;
-        const height = value * 48;
-        bar.style.height = height + 'px';
-        bar.style.backgroundColor = value > 0.6 ? '#ff3d2e' : 'rgba(245,242,237,0.15)';
-      });
-      requestAnimationFrame(animateWaveform);
-    }
-    animateWaveform();
-  </script>
 </body>
 </html>
