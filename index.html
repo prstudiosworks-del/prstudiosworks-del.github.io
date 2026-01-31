@@ -22,9 +22,6 @@
       overflow-x: hidden;
     }
     
-    /* ========================================
-       DESTRUCTION CANVAS
-       ======================================== */
     #void {
       position: fixed;
       inset: 0;
@@ -32,7 +29,6 @@
       pointer-events: none;
     }
     
-    /* Hidden sampler for pixel extraction */
     #sampler {
       position: fixed;
       top: 0; left: 0;
@@ -41,9 +37,7 @@
       opacity: 0;
     }
     
-    /* ========================================
-       CHROMATIC ABERRATION LAYER
-       ======================================== */
+    /* Chromatic Aberration */
     .chroma {
       position: fixed;
       inset: 0;
@@ -62,26 +56,22 @@
     }
     .chroma::before {
       background: radial-gradient(
-        circle 150px at var(--mx) var(--my),
-        rgba(255, 0, 60, 0.12) 0%,
-        rgba(255, 0, 60, 0.04) 40%,
-        transparent 70%
+        circle 180px at var(--mx) var(--my),
+        rgba(255, 0, 50, 0.1) 0%,
+        transparent 60%
       );
-      transform: translate(-4px, 0);
+      transform: translate(-5px, 0);
     }
     .chroma::after {
       background: radial-gradient(
-        circle 150px at var(--mx) var(--my),
-        rgba(0, 150, 255, 0.12) 0%,
-        rgba(0, 150, 255, 0.04) 40%,
-        transparent 70%
+        circle 180px at var(--mx) var(--my),
+        rgba(0, 150, 255, 0.1) 0%,
+        transparent 60%
       );
-      transform: translate(4px, 0);
+      transform: translate(5px, 0);
     }
     
-    /* ========================================
-       SCAN LINES - CRT effect
-       ======================================== */
+    /* Scan Lines */
     .scanlines {
       position: fixed;
       inset: 0;
@@ -91,63 +81,17 @@
         0deg,
         transparent 0px,
         transparent 2px,
-        rgba(0, 0, 0, 0.12) 2px,
-        rgba(0, 0, 0, 0.12) 4px
+        rgba(0, 0, 0, 0.08) 2px,
+        rgba(0, 0, 0, 0.08) 4px
       );
-      opacity: 0.5;
+      opacity: 0.6;
     }
     
-    /* ========================================
-       WARPABLE ELEMENTS
-       ======================================== */
+    /* Warpable Elements */
     .warp {
-      transition: transform 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  filter 0.12s ease;
+      transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  filter 0.1s ease;
       will-change: transform, filter;
-      position: relative;
-    }
-    
-    /* Glitch effect */
-    .warp.glitch {
-      animation: glitchShake 0.15s infinite;
-    }
-    .warp.glitch::before,
-    .warp.glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0.8;
-      pointer-events: none;
-    }
-    .warp.glitch::before {
-      color: #ff0050;
-      animation: glitchR 0.2s infinite;
-      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-    }
-    .warp.glitch::after {
-      color: #00d4ff;
-      animation: glitchB 0.2s infinite;
-      clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
-    }
-    @keyframes glitchShake {
-      0%, 100% { transform: translate(0) var(--warp-transform); }
-      20% { transform: translate(-2px, 1px) var(--warp-transform); }
-      40% { transform: translate(2px, -1px) var(--warp-transform); }
-      60% { transform: translate(-1px, -2px) var(--warp-transform); }
-      80% { transform: translate(1px, 2px) var(--warp-transform); }
-    }
-    @keyframes glitchR {
-      0%, 100% { transform: translate(0); }
-      25% { transform: translate(-3px, 0); }
-      75% { transform: translate(3px, 0); }
-    }
-    @keyframes glitchB {
-      0%, 100% { transform: translate(0); }
-      25% { transform: translate(3px, 0); }
-      75% { transform: translate(-3px, 0); }
     }
     
     @media (max-width: 768px) {
@@ -156,9 +100,7 @@
       .warp { transform: none !important; filter: none !important; }
     }
     
-    /* ========================================
-       FILM GRAIN
-       ======================================== */
+    /* Film Grain */
     .grain {
       position: fixed;
       inset: -50%;
@@ -166,7 +108,7 @@
       height: 200%;
       pointer-events: none;
       z-index: 100002;
-      opacity: 0.22;
+      opacity: 0.2;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       animation: grain 0.08s steps(4) infinite;
       mix-blend-mode: overlay;
@@ -183,7 +125,7 @@
       inset: 0;
       pointer-events: none;
       z-index: 2;
-      background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 0%, rgba(0,0,0,0.65) 100%);
+      background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 0%, rgba(0,0,0,0.6) 100%);
     }
     
     /* Waveform */
@@ -294,7 +236,6 @@
       opacity: 0;
       transform: translateY(60px);
       animation: slideUp 0.8s ease forwards;
-      position: relative;
     }
     .line:nth-child(1) { animation-delay: 0.4s; }
     .line:nth-child(2) { animation-delay: 0.5s; }
@@ -377,7 +318,6 @@
       font-weight: 900;
       font-size: clamp(48px, 12vw, 100px);
       letter-spacing: -0.03em;
-      position: relative;
     }
     .section-count {
       font-family: 'JetBrains Mono', monospace;
@@ -402,7 +342,6 @@
       text-transform: uppercase;
       line-height: 1;
       transition: all 0.4s;
-      position: relative;
     }
     .project:hover .project-title {
       color: transparent;
@@ -461,7 +400,6 @@
       letter-spacing: -0.04em;
       line-height: 0.85;
       text-transform: uppercase;
-      position: relative;
     }
     .contact-title .outline {
       color: transparent;
@@ -536,24 +474,24 @@
   
   <nav>
     <div class="nav-inner">
-      <div class="logo warp" data-text="PRSTUDIOS">PRSTUDIOS</div>
-      <a href="mailto:prstudios.works@gmail.com" class="contact-btn warp" data-text="CONTACT">CONTACT</a>
+      <div class="logo warp">PRSTUDIOS</div>
+      <a href="mailto:prstudios.works@gmail.com" class="contact-btn warp">CONTACT</a>
     </div>
   </nav>
   
   <section class="hero">
     <div class="hero-content">
-      <div class="top-tag warp" data-text="BERKLEE • BIMM">
+      <div class="top-tag warp">
         BERKLEE COLLEGE OF MUSIC • COMPOSITION<br>
         BIMM • SOUND DESIGN & ELECTRONIC MUSIC PRODUCTION
       </div>
       <h1>
-        <span class="line warp" data-text="VISION">VISION</span>
-        <span class="line small warp" data-text="FINDS ITS">FINDS ITS</span>
-        <span class="line outline warp" data-text="VOICE">VOICE</span>
+        <span class="line warp">VISION</span>
+        <span class="line small warp">FINDS ITS</span>
+        <span class="line outline warp">VOICE</span>
       </h1>
-      <p class="subtitle warp" data-text="PHILÉAS RENOULT">PHILÉAS RENOULT</p>
-      <p class="services warp" data-text="SOUND DESIGN • MUSIC COMPOSITION • SFX">SOUND DESIGN • MUSIC COMPOSITION • SFX</p>
+      <p class="subtitle warp">PHILÉAS RENOULT</p>
+      <p class="services warp">SOUND DESIGN • MUSIC COMPOSITION • SFX</p>
     </div>
     <a href="#work" class="scroll-hint">
       <span>SCROLL</span>
@@ -564,13 +502,13 @@
   <section class="work" id="work">
     <div class="work-inner">
       <div class="section-header">
-        <h2 class="section-title warp" data-text="WORK">WORK</h2>
-        <span class="section-count warp" data-text="(03)">(03)</span>
+        <h2 class="section-title warp">WORK</h2>
+        <span class="section-count warp">(03)</span>
       </div>
       
       <a href="https://f.io/fCmaVdqs" target="_blank" class="project">
-        <div class="project-title warp" data-text="THE DAILY MAIL">THE DAILY MAIL</div>
-        <div class="project-meta warp" data-text="SFX & MUSIC SYNC • 2024">
+        <div class="project-title warp">THE DAILY MAIL</div>
+        <div class="project-meta warp">
           <span>SFX & MUSIC SYNC</span>
           <span>2024</span>
         </div>
@@ -578,8 +516,8 @@
       </a>
       
       <a href="https://www.youtube.com/watch?v=ZMTjOdJJbbM" target="_blank" class="project">
-        <div class="project-title warp" data-text="BANG X AMP">BANG X AMP</div>
-        <div class="project-meta warp" data-text="MUSIC COMPOSITION • 2024">
+        <div class="project-title warp">BANG X AMP</div>
+        <div class="project-meta warp">
           <span>MUSIC COMPOSITION</span>
           <span>2024</span>
         </div>
@@ -587,8 +525,8 @@
       </a>
       
       <a href="https://www.youtube.com/watch?v=_xQbW_aJ1XY" target="_blank" class="project">
-        <div class="project-title warp" data-text="ELDEN RING">ELDEN RING</div>
-        <div class="project-meta warp" data-text="KAI CENAT • SFX & SCORE • 2024">
+        <div class="project-title warp">ELDEN RING</div>
+        <div class="project-meta warp">
           <span>KAI CENAT</span>
           <span>SFX & SCORE</span>
           <span>2024</span>
@@ -602,30 +540,30 @@
   
   <section class="contact">
     <div class="contact-inner">
-      <div class="contact-label warp" data-text="GET IN TOUCH">GET IN TOUCH</div>
+      <div class="contact-label warp">GET IN TOUCH</div>
       <h3 class="contact-title">
-        <span class="warp" data-text="LET'S">LET'S </span>
-        <span class="outline warp" data-text="CREATE">CREATE</span>
+        <span class="warp">LET'S </span>
+        <span class="outline warp">CREATE</span>
       </h3>
-      <a href="mailto:prstudios.works@gmail.com" class="contact-email warp" data-text="PRSTUDIOS.WORKS@GMAIL.COM">PRSTUDIOS.WORKS@GMAIL.COM</a>
+      <a href="mailto:prstudios.works@gmail.com" class="contact-email warp">PRSTUDIOS.WORKS@GMAIL.COM</a>
       <div class="social">
-        <a href="#" class="warp" data-text="INSTAGRAM">INSTAGRAM</a>
-        <a href="#" class="warp" data-text="TWITTER">TWITTER</a>
-        <a href="#" class="warp" data-text="LINKEDIN">LINKEDIN</a>
+        <a href="#" class="warp">INSTAGRAM</a>
+        <a href="#" class="warp">TWITTER</a>
+        <a href="#" class="warp">LINKEDIN</a>
       </div>
     </div>
   </section>
   
   <footer>
-    <span class="warp" data-text="© PRSTUDIOS 2024">© PRSTUDIOS 2024</span>
-    <span class="warp" data-text="PARIS, FRANCE">PARIS, FRANCE</span>
+    <span class="warp">© PRSTUDIOS 2024</span>
+    <span class="warp">PARIS, FRANCE</span>
   </footer>
   
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <script>
     // ================================================
-    // ULTIMATE CINEMATIC DESTRUCTION ENGINE
-    // Everything combined into one massive effect
+    // CLEAN PIXEL DESTRUCTION
+    // No letters, no rings - just pure deconstruction
     // ================================================
     
     const canvas = document.getElementById('void');
@@ -640,32 +578,15 @@
     let mx = 0, my = 0;
     let cx = 0, cy = 0;
     let speed = 0;
-    let time = 0;
-    let isHovering = false;
     let lastMx = 0, lastMy = 0;
-    let pageSnapshot = null;
     let lastSnapshotTime = 0;
     
-    // ============================================
-    // PARTICLE SYSTEMS
-    // ============================================
-    const pixels = [];          // Torn pixel debris from actual page
-    const letters = [];         // Torn text characters
-    const accretion = [];       // Accretion disk particles
-    const tearLines = [];       // Reality tear lines
-    const energyRings = [];     // Radiating energy rings
+    // Pixel debris only
+    const pixels = [];
+    const MAX_PIXELS = 300;
+    const WARP_RADIUS = 300;
+    const TEAR_RADIUS = 200;
     
-    const MAX_PIXELS = 250;
-    const MAX_LETTERS = 100;
-    const MAX_ACCRETION = 150;
-    
-    const WARP_RADIUS = 350;
-    const GLITCH_RADIUS = 180;
-    const TEAR_RADIUS = 220;
-    
-    // ============================================
-    // SETUP
-    // ============================================
     function resize() {
       W = canvas.width = window.innerWidth;
       H = canvas.height = window.innerHeight;
@@ -679,42 +600,36 @@
     // Capture page for pixel sampling
     async function captureSnapshot() {
       const now = Date.now();
-      if (now - lastSnapshotTime < 3000) return;
+      if (now - lastSnapshotTime < 2500) return;
       lastSnapshotTime = now;
       
       try {
-        const body = document.body;
-        const snapshot = await html2canvas(body, {
+        const snapshot = await html2canvas(document.body, {
           backgroundColor: '#0a0a0a',
-          scale: 0.4,
+          scale: 0.5,
           logging: false,
           useCORS: true,
-          ignoreElements: el => el.id === 'void' || el.id === 'sampler' || el.classList.contains('chroma') || el.classList.contains('scanlines') || el.classList.contains('grain')
+          ignoreElements: el => el.id === 'void' || el.id === 'sampler' || 
+                               el.classList.contains('chroma') || 
+                               el.classList.contains('scanlines') || 
+                               el.classList.contains('grain')
         });
-        pageSnapshot = snapshot;
         samplerCtx.drawImage(snapshot, 0, 0, W, H);
       } catch(e) {
-        createFallbackSnapshot();
+        // Fallback
+        samplerCtx.fillStyle = '#0a0a0a';
+        samplerCtx.fillRect(0, 0, W, H);
+        document.querySelectorAll('h1, h2, h3, p, a, span').forEach(el => {
+          const rect = el.getBoundingClientRect();
+          samplerCtx.fillStyle = getComputedStyle(el).color || '#e8e4dc';
+          samplerCtx.fillRect(rect.left, rect.top, rect.width, rect.height);
+        });
       }
     }
     
-    function createFallbackSnapshot() {
-      samplerCtx.fillStyle = '#0a0a0a';
-      samplerCtx.fillRect(0, 0, W, H);
-      
-      document.querySelectorAll('h1, h2, h3, p, a, span, .logo, .project-title').forEach(el => {
-        const rect = el.getBoundingClientRect();
-        const style = getComputedStyle(el);
-        samplerCtx.fillStyle = style.color || '#e8e4dc';
-        samplerCtx.globalAlpha = 0.9;
-        samplerCtx.fillRect(rect.left, rect.top, rect.width, rect.height);
-      });
-      samplerCtx.globalAlpha = 1;
-    }
+    setTimeout(captureSnapshot, 500);
     
-    setTimeout(captureSnapshot, 600);
-    
-    // Mouse tracking
+    // Mouse
     document.addEventListener('mousemove', e => {
       lastMx = mx;
       lastMy = my;
@@ -726,20 +641,12 @@
       root.style.setProperty('--my', my + 'px');
     });
     
-    // Hover detection
-    document.querySelectorAll('a, button, .project').forEach(el => {
-      el.addEventListener('mouseenter', () => isHovering = true);
-      el.addEventListener('mouseleave', () => isHovering = false);
-    });
-    
-    // ============================================
-    // SAMPLE REAL PIXELS FROM PAGE
-    // ============================================
+    // Sample pixel color
     function samplePixelColor(x, y) {
       try {
         const data = samplerCtx.getImageData(
-          Math.floor(x * 0.4),
-          Math.floor(y * 0.4),
+          Math.floor(x * 0.5),
+          Math.floor(y * 0.5),
           1, 1
         ).data;
         return { r: data[0], g: data[1], b: data[2] };
@@ -748,11 +655,8 @@
       }
     }
     
-    // ============================================
-    // ELEMENT WARPING - Pull content toward cursor
-    // ============================================
+    // Warp DOM elements toward cursor
     function warpDOMElements() {
-      let anyGlitching = false;
       let anyWarping = false;
       
       warpElements.forEach(el => {
@@ -765,411 +669,128 @@
         
         if (dist < WARP_RADIUS) {
           anyWarping = true;
-          const influence = Math.pow(1 - dist / WARP_RADIUS, 2.5);
+          const influence = Math.pow(1 - dist / WARP_RADIUS, 2);
           const angle = Math.atan2(dy, dx);
           
-          // Magnetic pull toward cursor
-          const pull = influence * 30;
+          const pull = influence * 25;
           const pullX = Math.cos(angle) * pull;
           const pullY = Math.sin(angle) * pull;
-          
-          // Rotation — twist toward void
-          const rotation = influence * (dx > 0 ? 5 : -5);
-          
-          // Skew — being sucked in
-          const skewX = influence * 6 * Math.sign(dx);
-          const skewY = influence * 2 * Math.sign(dy);
-          
-          // Scale — compress toward center
-          const scaleX = 1 + influence * 0.08;
-          const scaleY = 1 - influence * 0.05;
+          const rotation = influence * (dx > 0 ? 3 : -3);
+          const skew = influence * 4 * Math.sign(dx);
           
           el.style.transform = `
             translate(${pullX}px, ${pullY}px)
             rotate(${rotation}deg)
-            skew(${skewX}deg, ${skewY}deg)
-            scale(${scaleX}, ${scaleY})
+            skewX(${skew}deg)
           `;
-          el.style.setProperty('--warp-transform', '');
           
-          // Glitch at close range
-          if (dist < GLITCH_RADIUS) {
-            const blur = (1 - dist / GLITCH_RADIUS) * 2;
-            el.style.filter = `blur(${blur}px)`;
-            el.classList.add('glitch');
-            anyGlitching = true;
+          if (dist < 150) {
+            el.style.filter = `blur(${(1 - dist / 150) * 1.5}px)`;
           } else {
             el.style.filter = '';
-            el.classList.remove('glitch');
           }
         } else {
           el.style.transform = '';
           el.style.filter = '';
-          el.classList.remove('glitch');
         }
       });
       
       // Chromatic aberration when warping or moving fast
-      if (anyGlitching || anyWarping || speed > 12) {
+      if (anyWarping || speed > 10) {
         chroma.classList.add('active');
       } else {
         chroma.classList.remove('active');
       }
     }
     
-    // ============================================
-    // TEAR REAL PIXELS FROM PAGE
-    // ============================================
+    // Tear pixels from page
     function tearPixels() {
       if (pixels.length >= MAX_PIXELS) return;
       
-      const tearIntensity = Math.min(speed / 8, 1) + 0.15;
-      const numPixels = Math.floor(3 + speed * 0.4);
+      const tearIntensity = Math.min(speed / 10, 1) + 0.1;
+      const numPixels = Math.floor(2 + speed * 0.3);
       
       for (let i = 0; i < numPixels; i++) {
         if (pixels.length >= MAX_PIXELS) break;
         if (Math.random() > tearIntensity) continue;
         
         const angle = Math.random() * Math.PI * 2;
-        const dist = 25 + Math.random() * TEAR_RADIUS;
+        const dist = 20 + Math.random() * TEAR_RADIUS;
         const px = mx + Math.cos(angle) * dist;
         const py = my + Math.sin(angle) * dist;
         
         if (px < 0 || px > W || py < 0 || py > H) continue;
         
-        // Sample REAL color from page
         const color = samplePixelColor(px, py);
         
-        // Skip pure background
-        if (color.r < 15 && color.g < 15 && color.b < 15) {
-          if (Math.random() > 0.15) continue;
+        // Skip pure background pixels mostly
+        if (color.r < 20 && color.g < 20 && color.b < 20) {
+          if (Math.random() > 0.1) continue;
         }
-        
-        const size = 2 + Math.random() * 6;
         
         pixels.push({
-          x: px, y: py,
-          size,
+          x: px,
+          y: py,
+          size: 2 + Math.random() * 5,
           ...color,
           life: 1,
-          decay: 0.007 + Math.random() * 0.008,
-          orbitAngle: Math.random() * Math.PI * 2,
-          orbitSpeed: 0.025 + Math.random() * 0.045,
-          orbitRadius: 35 + Math.random() * 70,
+          decay: 0.008 + Math.random() * 0.008,
+          vx: (Math.random() - 0.5) * 2,
+          vy: (Math.random() - 0.5) * 2,
           rotation: Math.random() * Math.PI * 2,
-          rotationSpeed: (Math.random() - 0.5) * 0.35,
+          rotationSpeed: (Math.random() - 0.5) * 0.2,
         });
       }
     }
     
-    // ============================================
-    // TEAR LETTERS FROM TEXT
-    // ============================================
-    function tearLetters() {
-      if (letters.length >= MAX_LETTERS) return;
-      
-      warpElements.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        const text = el.textContent;
-        if (!text || text.length < 2) return;
-        
-        const closestX = Math.max(rect.left, Math.min(mx, rect.right));
-        const closestY = Math.max(rect.top, Math.min(my, rect.bottom));
-        const dist = Math.hypot(mx - closestX, my - closestY);
-        
-        const prob = Math.pow(1 - dist / TEAR_RADIUS, 2.5) * 0.35 * (1 + speed * 0.02);
-        
-        if (dist < TEAR_RADIUS && Math.random() < prob && letters.length < MAX_LETTERS) {
-          const char = text[Math.floor(Math.random() * text.length)];
-          if (!char.trim()) return;
-          
-          const style = getComputedStyle(el);
-          const isOutline = el.classList.contains('outline');
-          
-          letters.push({
-            char,
-            x: closestX + (Math.random() - 0.5) * 40,
-            y: closestY + (Math.random() - 0.5) * 40,
-            size: Math.min(parseFloat(style.fontSize) * 0.45, 52),
-            weight: style.fontWeight,
-            isOutline,
-            life: 1,
-            decay: 0.005 + Math.random() * 0.006,
-            orbitAngle: Math.random() * Math.PI * 2,
-            orbitSpeed: 0.02 + Math.random() * 0.035,
-            orbitRadius: 45 + Math.random() * 75,
-          });
-        }
-      });
-    }
-    
-    // ============================================
-    // ACCRETION DISK
-    // ============================================
-    function spawnAccretion() {
-      if (accretion.length >= MAX_ACCRETION || Math.random() > 0.55) return;
-      
-      accretion.push({
-        angle: Math.random() * Math.PI * 2,
-        radius: 18 + Math.random() * 55,
-        speed: 0.018 + Math.random() * 0.032,
-        size: 1 + Math.random() * 2.5,
-        life: 1,
-        decay: 0.003 + Math.random() * 0.004,
-        brightness: 0.25 + Math.random() * 0.75,
-        type: Math.random() > 0.6 ? 'hot' : 'cold', // Orange or blue
-      });
-    }
-    
-    // ============================================
-    // REALITY TEAR LINES
-    // ============================================
-    function spawnTearLines() {
-      if (speed < 12 || tearLines.length > 15) return;
-      
-      const num = Math.floor(speed / 8);
-      for (let i = 0; i < num; i++) {
-        const moveAngle = Math.atan2(my - lastMy, mx - lastMx);
-        const angle = moveAngle + (Math.random() - 0.5) * 1.2;
-        tearLines.push({
-          x: cx,
-          y: cy,
-          angle,
-          length: 40 + Math.random() * 70,
-          life: 1,
-          decay: 0.04 + Math.random() * 0.03,
-        });
-      }
-    }
-    
-    // ============================================
-    // ENERGY RINGS - Radiate outward
-    // ============================================
-    function spawnEnergyRing() {
-      if (speed < 8 || energyRings.length > 5) return;
-      if (Math.random() > 0.3) return;
-      
-      energyRings.push({
-        x: cx,
-        y: cy,
-        radius: 20,
-        maxRadius: 150 + speed * 3,
-        life: 1,
-        decay: 0.025,
-      });
-    }
-    
-    // ============================================
-    // MAIN RENDER LOOP
-    // ============================================
+    // Main render
     function render() {
-      time += 0.016;
-      
-      // Smooth cursor
       cx += (mx - cx) * 0.1;
       cy += (my - cy) * 0.1;
       
       ctx.clearRect(0, 0, W, H);
       
-      const intensity = Math.min(speed / 12, 1);
-      const hover = isHovering ? 1.3 : 1;
-      
-      // Warp DOM elements
       warpDOMElements();
+      tearPixels();
       
-      // ============================================
-      // 1. GRAVITATIONAL FIELD GLOW
-      // ============================================
-      const fieldRadius = (280 + intensity * 120) * hover;
-      const fieldGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, fieldRadius);
-      fieldGrad.addColorStop(0, `rgba(255, 250, 240, ${0.1 + intensity * 0.1})`);
-      fieldGrad.addColorStop(0.25, `rgba(232, 228, 220, ${0.05 + intensity * 0.06})`);
-      fieldGrad.addColorStop(0.5, `rgba(200, 180, 160, ${0.02 + intensity * 0.03})`);
-      fieldGrad.addColorStop(1, 'transparent');
-      ctx.fillStyle = fieldGrad;
-      ctx.beginPath();
-      ctx.arc(cx, cy, fieldRadius, 0, Math.PI * 2);
-      ctx.fill();
-      
-      // ============================================
-      // 2. ENERGY RINGS - Radiating outward
-      // ============================================
-      spawnEnergyRing();
-      
-      for (let i = energyRings.length - 1; i >= 0; i--) {
-        const ring = energyRings[i];
-        ring.radius += (ring.maxRadius - ring.radius) * 0.08;
-        ring.life -= ring.decay;
-        
-        if (ring.life > 0) {
-          ctx.strokeStyle = `rgba(232, 228, 220, ${ring.life * 0.3})`;
-          ctx.lineWidth = 1.5 * ring.life;
-          ctx.beginPath();
-          ctx.arc(ring.x, ring.y, ring.radius, 0, Math.PI * 2);
-          ctx.stroke();
-        } else {
-          energyRings.splice(i, 1);
-        }
-      }
-      
-      // ============================================
-      // 3. GRAVITATIONAL LENSING RINGS (Pulsing)
-      // ============================================
-      const numRings = 7;
-      for (let i = 0; i < numRings; i++) {
-        const baseRadius = (22 + i * 16) * hover;
-        const pulse = Math.sin(time * 3 + i * 0.8) * 3;
-        const alpha = (0.12 - i * 0.014) * (1 + intensity * 0.6);
-        
-        ctx.strokeStyle = `rgba(232, 228, 220, ${alpha})`;
-        ctx.lineWidth = 1 + (numRings - i) * 0.1;
-        ctx.beginPath();
-        ctx.arc(cx, cy, baseRadius + pulse, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-      
-      // ============================================
-      // 4. REALITY TEAR LINES
-      // ============================================
-      spawnTearLines();
-      
-      for (let i = tearLines.length - 1; i >= 0; i--) {
-        const line = tearLines[i];
-        line.life -= line.decay;
-        
-        if (line.life > 0) {
-          const len = line.length * line.life;
-          
-          // Chromatic split on lines
-          ctx.strokeStyle = `rgba(255, 100, 100, ${line.life * 0.3})`;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(line.x - 2, line.y);
-          ctx.lineTo(line.x - 2 + Math.cos(line.angle) * len, line.y + Math.sin(line.angle) * len);
-          ctx.stroke();
-          
-          ctx.strokeStyle = `rgba(100, 180, 255, ${line.life * 0.3})`;
-          ctx.beginPath();
-          ctx.moveTo(line.x + 2, line.y);
-          ctx.lineTo(line.x + 2 + Math.cos(line.angle) * len, line.y + Math.sin(line.angle) * len);
-          ctx.stroke();
-          
-          ctx.strokeStyle = `rgba(232, 228, 220, ${line.life * 0.7})`;
-          ctx.lineWidth = 2 * line.life;
-          ctx.beginPath();
-          ctx.moveTo(line.x, line.y);
-          ctx.lineTo(line.x + Math.cos(line.angle) * len, line.y + Math.sin(line.angle) * len);
-          ctx.stroke();
-        } else {
-          tearLines.splice(i, 1);
-        }
-      }
-      
-      // ============================================
-      // 5. ACCRETION DISK
-      // ============================================
-      spawnAccretion();
-      
-      for (let i = accretion.length - 1; i >= 0; i--) {
-        const p = accretion[i];
-        
-        p.angle += p.speed * (1 + (1 - p.life) * 0.5);
-        p.radius *= 0.995;
-        p.life -= p.decay;
-        
-        const ax = cx + Math.cos(p.angle) * p.radius * hover;
-        const ay = cy + Math.sin(p.angle) * p.radius * hover * 0.28;
-        
-        if (p.life > 0 && p.radius > 4) {
-          const alpha = p.life * p.brightness;
-          const glow = ctx.createRadialGradient(ax, ay, 0, ax, ay, p.size * 6);
-          
-          if (p.type === 'hot') {
-            glow.addColorStop(0, `rgba(255, 220, 180, ${alpha})`);
-            glow.addColorStop(0.4, `rgba(255, 160, 80, ${alpha * 0.6})`);
-            glow.addColorStop(1, 'transparent');
-          } else {
-            glow.addColorStop(0, `rgba(180, 220, 255, ${alpha})`);
-            glow.addColorStop(0.4, `rgba(80, 160, 255, ${alpha * 0.6})`);
-            glow.addColorStop(1, 'transparent');
-          }
-          
-          ctx.fillStyle = glow;
-          ctx.beginPath();
-          ctx.arc(ax, ay, p.size * 6, 0, Math.PI * 2);
-          ctx.fill();
-        } else {
-          accretion.splice(i, 1);
-        }
-      }
-      
-      // ============================================
-      // 6. EVENT HORIZON
-      // ============================================
-      const horizonRadius = (18 + intensity * 10) * hover;
-      
-      // Dark void
-      const voidGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, horizonRadius * 3.5);
-      voidGrad.addColorStop(0, 'rgba(0, 0, 0, 0.99)');
-      voidGrad.addColorStop(0.25, 'rgba(0, 0, 0, 0.9)');
-      voidGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0.6)');
-      voidGrad.addColorStop(0.75, 'rgba(0, 0, 0, 0.2)');
+      // Draw singularity void (subtle dark area)
+      const voidRadius = 60 + Math.min(speed, 30);
+      const voidGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, voidRadius);
+      voidGrad.addColorStop(0, 'rgba(0, 0, 0, 0.9)');
+      voidGrad.addColorStop(0.3, 'rgba(0, 0, 0, 0.5)');
+      voidGrad.addColorStop(0.7, 'rgba(0, 0, 0, 0.15)');
       voidGrad.addColorStop(1, 'transparent');
       ctx.fillStyle = voidGrad;
       ctx.beginPath();
-      ctx.arc(cx, cy, horizonRadius * 3.5, 0, Math.PI * 2);
+      ctx.arc(cx, cy, voidRadius, 0, Math.PI * 2);
       ctx.fill();
       
-      // Photon sphere - bright ring
-      const photonPulse = 1 + Math.sin(time * 4) * 0.1;
-      ctx.strokeStyle = `rgba(255, 252, 245, ${0.7 + intensity * 0.25})`;
-      ctx.lineWidth = 2.5 * photonPulse;
-      ctx.beginPath();
-      ctx.arc(cx, cy, horizonRadius, 0, Math.PI * 2);
-      ctx.stroke();
-      
-      // Inner glow
-      const innerGlow = ctx.createRadialGradient(cx, cy, horizonRadius * 0.2, cx, cy, horizonRadius);
-      innerGlow.addColorStop(0, 'rgba(255, 255, 255, 0.2)');
-      innerGlow.addColorStop(0.5, 'rgba(255, 230, 200, 0.35)');
-      innerGlow.addColorStop(1, 'rgba(255, 200, 150, 0.5)');
-      ctx.fillStyle = innerGlow;
-      ctx.beginPath();
-      ctx.arc(cx, cy, horizonRadius, 0, Math.PI * 2);
-      ctx.fill();
-      
-      // Singularity core
-      const corePulse = 1 + Math.sin(time * 5) * 0.15;
+      // Singularity core - just a small bright point
       ctx.fillStyle = '#fff';
       ctx.shadowColor = '#fff';
-      ctx.shadowBlur = 35 + intensity * 30;
+      ctx.shadowBlur = 15 + speed * 0.5;
       ctx.beginPath();
-      ctx.arc(cx, cy, 4.5 * hover * corePulse, 0, Math.PI * 2);
+      ctx.arc(cx, cy, 3, 0, Math.PI * 2);
       ctx.fill();
       ctx.shadowBlur = 0;
       
-      // ============================================
-      // 7. PIXEL DEBRIS - Real page pixels
-      // ============================================
-      tearPixels();
-      
+      // Render pixels
       for (let i = pixels.length - 1; i >= 0; i--) {
         const p = pixels[i];
         
+        // Gravity toward cursor
         const dx = cx - p.x;
         const dy = cy - p.y;
         const dist = Math.hypot(dx, dy);
+        const gravity = 800 / (dist * dist + 50);
         
-        const gravity = 2200 / (dist * dist + 90);
+        p.vx += (dx / dist) * gravity;
+        p.vy += (dy / dist) * gravity;
+        p.vx *= 0.98;
+        p.vy *= 0.98;
         
-        p.orbitAngle += p.orbitSpeed * (1 + (1 - p.life) * 2.5);
-        p.orbitRadius *= 0.965;
-        
-        const orbitX = Math.cos(p.orbitAngle) * p.orbitRadius * p.life;
-        const orbitY = Math.sin(p.orbitAngle) * p.orbitRadius * p.life * 0.35;
-        
-        p.x += (dx / dist) * gravity + orbitX * 0.02;
-        p.y += (dy / dist) * gravity + orbitY * 0.02;
+        p.x += p.vx;
+        p.y += p.vy;
         p.rotation += p.rotationSpeed;
         p.life -= p.decay;
         
@@ -1180,12 +801,12 @@
           ctx.translate(p.x, p.y);
           ctx.rotate(p.rotation);
           
-          // Chromatic split
-          if (p.life < 0.55) {
-            const split = (0.55 - p.life) * 8;
-            ctx.fillStyle = `rgba(${Math.min(255, p.r + 100)}, ${p.g * 0.2}, ${p.b * 0.2}, ${p.life * 0.45})`;
+          // Chromatic split when dying
+          if (p.life < 0.5) {
+            const split = (0.5 - p.life) * 6;
+            ctx.fillStyle = `rgba(${Math.min(255, p.r + 80)}, ${p.g * 0.3}, ${p.b * 0.3}, ${p.life * 0.5})`;
             ctx.fillRect(-size/2 - split, -size/2, size, size);
-            ctx.fillStyle = `rgba(${p.r * 0.2}, ${p.g * 0.2}, ${Math.min(255, p.b + 100)}, ${p.life * 0.45})`;
+            ctx.fillStyle = `rgba(${p.r * 0.3}, ${p.g * 0.3}, ${Math.min(255, p.b + 80)}, ${p.life * 0.5})`;
             ctx.fillRect(-size/2 + split, -size/2, size, size);
           }
           
@@ -1193,103 +814,22 @@
           ctx.fillStyle = `rgba(${p.r}, ${p.g}, ${p.b}, ${p.life})`;
           ctx.fillRect(-size/2, -size/2, size, size);
           
-          // Glow on bright pixels
-          if (p.r > 120 || p.g > 120 || p.b > 120) {
-            ctx.shadowColor = `rgb(${p.r}, ${p.g}, ${p.b})`;
-            ctx.shadowBlur = 6 * p.life;
-            ctx.fillRect(-size/2, -size/2, size, size);
-            ctx.shadowBlur = 0;
-          }
-          
           ctx.restore();
         } else {
           pixels.splice(i, 1);
         }
       }
       
-      // ============================================
-      // 8. TORN LETTERS
-      // ============================================
-      tearLetters();
-      
-      for (let i = letters.length - 1; i >= 0; i--) {
-        const L = letters[i];
-        
-        const dx = cx - L.x;
-        const dy = cy - L.y;
-        const dist = Math.hypot(dx, dy);
-        
-        const gravity = 1800 / (dist * dist + 70);
-        
-        L.orbitAngle += L.orbitSpeed * (1 + (1 - L.life) * 3);
-        L.orbitRadius *= 0.97;
-        
-        const orbitX = Math.cos(L.orbitAngle) * L.orbitRadius * L.life;
-        const orbitY = Math.sin(L.orbitAngle) * L.orbitRadius * L.life * 0.3;
-        
-        L.x += (dx / dist) * gravity + orbitX * 0.025;
-        L.y += (dy / dist) * gravity + orbitY * 0.025;
-        L.life -= L.decay;
-        
-        if (L.life > 0 && dist > 10) {
-          const alpha = L.life * 0.92;
-          const scale = L.life;
-          const rotation = (1 - L.life) * 800;
-          const stretch = 1 + (1 - L.life) * 2;
-          
-          ctx.save();
-          ctx.translate(L.x, L.y);
-          ctx.rotate(rotation * Math.PI / 180);
-          ctx.scale(1, stretch);
-          
-          // Chromatic aberration
-          if (L.life < 0.65) {
-            const split = (0.65 - L.life) * 5;
-            ctx.fillStyle = `rgba(255, 60, 80, ${alpha * 0.45})`;
-            ctx.font = `${L.weight} ${L.size * scale}px Inter`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(L.char, -split, 0);
-            
-            ctx.fillStyle = `rgba(60, 160, 255, ${alpha * 0.45})`;
-            ctx.fillText(L.char, split, 0);
-          }
-          
-          // Main letter
-          if (L.isOutline) {
-            ctx.strokeStyle = `rgba(232, 228, 220, ${alpha})`;
-            ctx.lineWidth = 1;
-            ctx.font = `${L.weight} ${L.size * scale}px Inter`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.strokeText(L.char, 0, 0);
-          } else {
-            ctx.fillStyle = `rgba(232, 228, 220, ${alpha})`;
-            ctx.font = `${L.weight} ${L.size * scale}px Inter`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(L.char, 0, 0);
-          }
-          
-          ctx.restore();
-        } else {
-          letters.splice(i, 1);
-        }
-      }
-      
       requestAnimationFrame(render);
     }
     
-    // ============================================
-    // CLICK = MASSIVE BURST
-    // ============================================
+    // Click burst
     document.addEventListener('click', () => {
-      // Pixel explosion
-      for (let i = 0; i < 80; i++) {
+      for (let i = 0; i < 60; i++) {
         if (pixels.length >= MAX_PIXELS) break;
         
         const angle = Math.random() * Math.PI * 2;
-        const dist = 50 + Math.random() * 300;
+        const dist = 30 + Math.random() * 250;
         const px = mx + Math.cos(angle) * dist;
         const py = my + Math.sin(angle) * dist;
         
@@ -1298,86 +838,16 @@
         const color = samplePixelColor(px, py);
         
         pixels.push({
-          x: px, y: py,
-          size: 3 + Math.random() * 8,
+          x: px,
+          y: py,
+          size: 3 + Math.random() * 6,
           ...color,
           life: 1,
-          decay: 0.012 + Math.random() * 0.012,
-          orbitAngle: Math.random() * Math.PI * 2,
-          orbitSpeed: 0.05 + Math.random() * 0.07,
-          orbitRadius: 70 + Math.random() * 130,
+          decay: 0.01 + Math.random() * 0.01,
+          vx: (Math.random() - 0.5) * 4,
+          vy: (Math.random() - 0.5) * 4,
           rotation: Math.random() * Math.PI * 2,
-          rotationSpeed: (Math.random() - 0.5) * 0.5,
-        });
-      }
-      
-      // Letter explosion
-      warpElements.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        const text = el.textContent;
-        if (!text) return;
-        
-        const dist = Math.hypot(mx - (rect.left + rect.width/2), my - (rect.top + rect.height/2));
-        if (dist > 400) return;
-        
-        const style = getComputedStyle(el);
-        const isOutline = el.classList.contains('outline');
-        
-        for (let i = 0; i < 6 && letters.length < MAX_LETTERS; i++) {
-          const char = text[Math.floor(Math.random() * text.length)];
-          if (!char.trim()) continue;
-          
-          letters.push({
-            char,
-            x: rect.left + Math.random() * rect.width,
-            y: rect.top + Math.random() * rect.height,
-            size: Math.min(parseFloat(style.fontSize) * 0.45, 45),
-            weight: style.fontWeight,
-            isOutline,
-            life: 1,
-            decay: 0.012 + Math.random() * 0.012,
-            orbitAngle: Math.random() * Math.PI * 2,
-            orbitSpeed: 0.045 + Math.random() * 0.065,
-            orbitRadius: 80 + Math.random() * 120,
-          });
-        }
-      });
-      
-      // Accretion burst
-      for (let i = 0; i < 50; i++) {
-        accretion.push({
-          angle: Math.random() * Math.PI * 2,
-          radius: 35 + Math.random() * 100,
-          speed: 0.04 + Math.random() * 0.06,
-          size: 2 + Math.random() * 3.5,
-          life: 1,
-          decay: 0.018 + Math.random() * 0.015,
-          brightness: 0.6 + Math.random() * 0.4,
-          type: Math.random() > 0.5 ? 'hot' : 'cold',
-        });
-      }
-      
-      // Tear lines burst
-      for (let i = 0; i < 12; i++) {
-        tearLines.push({
-          x: cx,
-          y: cy,
-          angle: (Math.PI * 2 / 12) * i + Math.random() * 0.4,
-          length: 80 + Math.random() * 120,
-          life: 1,
-          decay: 0.035,
-        });
-      }
-      
-      // Energy ring burst
-      for (let i = 0; i < 3; i++) {
-        energyRings.push({
-          x: cx,
-          y: cy,
-          radius: 15 + i * 10,
-          maxRadius: 200 + i * 50,
-          life: 1,
-          decay: 0.02 + i * 0.005,
+          rotationSpeed: (Math.random() - 0.5) * 0.3,
         });
       }
     });
@@ -1386,10 +856,9 @@
     let scrollTimeout;
     window.addEventListener('scroll', () => {
       clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(captureSnapshot, 400);
+      scrollTimeout = setTimeout(captureSnapshot, 300);
     });
     
-    // Start
     render();
     
     // Disable on touch
