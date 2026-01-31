@@ -163,10 +163,52 @@
     }
     @media (max-width: 768px) { .waveform { display: none; } }
     
+    /* Location Bar */
+    .location-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 51;
+      padding: 10px 48px;
+      background: rgba(26, 23, 21, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(196, 92, 62, 0.1);
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.4em;
+      color: var(--warm-gray);
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards 0.1s;
+    }
+    .location-bar span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .location-bar span::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      background: var(--rust);
+      border-radius: 50%;
+    }
+    @media (max-width: 768px) {
+      .location-bar {
+        padding: 10px 24px;
+        gap: 16px;
+        font-size: 8px;
+        letter-spacing: 0.2em;
+      }
+    }
+    
     /* Navigation */
     nav {
       position: fixed;
-      top: 0;
+      top: 36px;
       left: 0;
       right: 0;
       z-index: 50;
@@ -210,7 +252,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 120px 32px 160px;
+      padding: 140px 32px 160px;
       position: relative;
       z-index: 10;
     }
@@ -562,8 +604,8 @@
     footer span:first-child { color: var(--rust); opacity: 0.5; }
     
     @media (max-width: 768px) {
-      nav { padding: 24px; }
-      .hero { padding: 100px 24px 160px; }
+      nav { padding: 24px; top: 32px; }
+      .hero { padding: 140px 24px 160px; }
       .hero-content { margin-bottom: 80px; }
       .work { padding: 80px 24px; }
       .contact { padding: 80px 24px; }
@@ -582,6 +624,12 @@
   
   <div class="waveform">
     <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  
+  <div class="location-bar">
+    <span>GENEVA</span>
+    <span>PARIS</span>
+    <span>LONDON</span>
   </div>
   
   <nav>
@@ -684,16 +732,15 @@
       </h3>
       <a href="mailto:prstudios.works@gmail.com" class="contact-email warp">PRSTUDIOS.WORKS@GMAIL.COM</a>
       <div class="social">
-        <a href="#" class="warp">INSTAGRAM</a>
-        <a href="#" class="warp">TWITTER</a>
-        <a href="#" class="warp">LINKEDIN</a>
+        <a href="https://instagram.com/phileas_renoult" target="_blank" class="warp">INSTAGRAM</a>
+        <a href="mailto:prstudios.works@gmail.com" class="warp">E-MAIL</a>
       </div>
     </div>
   </section>
   
   <footer>
     <span class="warp">© PRSTUDIOS 2025</span>
-    <span class="warp">PARIS, FRANCE</span>
+    <span class="warp">GENEVA • PARIS • LONDON</span>
   </footer>
   
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
