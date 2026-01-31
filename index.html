@@ -304,7 +304,7 @@
       position: relative;
       z-index: 10;
     }
-    .work-inner { max-width: 1000px; margin: 0 auto; }
+    .work-inner { max-width: 1200px; margin: 0 auto; }
     
     .section-header {
       margin-bottom: 64px;
@@ -325,19 +325,93 @@
       color: var(--gray);
     }
     
+    /* Project Cards with Thumbnails */
     .project {
-      display: block;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
       padding: 48px 0;
       border-bottom: 1px solid rgba(232,228,220,0.05);
       text-decoration: none;
       color: var(--white);
-      transition: padding 0.4s ease;
-      position: relative;
+      align-items: center;
     }
-    .project:hover { padding-left: 32px; }
+    .project:nth-child(even) {
+      direction: rtl;
+    }
+    .project:nth-child(even) > * {
+      direction: ltr;
+    }
+    .project:hover .project-thumb {
+      transform: scale(1.02);
+    }
+    .project:hover .project-thumb img {
+      filter: grayscale(0%);
+    }
+    
+    .project-thumb {
+      position: relative;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      background: rgba(232,228,220,0.05);
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .project-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(40%);
+      transition: filter 0.5s ease;
+    }
+    .project-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(232,228,220,0.1);
+      pointer-events: none;
+    }
+    .project-thumb .play-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      border: 1px solid rgba(232,228,220,0.5);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .project:hover .play-icon {
+      opacity: 1;
+    }
+    .play-icon::after {
+      content: '';
+      width: 0;
+      height: 0;
+      border-left: 14px solid var(--white);
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      margin-left: 4px;
+    }
+    
+    .project-info {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .project-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--gray);
+    }
     .project-title {
       font-weight: 900;
-      font-size: clamp(28px, 8vw, 72px);
+      font-size: clamp(32px, 5vw, 56px);
       letter-spacing: -0.03em;
       text-transform: uppercase;
       line-height: 1;
@@ -349,25 +423,27 @@
     }
     .project-meta {
       display: flex;
-      gap: 32px;
-      margin-top: 12px;
+      gap: 24px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 10px;
       letter-spacing: 0.2em;
       color: var(--gray);
     }
-    .project-arrow {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%) translateX(10px);
-      opacity: 0;
-      font-size: 20px;
-      transition: all 0.4s ease;
+    .project-desc {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.6;
+      max-width: 400px;
     }
-    .project:hover .project-arrow {
-      opacity: 1;
-      transform: translateY(-50%) translateX(0);
+    
+    @media (max-width: 900px) {
+      .project {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .project:nth-child(even) {
+        direction: ltr;
+      }
     }
     
     .divider {
@@ -455,7 +531,6 @@
       .work { padding: 80px 24px; }
       .contact { padding: 80px 24px; }
       footer { padding: 32px 24px; flex-direction: column; gap: 8px; }
-      .project-arrow { display: none; }
     }
   </style>
 </head>
@@ -507,31 +582,52 @@
       </div>
       
       <a href="https://f.io/fCmaVdqs" target="_blank" class="project">
-        <div class="project-title warp">THE DAILY MAIL</div>
-        <div class="project-meta warp">
-          <span>SFX & MUSIC SYNC</span>
-          <span>2024</span>
+        <div class="project-thumb warp">
+          <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80" alt="The Daily Mail">
+          <div class="play-icon"></div>
         </div>
-        <span class="project-arrow">→</span>
+        <div class="project-info">
+          <span class="project-number">01</span>
+          <div class="project-title warp">THE DAILY MAIL</div>
+          <div class="project-meta warp">
+            <span>SFX & MUSIC SYNC</span>
+            <span>2024</span>
+          </div>
+          <p class="project-desc">Sound design and music synchronization for editorial content.</p>
+        </div>
       </a>
       
       <a href="https://www.youtube.com/watch?v=ZMTjOdJJbbM" target="_blank" class="project">
-        <div class="project-title warp">BANG X AMP</div>
-        <div class="project-meta warp">
-          <span>MUSIC COMPOSITION</span>
-          <span>2024</span>
+        <div class="project-thumb warp">
+          <img src="https://img.youtube.com/vi/ZMTjOdJJbbM/maxresdefault.jpg" alt="Bang X AMP">
+          <div class="play-icon"></div>
         </div>
-        <span class="project-arrow">→</span>
+        <div class="project-info">
+          <span class="project-number">02</span>
+          <div class="project-title warp">BANG X AMP</div>
+          <div class="project-meta warp">
+            <span>MUSIC COMPOSITION</span>
+            <span>2024</span>
+          </div>
+          <p class="project-desc">Original music composition for brand collaboration.</p>
+        </div>
       </a>
       
       <a href="https://www.youtube.com/watch?v=_xQbW_aJ1XY" target="_blank" class="project">
-        <div class="project-title warp">ELDEN RING</div>
-        <div class="project-meta warp">
-          <span>KAI CENAT</span>
-          <span>SFX & SCORE</span>
-          <span>2024</span>
+        <div class="project-thumb warp">
+          <img src="https://img.youtube.com/vi/_xQbW_aJ1XY/maxresdefault.jpg" alt="Elden Ring Marathon">
+          <div class="play-icon"></div>
         </div>
-        <span class="project-arrow">→</span>
+        <div class="project-info">
+          <span class="project-number">03</span>
+          <div class="project-title warp">ELDEN RING</div>
+          <div class="project-meta warp">
+            <span>KAI CENAT</span>
+            <span>SFX & SCORE</span>
+            <span>2024</span>
+          </div>
+          <p class="project-desc">Sound effects and original score for Kai Cenat's Elden Ring marathon stream.</p>
+        </div>
       </a>
     </div>
   </section>
@@ -563,7 +659,6 @@
   <script>
     // ================================================
     // CLEAN PIXEL DESTRUCTION
-    // No letters, no rings - just pure deconstruction
     // ================================================
     
     const canvas = document.getElementById('void');
@@ -581,7 +676,6 @@
     let lastMx = 0, lastMy = 0;
     let lastSnapshotTime = 0;
     
-    // Pixel debris only
     const pixels = [];
     const MAX_PIXELS = 300;
     const WARP_RADIUS = 300;
@@ -597,7 +691,6 @@
     resize();
     window.addEventListener('resize', resize);
     
-    // Capture page for pixel sampling
     async function captureSnapshot() {
       const now = Date.now();
       if (now - lastSnapshotTime < 2500) return;
@@ -616,10 +709,9 @@
         });
         samplerCtx.drawImage(snapshot, 0, 0, W, H);
       } catch(e) {
-        // Fallback
         samplerCtx.fillStyle = '#0a0a0a';
         samplerCtx.fillRect(0, 0, W, H);
-        document.querySelectorAll('h1, h2, h3, p, a, span').forEach(el => {
+        document.querySelectorAll('h1, h2, h3, p, a, span, img').forEach(el => {
           const rect = el.getBoundingClientRect();
           samplerCtx.fillStyle = getComputedStyle(el).color || '#e8e4dc';
           samplerCtx.fillRect(rect.left, rect.top, rect.width, rect.height);
@@ -629,7 +721,6 @@
     
     setTimeout(captureSnapshot, 500);
     
-    // Mouse
     document.addEventListener('mousemove', e => {
       lastMx = mx;
       lastMy = my;
@@ -641,7 +732,6 @@
       root.style.setProperty('--my', my + 'px');
     });
     
-    // Sample pixel color
     function samplePixelColor(x, y) {
       try {
         const data = samplerCtx.getImageData(
@@ -655,7 +745,6 @@
       }
     }
     
-    // Warp DOM elements toward cursor
     function warpDOMElements() {
       let anyWarping = false;
       
@@ -695,7 +784,6 @@
         }
       });
       
-      // Chromatic aberration when warping or moving fast
       if (anyWarping || speed > 10) {
         chroma.classList.add('active');
       } else {
@@ -703,7 +791,6 @@
       }
     }
     
-    // Tear pixels from page
     function tearPixels() {
       if (pixels.length >= MAX_PIXELS) return;
       
@@ -723,7 +810,6 @@
         
         const color = samplePixelColor(px, py);
         
-        // Skip pure background pixels mostly
         if (color.r < 20 && color.g < 20 && color.b < 20) {
           if (Math.random() > 0.1) continue;
         }
@@ -743,7 +829,6 @@
       }
     }
     
-    // Main render
     function render() {
       cx += (mx - cx) * 0.1;
       cy += (my - cy) * 0.1;
@@ -753,7 +838,7 @@
       warpDOMElements();
       tearPixels();
       
-      // Draw singularity void (subtle dark area)
+      // Singularity void
       const voidRadius = 60 + Math.min(speed, 30);
       const voidGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, voidRadius);
       voidGrad.addColorStop(0, 'rgba(0, 0, 0, 0.9)');
@@ -765,7 +850,7 @@
       ctx.arc(cx, cy, voidRadius, 0, Math.PI * 2);
       ctx.fill();
       
-      // Singularity core - just a small bright point
+      // Core
       ctx.fillStyle = '#fff';
       ctx.shadowColor = '#fff';
       ctx.shadowBlur = 15 + speed * 0.5;
@@ -774,11 +859,10 @@
       ctx.fill();
       ctx.shadowBlur = 0;
       
-      // Render pixels
+      // Pixels
       for (let i = pixels.length - 1; i >= 0; i--) {
         const p = pixels[i];
         
-        // Gravity toward cursor
         const dx = cx - p.x;
         const dy = cy - p.y;
         const dist = Math.hypot(dx, dy);
@@ -801,7 +885,6 @@
           ctx.translate(p.x, p.y);
           ctx.rotate(p.rotation);
           
-          // Chromatic split when dying
           if (p.life < 0.5) {
             const split = (0.5 - p.life) * 6;
             ctx.fillStyle = `rgba(${Math.min(255, p.r + 80)}, ${p.g * 0.3}, ${p.b * 0.3}, ${p.life * 0.5})`;
@@ -810,7 +893,6 @@
             ctx.fillRect(-size/2 + split, -size/2, size, size);
           }
           
-          // Main pixel
           ctx.fillStyle = `rgba(${p.r}, ${p.g}, ${p.b}, ${p.life})`;
           ctx.fillRect(-size/2, -size/2, size, size);
           
@@ -823,7 +905,6 @@
       requestAnimationFrame(render);
     }
     
-    // Click burst
     document.addEventListener('click', () => {
       for (let i = 0; i < 60; i++) {
         if (pixels.length >= MAX_PIXELS) break;
@@ -852,7 +933,6 @@
       }
     });
     
-    // Recapture on scroll
     let scrollTimeout;
     window.addEventListener('scroll', () => {
       clearTimeout(scrollTimeout);
@@ -861,7 +941,6 @@
     
     render();
     
-    // Disable on touch
     if ('ontouchstart' in window) {
       canvas.style.display = 'none';
       samplerCanvas.style.display = 'none';
