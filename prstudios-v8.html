@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>PRSTUDIOS — Philéas Renoult</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,600;9..144,1,600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#0C0B12;
+  --cream:#F4EDDC;
+  --disp:'Fraunces',Georgia,serif;
+  --ui:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --bar:52px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+body{background:var(--void);color:var(--cream);font-family:var(--ui);
+ -webkit-font-smoothing:antialiased;touch-action:none;
+ display:flex;flex-direction:column}
+::selection{background:var(--cream);color:var(--void)}
+
+/* ===== top bar — identity, always visible ===== */
+#top{height:var(--bar);flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;
+ padding:0 clamp(10px,2vw,20px);gap:12px;border-bottom:2px solid var(--void);
+ background:var(--void);z-index:20;position:relative}
+#top .id{display:flex;align-items:baseline;gap:12px;min-width:0}
+#top .nm{font-family:var(--disp);font-weight:600;font-size:clamp(15px,2.2vw,21px);letter-spacing:-.02em;
+ font-variation-settings:'SOFT' 60,'WONK' 1;white-space:nowrap}
+#top .rl{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,237,220,.55);
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#top .rt{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+#top a,#top button{font-family:var(--ui);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+ padding:7px 13px;border:1.5px solid rgba(244,237,220,.4);background:none;color:var(--cream);
+ text-decoration:none;cursor:pointer;white-space:nowrap}
+#top a:hover,#top button:hover{background:var(--cream);color:var(--void);border-color:var(--cream)}
+#master{display:flex;align-items:center;gap:7px;padding-right:4px}
+#master .mtrack{width:74px;height:5px;background:rgba(244,237,220,.22);position:relative;cursor:ew-resize}
+#master .mfill{position:absolute;left:0;top:0;bottom:0;background:var(--cream);width:80%}
+#master span{font-size:9.5px;letter-spacing:.16em;color:rgba(244,237,220,.5)}
+
+/* ===== the desk ===== */
+#desk{flex:1 1 auto;display:flex;min-height:0;gap:2px;background:var(--void)}
+
+.ch{position:relative;flex:1 1 0;min-width:0;overflow:hidden;cursor:pointer;
+ transition:flex-grow .65s cubic-bezier(.2,.9,.25,1);
+ display:flex;flex-direction:column;justify-content:flex-end}
+.ch.open{flex-grow:5.2}
+
+.ch .tex{position:absolute;inset:0;opacity:.5;pointer-events:none}
+.ch .star{position:absolute;top:14px;left:50%;width:46px;height:46px;margin-left:-23px;
+ transition:transform .7s cubic-bezier(.2,.9,.25,1),top .6s,left .6s,margin .6s}
+.ch.open .star{top:16px;left:22px;margin-left:0;width:54px;height:54px}
+
+/* collapsed label — vertical */
+.ch .vlab{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+ writing-mode:vertical-rl;text-orientation:mixed;white-space:nowrap;
+ font-family:var(--disp);font-weight:600;font-size:clamp(17px,2.4vw,25px);letter-spacing:-.01em;
+ font-variation-settings:'SOFT' 70,'WONK' 1;transition:opacity .35s;pointer-events:none}
+.ch .vsub{position:absolute;left:50%;bottom:96px;transform:translateX(-50%);
+ writing-mode:vertical-rl;white-space:nowrap;font-size:9.5px;letter-spacing:.2em;
+ text-transform:uppercase;opacity:.7;transition:opacity .35s;pointer-events:none}
+.ch.open .vlab,.ch.open .vsub{opacity:0}
+
+/* expanded content */
+.ch .body{position:absolute;left:22px;right:22px;top:86px;bottom:104px;
+ opacity:0;transform:translateY(12px);transition:opacity .5s ease .12s,transform .55s cubic-bezier(.2,.9,.25,1) .12s;
+ pointer-events:none;overflow:auto;-webkit-overflow-scrolling:touch}
+.ch.open .body{opacity:1;transform:none;pointer-events:auto}
+.ch .body .yr{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.72}
+.ch .body h2{font-family:var(--disp);font-weight:300;font-size:clamp(28px,4.6vw,58px);line-height:.98;
+ letter-spacing:-.035em;margin:8px 0 0;font-variation-settings:'SOFT' 90,'WONK' 1}
+.ch .body h2 em{font-style:italic;font-weight:600}
+.ch .body p{font-size:14px;line-height:1.5;margin-top:14px;max-width:38ch;opacity:.86}
+.ch .body .thumb{margin-top:16px;width:100%;max-width:420px;aspect-ratio:16/9;object-fit:cover;
+ display:block;filter:contrast(1.08)}
+.ch .body a.cta{display:inline-block;margin-top:16px;font-size:11px;letter-spacing:.16em;
+ text-transform:uppercase;text-decoration:none;color:inherit;border:1.5px solid currentColor;
+ padding:9px 18px;transition:background .25s}
+.ch .body a.cta:hover{background:currentColor}
+.ch .body a.cta:hover b{color:var(--chbg)}
+
+/* fader + meter at the foot of every channel */
+.foot{position:relative;z-index:3;padding:0 10px 12px;flex:0 0 auto}
+.fader{position:relative;height:56px;border:1.5px solid;opacity:.85}
+.fill{position:absolute;left:0;right:0;bottom:0;background:currentColor;opacity:.55;
+ transition:height .08s linear}
+.cap{position:absolute;left:-2px;right:-2px;height:7px;background:currentColor;
+ transition:bottom .08s linear;box-shadow:0 0 0 1.5px rgba(0,0,0,.35)}
+.meter{position:absolute;right:4px;bottom:4px;top:4px;width:4px;background:rgba(0,0,0,.22)}
+.meter i{position:absolute;left:0;right:0;bottom:0;background:currentColor;height:0}
+.num{margin-top:7px;display:flex;justify-content:space-between;align-items:center;
+ font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.75}
+
+/* ===== gate ===== */
+#gate{position:fixed;inset:0;z-index:60;display:grid;place-items:center;text-align:center;
+ padding:26px;cursor:pointer;background:var(--void)}
+#gate.gone{opacity:0;pointer-events:none;transition:opacity .8s ease}
+#gate .strips{position:absolute;inset:0;display:flex;gap:2px;opacity:.9}
+#gate .strips i{flex:1}
+#gate .in{position:relative;z-index:2;max-width:30ch;background:var(--void);padding:30px 26px}
+#gate h1{font-family:var(--disp);font-weight:300;font-size:clamp(28px,6vw,50px);line-height:1;
+ letter-spacing:-.035em;font-variation-settings:'SOFT' 90,'WONK' 1}
+#gate h1 em{font-style:italic;font-weight:600}
+#gate p{font-size:13.5px;line-height:1.6;color:rgba(244,237,220,.65);margin-top:14px}
+#gate .b{display:inline-block;margin-top:24px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+ border:1.5px solid var(--cream);padding:11px 26px}
+#gate .b:hover{background:var(--cream);color:var(--void)}
+
+@media(max-width:760px){
+  #desk{flex-direction:column}
+  .ch{flex-direction:row;align-items:stretch;justify-content:flex-start}
+  .ch.open{flex-grow:6}
+  .ch .vlab{writing-mode:horizontal-tb;left:74px;top:50%;transform:translateY(-50%)}
+  .ch .vsub{writing-mode:horizontal-tb;left:auto;right:14px;bottom:auto;top:50%;
+    transform:translateY(-50%)}
+  .ch .star{top:50%;left:14px;margin:-17px 0 0 0;width:34px;height:34px}
+  .ch.open .star{top:14px;left:14px;margin:0;width:40px;height:40px}
+  .ch .body{left:14px;right:14px;top:62px;bottom:14px}
+  .foot{width:56px;padding:10px 8px;display:flex;flex-direction:column;justify-content:flex-end}
+  .ch.open .foot{width:52px}
+  #top .rl{display:none}
+}
+a:focus-visible,button:focus-visible,.ch:focus-visible{outline:2px solid var(--cream);outline-offset:-4px}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<div id="top">
+  <div class="id">
+    <span class="nm">PRSTUDIOS</span>
+    <span class="rl">Philéas Renoult · Sound design &amp; music composition · Geneva Paris London</span>
+  </div>
+  <div class="rt">
+    <div id="master"><span>MST</span><div class="mtrack"><div class="mfill"></div></div></div>
+    <a href="mailto:prstudios.works@gmail.com">Hire me</a>
+    <button id="mute" aria-pressed="true">On</button>
+  </div>
+</div>
+
+<div id="desk"></div>
+
+<div id="gate">
+  <div class="strips" id="gstrips"></div>
+  <div class="in">
+    <h1>Six channels.<br>You <em>mix</em> them.</h1>
+    <p>Every project is a fader. Push them up, leave them running, build your own arrangement. Tap a channel to read it.</p>
+    <div class="b">Open the desk</div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ================= CHANNELS ================= */
+const CH=[
+ {id:'elden',bg:'#E08A22',fg:'#17120A',edge:'#C2210F',pts:8,
+  name:'Elden Ring',em:'for Kai Cenat',sub:'Score · SFX',yr:'2024 · Score &amp; SFX',
+  desc:'Live score and sound effects for a marathon stream watched by hundreds of thousands. Written and played in real time — no second take, no safety net.',
+  yt:'_xQbW_aJ1XY',href:'https://www.youtube.com/watch?v=_xQbW_aJ1XY',cta:'Watch',
+  bed:[73.42,110,164.81,220],rate:4.6,tone:.75,init:.62},
+
+ {id:'bang',bg:'#2B34D8',fg:'#F4EDDC',edge:'#E4795A',pts:5,
+  name:'Bang × AMP',em:'',sub:'Composition',yr:'2024 · Composition',
+  desc:'A brand identity written as music. Four seconds that have to be recognisable before the logo lands.',
+  yt:'ZMTjOdJJbbM',href:'https://www.youtube.com/watch?v=ZMTjOdJJbbM',cta:'Watch',
+  bed:[146.83,220,277.18,329.63],rate:3.1,tone:1.5,init:.48},
+
+ {id:'mail',bg:'#DC2010',fg:'#F7EFDD',edge:'#F4EDDC',pts:4,
+  name:'The Daily Mail',em:'',sub:'SFX · Sync',yr:'2025 · SFX &amp; Sync',
+  desc:'Sound design and music synchronisation across an entire newsroom’s video output. One sonic grammar, applied at newsroom speed.',
+  yt:'',href:'https://f.io/fCmaVdqs',cta:'Listen',
+  bed:[196,293.66,392,440],rate:3.8,tone:1.15,init:.4},
+
+ {id:'piano',bg:'#8A8628',fg:'#14130A',edge:'#E4795A',pts:6,
+  name:'Solo piano',em:'',sub:'Live',yr:'Ongoing · Live',
+  desc:'Standards and originals played live around Geneva and Lausanne. The ear behind everything else on this desk.',
+  yt:'',href:'https://instagram.com/phileasal',cta:'Instagram',
+  bed:[98,146.83,246.94,329.63],rate:5.4,tone:.9,init:.34},
+
+ {id:'about',bg:'#1E7C84',fg:'#F4EDDC',edge:'#E8D021',pts:12,
+  name:'Philéas Renoult',em:'',sub:'The person',yr:'About',
+  desc:'Composer and sound designer. Trained at Berklee College of Music and BIMM London, working between Geneva, Paris and London. Method: picture first, then the sound that makes you believe it. A cue is finished when nothing in the mix argues with the image.',
+  yt:'',href:'',cta:'',
+  bed:[110,164.81,220,277.18],rate:6.7,tone:.62,init:.3},
+
+ {id:'hire',bg:'#E8D021',fg:'#151204',edge:'#0C0B12',pts:8,
+  name:'Hire me',em:'',sub:'Open 2026',yr:'Commissions — open',
+  desc:'Score, sound design, music supervision and mix. Available for film, brand and broadcast work in 2026.<br><br><b>prstudios.works@gmail.com</b>',
+  yt:'',href:'mailto:prstudios.works@gmail.com',cta:'Email',
+  bed:[261.63,392,466.16,587.33],rate:2.6,tone:2.1,init:.26}
+];
+
+/* ---------- shapes ---------- */
+function starPath(p,ro,ri,rot,cx,cy){
+  let d='';
+  for(let i=0;i<p*2;i++){const r=i%2?ri:ro,a=(i/(p*2))*6.283+rot;
+    d+=(i?'L':'M')+(cx+Math.cos(a)*r).toFixed(2)+' '+(cy+Math.sin(a)*r).toFixed(2);}
+  return d+'Z';
+}
+function star(svg,p,fill,edge,spin){
+  const NS='http://www.w3.org/2000/svg';
+  const d=starPath(p,40,p>8?27:14,.2,50,50);
+  const g=document.createElementNS(NS,'g');
+  const b=document.createElementNS(NS,'path');
+  b.setAttribute('d',d);b.setAttribute('fill','none');b.setAttribute('stroke',edge);
+  b.setAttribute('stroke-width',6);b.setAttribute('stroke-linejoin','round');
+  const f=document.createElementNS(NS,'path');
+  f.setAttribute('d',d);f.setAttribute('fill',fill);
+  g.appendChild(b);g.appendChild(f);
+  if(spin&&!RM){const a=document.createElementNS(NS,'animateTransform');
+    a.setAttribute('attributeName','transform');a.setAttribute('type','rotate');
+    a.setAttribute('from','0 50 50');a.setAttribute('to','360 50 50');
+    a.setAttribute('dur',spin+'s');a.setAttribute('repeatCount','indefinite');g.appendChild(a);}
+  svg.appendChild(g);
+}
+function rnd(s){let x=s*9301+49297;return()=>{x=(x*9301+49297)%233280;return x/233280;};}
+
+/* stripe texture inside each channel */
+function texture(cv,seed,fg){
+  const c=cv.getContext('2d');let w,h;
+  function size(){const d=Math.min(devicePixelRatio||1,2);
+    w=cv.clientWidth;h=cv.clientHeight;
+    if(!w||!h)return;
+    cv.width=w*d;cv.height=h*d;c.setTransform(d,0,0,d,0,0);paint();}
+  function paint(){
+    c.clearRect(0,0,w,h);const r=rnd(seed);let y=0;
+    while(y<h){
+      const t=2+Math.pow(r(),2.4)*26;
+      c.globalAlpha=.05+r()*.14;c.fillStyle=fg;
+      c.fillRect(0,y,w,t);
+      y+=t+(r()<.2?10+r()*26:2);
+    }
+    c.globalAlpha=1;
+  }
+  size();addEventListener('resize',size);
+  return{resize:size};
+}
+
+/* ================= build the desk ================= */
+const desk=document.getElementById('desk');
+const gstrips=document.getElementById('gstrips');
+CH.forEach((ch,i)=>{
+  const el=document.createElement('div');
+  el.className='ch';el.tabIndex=0;
+  el.style.background=ch.bg;el.style.color=ch.fg;
+  el.style.setProperty('--chbg',ch.bg);
+
+  const tex=document.createElement('canvas');tex.className='tex';
+  el.appendChild(tex);
+
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('viewBox','0 0 100 100');svg.classList.add('star');
+  star(svg,ch.pts,ch.bg==='#E8D021'?'#DC2010':ch.edge,ch.fg,110+i*36);
+  el.appendChild(svg);
+
+  const vl=document.createElement('div');vl.className='vlab';vl.textContent=ch.name;
+  const vs=document.createElement('div');vs.className='vsub';vs.textContent=ch.sub;
+  el.appendChild(vl);el.appendChild(vs);
+
+  const body=document.createElement('div');body.className='body';
+  body.innerHTML=
+    '<div class="yr">'+ch.yr+'</div>'+
+    '<h2>'+ch.name+(ch.em?' <em>'+ch.em+'</em>':'')+'</h2>'+
+    '<p>'+ch.desc+'</p>'+
+    (ch.yt?'<img class="thumb" alt="" loading="lazy" referrerpolicy="no-referrer" '+
+      'src="https://i.ytimg.com/vi/'+ch.yt+'/hqdefault.jpg">':'')+
+    (ch.href?'<a class="cta" href="'+ch.href+'"'+
+      (ch.href.indexOf('http')===0?' target="_blank" rel="noopener"':'')+
+      '><b>'+ch.cta+' &nearr;</b></a>':'');
+  el.appendChild(body);
+
+  const foot=document.createElement('div');foot.className='foot';
+  foot.innerHTML=
+    '<div class="fader"><div class="fill"></div><div class="cap"></div>'+
+    '<div class="meter"><i></i></div></div>'+
+    '<div class="num"><span>'+String(i+1).padStart(2,'0')+'</span><span class="db">—</span></div>';
+  el.appendChild(foot);
+
+  desk.appendChild(el);
+  ch._el=el;ch._fill=foot.querySelector('.fill');ch._cap=foot.querySelector('.cap');
+  ch._meter=foot.querySelector('.meter i');ch._db=foot.querySelector('.db');
+  ch._fader=foot.querySelector('.fader');ch._tex=texture(tex,i*17+3,ch.fg);
+  ch.level=ch.init;
+
+  const gi=document.createElement('i');gi.style.background=ch.bg;gstrips.appendChild(gi);
+});
+
+function drawFader(ch){
+  const p=Math.max(0,Math.min(1,ch.level));
+  ch._fill.style.height=(p*100)+'%';
+  ch._cap.style.bottom='calc('+(p*100)+'% - 3px)';
+  ch._db.textContent=p<=0.005?'−∞':(Math.round((Math.log10(p)*20))+' dB');
+}
+CH.forEach(drawFader);
+
+/* ---------- open / close + fader drag ---------- */
+let openCh=null;
+function setOpen(ch){
+  if(openCh&&openCh!==ch){openCh._el.classList.remove('open');}
+  if(openCh===ch){ch._el.classList.remove('open');openCh=null;}
+  else{ch._el.classList.add('open');openCh=ch;}
+  setTimeout(()=>CH.forEach(c=>c._tex.resize()),700);
+}
+
+CH.forEach(ch=>{
+  let sy=0,sl=0,moved=false,onFader=false,drag=false;
+  ch._el.addEventListener('pointerdown',e=>{
+    if(e.target.closest('a'))return;
+    drag=true;moved=false;sy=e.clientY;sl=ch.level;
+    onFader=!!e.target.closest('.fader');
+    ch._el.setPointerCapture&&ch._el.setPointerCapture(e.pointerId);
+  });
+  ch._el.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const dy=sy-e.clientY;
+    if(Math.abs(dy)>6)moved=true;
+    if(!moved)return;
+    const span=onFader?110:260;
+    ch.level=Math.max(0,Math.min(1,sl+dy/span));
+    drawFader(ch);applyLevel(ch);
+  });
+  ch._el.addEventListener('pointerup',e=>{
+    if(!drag)return;drag=false;
+    if(!moved)setOpen(ch);
+  });
+  ch._el.addEventListener('pointercancel',()=>{drag=false;});
+  ch._el.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();setOpen(ch);}
+    if(e.key==='ArrowUp'){e.preventDefault();ch.level=Math.min(1,ch.level+.08);drawFader(ch);applyLevel(ch);}
+    if(e.key==='ArrowDown'){e.preventDefault();ch.level=Math.max(0,ch.level-.08);drawFader(ch);applyLevel(ch);}
+  });
+});
+
+/* ================= AUDIO ================= */
+let AC=null,master=null,verb=null,on=true,booted=false,masterLevel=.8;
+function applyLevel(ch){
+  if(ch._gain&&AC)ch._gain.gain.setTargetAtTime(ch.level*ch.level*.9,AC.currentTime,.03);
+}
+function build(){
+  AC=new (window.AudioContext||window.webkitAudioContext)();
+  master=AC.createGain();master.gain.value=0;
+  const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=7200;
+  const comp=AC.createDynamicsCompressor();comp.threshold.value=-19;comp.ratio.value=3.4;
+  master.connect(lp);lp.connect(comp);comp.connect(AC.destination);
+
+  verb=AC.createGain();verb.gain.value=.3;
+  const d1=AC.createDelay(1),d2=AC.createDelay(1);
+  d1.delayTime.value=.149;d2.delayTime.value=.227;
+  const f1=AC.createBiquadFilter(),f2=AC.createBiquadFilter();
+  f1.type=f2.type='lowpass';f1.frequency.value=2700;f2.frequency.value=1800;
+  const g1=AC.createGain(),g2=AC.createGain();g1.gain.value=.56;g2.gain.value=.5;
+  verb.connect(d1);verb.connect(d2);
+  d1.connect(f1);f1.connect(g1);g1.connect(d2);
+  d2.connect(f2);f2.connect(g2);g2.connect(d1);
+  f1.connect(master);f2.connect(master);
+
+  CH.forEach((ch,i)=>{
+    const g=AC.createGain();g.gain.value=ch.level*ch.level*.9;
+    const pan=AC.createStereoPanner?AC.createStereoPanner():null;
+    const an=AC.createAnalyser();an.fftSize=256;an.smoothingTimeConstant=.72;
+    if(pan){pan.pan.value=(i/(CH.length-1))*1.5-0.75;g.connect(pan);pan.connect(an);}
+    else g.connect(an);
+    an.connect(master);an.connect(verb);
+    ch._gain=g;ch._an=an;ch._buf=new Uint8Array(an.frequencyBinCount);
+    schedule(ch);
+  });
+  master.gain.linearRampToValueAtTime(masterLevel,AC.currentTime+1.0);
+}
+function tine(f,o){
+  if(!AC)return;o=o||{};
+  const t=AC.currentTime+(o.at||0),dur=o.dur||2.4,pk=o.gain||.1;
+  const out=AC.createGain();
+  [[1,1,'sine'],[2.01,.33,'sine'],[4.02,.11,'triangle'],[6.98,.05,'sine']].forEach(function(pt){
+    const osc=AC.createOscillator();osc.type=pt[2];
+    osc.frequency.value=f*pt[0];osc.detune.value=(Math.random()-.5)*6;
+    const g=AC.createGain(),dd=dur*(pt[0]>3?.42:1);
+    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(pk*pt[1],t+.014);
+    g.gain.exponentialRampToValueAtTime(.0001,t+dd);
+    osc.connect(g);g.connect(out);osc.start(t);osc.stop(t+dd+.05);
+  });
+  const flt=AC.createBiquadFilter();flt.type='lowpass';
+  flt.frequency.setValueAtTime(o.cut||3000,t);
+  flt.frequency.exponentialRampToValueAtTime(650,t+dur);
+  out.connect(flt);flt.connect(o.dest);
+}
+function schedule(ch){
+  const step=function(){
+    if(AC&&on&&ch.level>0.01){
+      const n=ch.bed[Math.floor(Math.random()*ch.bed.length)];
+      tine(n*(Math.random()<.22?2:1),
+        {dur:3.2+Math.random()*1.8,gain:.1,cut:1500*ch.tone,dest:ch._gain});
+    }
+    ch._t=setTimeout(step,(ch.rate*(.74+Math.random()*.54))*1000);
+  };
+  ch._t=setTimeout(step,Math.random()*1800);
+}
+
+/* meters */
+function meters(){
+  if(AC){
+    CH.forEach(ch=>{
+      if(!ch._an)return;
+      ch._an.getByteFrequencyData(ch._buf);
+      let s=0;for(let i=0;i<ch._buf.length;i++)s+=ch._buf[i];
+      const v=Math.min(1,(s/ch._buf.length)/86);
+      ch._meter.style.height=(v*100).toFixed(1)+'%';
+    });
+  }
+  requestAnimationFrame(meters);
+}
+meters();
+
+/* master fader */
+(function(){
+  const tr=document.querySelector('#master .mtrack'),fl=document.querySelector('#master .mfill');
+  let d=false;
+  function set(e){
+    const r=tr.getBoundingClientRect();
+    masterLevel=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
+    fl.style.width=(masterLevel*100)+'%';
+    if(AC&&on)master.gain.setTargetAtTime(masterLevel,AC.currentTime,.03);
+  }
+  tr.addEventListener('pointerdown',e=>{d=true;set(e);tr.setPointerCapture(e.pointerId);});
+  tr.addEventListener('pointermove',e=>{if(d)set(e);});
+  addEventListener('pointerup',()=>d=false);
+})();
+
+/* ---------- boot ---------- */
+const gate=document.getElementById('gate');
+function boot(){
+  if(booted)return;booted=true;
+  try{build();}catch(e){on=false;}
+  gate.classList.add('gone');
+  setTimeout(()=>{gate.remove();CH.forEach(c=>c._tex.resize());},900);
+}
+gate.addEventListener('click',boot);
+addEventListener('keydown',e=>{if(!booted&&(e.key==='Enter'||e.key===' ')){e.preventDefault();boot();}});
+document.getElementById('mute').addEventListener('click',e=>{
+  e.stopPropagation();on=!on;
+  e.currentTarget.textContent=on?'On':'Off';
+  e.currentTarget.setAttribute('aria-pressed',String(on));
+  if(AC)master.gain.setTargetAtTime(on?masterLevel:0,AC.currentTime,.05);
+});
+addEventListener('resize',()=>CH.forEach(c=>c._tex.resize()));
+})();
+</script>
+</body>
+</html>
