@@ -95,30 +95,35 @@ body{background:var(--void);color:var(--cream);font-family:var(--mono);
 #card .x{margin-left:auto;font-size:9px;letter-spacing:.12em;text-transform:uppercase;background:none;
  border:1px solid rgba(242,234,214,.4);color:var(--cream);padding:7px 11px}
 #card .x:hover{background:var(--cream);color:var(--void)}
-#gate{position:fixed;inset:0;z-index:60;background:var(--void);display:grid;place-items:center;
- padding:20px}
-#gate.gone{opacity:0;pointer-events:none;transition:opacity 1s}
-#gate .poster{position:relative;max-width:430px;width:100%;text-align:left;
- border:1px solid rgba(242,234,214,.22);padding:clamp(22px,4.5vw,38px);
- background:linear-gradient(160deg,rgba(242,234,214,.035),rgba(242,234,214,0))}
-#gate .poster::before{content:'';position:absolute;inset:6px;border:1px solid rgba(242,234,214,.1);
- pointer-events:none}
-#gate svg{width:64px;display:block;margin-bottom:18px}
-#gate .kick{font-size:8.5px;letter-spacing:.3em;text-transform:uppercase;color:rgba(242,234,214,.5)}
-#gate h1{font-family:var(--fat);font-size:clamp(30px,7vw,52px);line-height:.94;
- letter-spacing:-.04em;margin-top:10px}
-#gate h1 em{font-style:normal;color:var(--orange)}
-#gate .lede{font-family:var(--ser);font-style:italic;font-size:clamp(14px,2.4vw,17px);
- color:rgba(242,234,214,.72);margin-top:12px;line-height:1.4}
-#gate .prog{margin-top:20px;border-top:1px solid rgba(242,234,214,.18);padding-top:13px;
- display:grid;grid-template-columns:1fr auto;gap:5px 18px;
- font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,234,214,.55)}
-#gate .prog b{font-weight:400;color:rgba(242,234,214,.85)}
-#gate .b{display:inline-block;margin-top:22px;font-family:var(--fat);font-size:12px;
- background:var(--cream);color:var(--void);padding:12px 28px;letter-spacing:.02em}
-#gate .b:hover{background:var(--acid)}
-#gate .foot{margin-top:14px;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;
- color:rgba(242,234,214,.35)}
+#gate{position:fixed;inset:0;z-index:60;background:var(--void);display:grid;
+ place-items:center;padding:24px;transition:opacity 1.1s ease}
+#gate.gone{opacity:0;pointer-events:none}
+#gate .in{text-align:center;max-width:min(88vw,520px)}
+#gate svg{width:34px;display:block;margin:0 auto 30px;opacity:.9}
+#gate h1{font-family:var(--ser);font-style:italic;font-weight:300;
+ font-size:clamp(30px,6.4vw,58px);line-height:1.04;letter-spacing:-.015em;
+ color:var(--cream)}
+#gate h1 em{font-style:normal;font-family:var(--fat);letter-spacing:-.04em;
+ font-size:.86em;color:var(--orange)}
+#gate .sub{font-size:9px;letter-spacing:.34em;text-transform:uppercase;
+ color:rgba(242,234,214,.34);margin-top:22px}
+/* le bouton : un seul, un anneau qui respire */
+#enter{position:relative;display:inline-grid;place-items:center;
+ width:132px;height:132px;margin-top:44px;border-radius:50%;
+ background:none;border:none;color:var(--cream);font-family:var(--mono);
+ font-size:9px;letter-spacing:.3em;text-transform:uppercase}
+#enter span{position:relative;z-index:2;transition:color .5s}
+#enter::before,#enter::after{content:'';position:absolute;inset:0;
+ border-radius:50%;border:1px solid rgba(242,234,214,.3);
+ transition:transform .8s cubic-bezier(.2,.9,.25,1),border-color .5s,opacity .8s}
+#enter::after{animation:ring 3.6s ease-out infinite;opacity:0}
+@keyframes ring{
+  0%{transform:scale(.82);opacity:0}
+  22%{opacity:.5}
+  100%{transform:scale(1.5);opacity:0}}
+#enter:hover::before{transform:scale(1.1);border-color:var(--cream)}
+#enter:hover span{color:var(--acid)}
+#enter:active::before{transform:scale(.94)}
 @media(max-width:640px){
   #card .bd{flex-direction:column}
   #card img{width:100%}
@@ -140,12 +145,12 @@ body{background:var(--void);color:var(--cream);font-family:var(--mono);
     <div class="sb">Philéas Renoult — score &amp; sound design</div></div>
   <div class="tr">
     <a href="mailto:prstudios.works@gmail.com">Hire</a>
-    <button id="eng" class="on">Engine</button>
+    <button id="eng">Sound</button>
   </div>
-  <div class="bl" id="hint">drag to orbit · the mix turns with you<br>hover a piece to hear it · tap to open</div>
+  <div class="bl" id="hint">drag to orbit · scroll to move in<br>tap a piece to open it</div>
   <div class="br" id="sys">—</div>
 </div>
-<div id="score">
+<div id="score" style="opacity:0;transition:opacity 1s">
   <div class="ch">—</div><div class="fn">—</div>
   <div class="form"><i></i><i></i><i></i><i></i><i></i><i></i></div>
 </div>
@@ -162,27 +167,18 @@ body{background:var(--void);color:var(--cream);font-family:var(--mono);
   </div>
 </div></div></div>
 
-<div id="gate"><div class="poster">
+<div id="gate"><div class="in">
   <svg viewBox="0 0 100 100" id="gstar"></svg>
-  <div class="kick">PRSTUDIOS présente</div>
-  <h1>A room full<br>of <em>pieces</em></h1>
-  <div class="lede">A through-composed introduction in B♭ minor —<br>five movements, three minutes before it breathes twice the same way.</div>
-  <div class="prog">
-    <span>I</span><b>alone</b>
-    <span>II</span><b>the theme</b>
-    <span>III</span><b>sixth diminished</b>
-    <span>IV</span><b>new color</b>
-    <span>V</span><b>home</b>
-  </div>
-  <div class="b" id="stepin">STEP IN</div>
-  <div class="foot">headphones recommended · HRTF</div>
+  <h1>A room full<br>of <em>PIECES</em></h1>
+  <div class="sub">Philéas Renoult — score &amp; sound design</div>
+  <button id="enter" type="button"><span>Enter</span></button>
 </div></div>
 
 <script>
 (function(){
 "use strict";
 if(!window.THREE){document.getElementById('gate').innerHTML=
-  '<div class="poster"><h1>WebGL failed</h1></div>';return;}
+  '<div class="in"><h1>WebGL unavailable</h1></div>';return;}
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const K={void:'#0A0910',cream:'#F2EAD6',rust:'#B7291B',orange:'#E8721A',coral:'#E4795A',
@@ -552,7 +548,7 @@ const deco=[];
   d+='Z';
   const b=document.createElementNS(NS,'path');
   b.setAttribute('d',d);b.setAttribute('fill','none');
-  b.setAttribute('stroke',K.rust);b.setAttribute('stroke-width',7);
+  b.setAttribute('stroke',K.rust);b.setAttribute('stroke-width',9);
   b.setAttribute('stroke-linejoin','round');
   const f=document.createElementNS(NS,'path');
   f.setAttribute('d',d);f.setAttribute('fill',K.orange);
@@ -563,7 +559,7 @@ const deco=[];
   if(!RM){const a=document.createElementNS(NS,'animateTransform');
     a.setAttribute('attributeName','transform');a.setAttribute('type','rotate');
     a.setAttribute('from','0 50 50');a.setAttribute('to','360 50 50');
-    a.setAttribute('dur','130s');a.setAttribute('repeatCount','indefinite');g.appendChild(a);}
+    a.setAttribute('dur','58s');a.setAttribute('repeatCount','indefinite');g.appendChild(a);}
   s.appendChild(g);
 })();
 const WALK_TEX=[];
@@ -656,7 +652,7 @@ function setNow(vo,fn,dot,top,bell){
 }
 
 /* ============ AUDIO ============ */
-let AC=null,out=null,busUI=null,busWorld=null,verbIn=null,eng=true,booted=false;
+let AC=null,out=null,busUI=null,busWorld=null,verbIn=null,eng=false,booted=false;
 let mAn=null,mBuf=null,NB=null;
 const scoreCh=document.querySelector('#score .ch'),
       scoreFn=document.querySelector('#score .fn'),
@@ -666,57 +662,102 @@ function noiseBuf(sec){
   for(let i=0;i<n;i++)d[i]=Math.random()*2-1;
   return b;
 }
+/* Saturation NORMALISEE : pente unitaire a l'origine, compression douce
+   au sommet. L'ancienne courbe avait +6,6 dB de gain cache. */
 function satCurve(k){
-  const n=1024,c=new Float32Array(n);
-  for(let i=0;i<n;i++){const x=i*2/n-1;c[i]=(1+k)*x/(1+k*Math.abs(x));}
+  const n=2048,c=new Float32Array(n),d=Math.tanh(k);
+  for(let i=0;i<n;i++){const x=i*2/n-1;c[i]=Math.tanh(k*x)/d;}
   return c;
+}
+/* budget de voix : au-dela, on refuse au lieu d'empiler et de faire
+   pomper le limiteur. C'est ce qui rendait le mouvement III agressif. */
+let voices=0;
+const VMAX=22;
+function take(n,life){
+  if(voices+n>VMAX)return false;
+  voices+=n;
+  setTimeout(function(){voices-=n;},(life||3)*1000);
+  return true;
 }
 function buildAudio(){
   AC=new (window.AudioContext||window.webkitAudioContext)();
   NB=noiseBuf(2);
   out=AC.createGain();out.gain.value=0;
-  const sat=AC.createWaveShaper();sat.curve=satCurve(1.15);sat.oversample='2x';
-  const dark=AC.createBiquadFilter();dark.type='lowpass';dark.frequency.value=6000;dark.Q.value=.5;
-  const mud=AC.createBiquadFilter();mud.type='peaking';mud.frequency.value=340;mud.Q.value=1;mud.gain.value=-1.8;
+
+  /* --- etage de tonalite : on retire la zone qui pique --- */
+  const mud=AC.createBiquadFilter();      /* boue */
+  mud.type='peaking';mud.frequency.value=330;mud.Q.value=.9;mud.gain.value=-1.6;
+  const harsh=AC.createBiquadFilter();    /* LA zone douloureuse : 3,8 kHz */
+  harsh.type='peaking';harsh.frequency.value=3800;harsh.Q.value=1.1;harsh.gain.value=-7;
+  const tilt=AC.createBiquadFilter();     /* inclinaison generale vers le grave */
+  tilt.type='highshelf';tilt.frequency.value=3200;tilt.gain.value=-5;
+  const air=AC.createBiquadFilter();      /* plafond doux, pente 12 dB/oct */
+  air.type='lowpass';air.frequency.value=5400;air.Q.value=.4;
+  const air2=AC.createBiquadFilter();
+  air2.type='lowpass';air2.frequency.value=7200;air2.Q.value=.5;
+  const sat=AC.createWaveShaper();sat.curve=satCurve(.8);sat.oversample='4x';
+  const glue=AC.createDynamicsCompressor();
+  glue.threshold.value=-24;glue.knee.value=12;glue.ratio.value=2.2;
+  glue.attack.value=.02;glue.release.value=.35;
   const lim=AC.createDynamicsCompressor();
-  lim.threshold.value=-9;lim.knee.value=5;lim.ratio.value=10;lim.attack.value=.004;lim.release.value=.22;
+  lim.threshold.value=-11;lim.knee.value=3;lim.ratio.value=14;
+  lim.attack.value=.005;lim.release.value=.26;
   mAn=AC.createAnalyser();mAn.fftSize=256;mAn.smoothingTimeConstant=.72;
   mBuf=new Uint8Array(mAn.frequencyBinCount);
-  out.connect(mud);mud.connect(dark);dark.connect(sat);sat.connect(lim);
+  out.connect(mud);mud.connect(harsh);harsh.connect(tilt);tilt.connect(air);
+  air.connect(air2);air2.connect(sat);sat.connect(glue);glue.connect(lim);
   lim.connect(mAn);mAn.connect(AC.destination);
-  busUI=AC.createGain();busUI.gain.value=.7;busUI.connect(out);
-  busWorld=AC.createGain();busWorld.gain.value=1;busWorld.connect(out);
+
+  busUI=AC.createGain();busUI.gain.value=.5;busUI.connect(out);
+  busWorld=AC.createGain();busWorld.gain.value=.8;busWorld.connect(out);
+
+  /* --- reverbe : plus sombre, diffusion allongee --- */
   verbIn=AC.createGain();verbIn.gain.value=1;
-  const dt=[.0431,.0827,.1213,.1657],fb=[.80,.78,.76,.74],cut=[2600,2000,1500,1100],taps=[];
-  for(let i=0;i<4;i++){
+  const pre=AC.createDelay(.2);pre.delayTime.value=.028;      /* pre-delay */
+  verbIn.connect(pre);
+  const dt=[.0371,.0693,.1129,.1523,.1889,.2311],
+        fb=[.80,.79,.78,.77,.76,.75],
+        cut=[2000,1700,1400,1150,950,800],taps=[];
+  for(let i=0;i<6;i++){
     const d=AC.createDelay(1);d.delayTime.value=dt[i];
     const f=AC.createBiquadFilter();f.type='lowpass';f.frequency.value=cut[i];
+    const hp=AC.createBiquadFilter();hp.type='highpass';hp.frequency.value=150;
     const g=AC.createGain();g.gain.value=fb[i];
-    const hp=AC.createBiquadFilter();hp.type='highpass';hp.frequency.value=160;
-    verbIn.connect(d);d.connect(f);f.connect(hp);hp.connect(g);
+    pre.connect(d);d.connect(f);f.connect(hp);hp.connect(g);
     taps.push({d:d,g:g,f:hp});
   }
-  for(let i=0;i<4;i++)taps[i].g.connect(taps[(i+1)%4].d);
-  const wet=AC.createGain();wet.gain.value=.44;
+  for(let i=0;i<6;i++)taps[i].g.connect(taps[(i+3)%6].d);
+  const wet=AC.createGain();wet.gain.value=.38;
+  const wetTone=AC.createBiquadFilter();
+  wetTone.type='lowpass';wetTone.frequency.value=2600;wetTone.Q.value=.5;
   taps.forEach(function(t){t.f.connect(wet);});
-  wet.connect(out);
+  wet.connect(wetTone);wetTone.connect(out);
+
   motion.src=AC.createBufferSource();motion.src.buffer=NB;motion.src.loop=true;
   motion.bp=AC.createBiquadFilter();motion.bp.type='bandpass';
-  motion.bp.frequency.value=380;motion.bp.Q.value=.8;
+  motion.bp.frequency.value=300;motion.bp.Q.value=.6;
+  motion.lp=AC.createBiquadFilter();motion.lp.type='lowpass';
+  motion.lp.frequency.value=1200;
   motion.g=AC.createGain();motion.g.gain.value=0;
-  motion.src.connect(motion.bp);motion.bp.connect(motion.g);
+  motion.src.connect(motion.bp);motion.bp.connect(motion.lp);
+  motion.lp.connect(motion.g);
   motion.g.connect(busUI);motion.g.connect(verbIn);motion.src.start();
+
   const rs=AC.createBufferSource();rs.buffer=NB;rs.loop=true;
-  const rf=AC.createBiquadFilter();rf.type='lowpass';rf.frequency.value=160;rf.Q.value=.4;
-  const rg=AC.createGain();rg.gain.value=.04;
+  const rf=AC.createBiquadFilter();rf.type='lowpass';rf.frequency.value=140;rf.Q.value=.4;
+  const rg=AC.createGain();rg.gain.value=.035;
   rs.connect(rf);rf.connect(rg);rg.connect(out);rs.start();
+
   PIECE.forEach(function(p){
     const pan=AC.createPanner();
     pan.panningModel='HRTF';pan.distanceModel='inverse';
     pan.refDistance=6;pan.maxDistance=90;pan.rolloffFactor=1.1;
+    const tone=AC.createBiquadFilter();
+    tone.type='lowpass';tone.frequency.value=4800;tone.Q.value=.4;
     const g=AC.createGain();g.gain.value=1;
-    const send=AC.createGain();send.gain.value=.3;
-    g.connect(pan);pan.connect(busWorld);pan.connect(send);send.connect(verbIn);
+    const send=AC.createGain();send.gain.value=.28;
+    g.connect(tone);tone.connect(pan);
+    pan.connect(busWorld);pan.connect(send);send.connect(verbIn);
     p._g=g;p._pan=pan;p._send=send;
   });
   WALKERS.forEach(function(w){
@@ -724,165 +765,211 @@ function buildAudio(){
     pan.panningModel='HRTF';pan.distanceModel='inverse';
     pan.refDistance=14;pan.maxDistance=120;pan.rolloffFactor=1.4;
     const g=AC.createGain();g.gain.value=1;
-    const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=480;
+    const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=420;
     g.connect(lp);lp.connect(pan);pan.connect(busWorld);
-    const snd=AC.createGain();snd.gain.value=.6;pan.connect(snd);snd.connect(verbIn);
+    const snd=AC.createGain();snd.gain.value=.5;pan.connect(snd);snd.connect(verbIn);
     w.userData.g=g;w.userData.pan=pan;
   });
-  out.gain.linearRampToValueAtTime(.9,AC.currentTime+1.4);
+  out.gain.linearRampToValueAtTime(.85,AC.currentTime+2.2);
   document.getElementById('sys').textContent=
-    (AC.sampleRate/1000).toFixed(1)+' kHz · HRTF · B♭m · 5 movements';
+    (AC.sampleRate/1000).toFixed(1)+' kHz \u00b7 HRTF \u00b7 B\u266dm \u00b7 5 movements';
 }
+/* enveloppes : attaques adoucies, jamais de rampe plus courte que 6 ms
+   (une attaque plus rapide produit un clic large bande) */
 function env(g,t,a,pk,d,curve){
+  const A=Math.max(.006,a);
   g.gain.setValueAtTime(0.0001,t);
-  if(curve==='lin')g.gain.linearRampToValueAtTime(pk,t+a);
-  else g.gain.exponentialRampToValueAtTime(Math.max(.0002,pk),t+a);
-  g.gain.exponentialRampToValueAtTime(.0001,t+a+d);
+  if(curve==='lin')g.gain.linearRampToValueAtTime(pk,t+A);
+  else g.gain.exponentialRampToValueAtTime(Math.max(.0002,pk),t+A);
+  g.gain.setTargetAtTime(.0001,t+A,Math.max(.12,d*0.34));
 }
+/* contrebasse : corps + une octave, bruit d'archet retire */
 function upright(f,o){
   if(!AC||!eng)return;o=o||{};
+  if(!take(2,(o.dur||3.6)+1))return;
   const t=AC.currentTime+(o.at||0),dur=o.dur||3.6;
   const bus=AC.createGain();
-  [[1,1],[2,.18]].forEach(function(q){
-    const osc=AC.createOscillator();osc.type='sine';osc.frequency.value=f*q[0];
-    const g=AC.createGain();env(g,t,.05,(o.gain||.15)*q[1],dur);
-    osc.connect(g);g.connect(bus);osc.start(t);osc.stop(t+dur+.2);
+  [[1,1],[2,.14],[3,.04]].forEach(function(q){
+    const osc=AC.createOscillator();osc.type='sine';
+    osc.frequency.value=f*q[0];osc.detune.value=(Math.random()-.5)*2;
+    const g=AC.createGain();env(g,t,.075,(o.gain||.15)*q[1],dur);
+    osc.connect(g);g.connect(bus);osc.start(t);osc.stop(t+dur+1.4);
   });
-  const n=AC.createBufferSource();n.buffer=NB;
-  const nf=AC.createBiquadFilter();nf.type='bandpass';nf.frequency.value=700;nf.Q.value=1.4;
-  const ng=AC.createGain();env(ng,t,.002,(o.gain||.15)*.18,.04);
-  n.connect(nf);nf.connect(ng);ng.connect(bus);n.start(t);n.stop(t+.08);
-  const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=900;
+  const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=620;lp.Q.value=.4;
   bus.connect(lp);lp.connect(o.dest||busUI);
 }
+/* piano feutre : partiels legerement etires comme une vraie corde,
+   filtre qui se ferme, attaque de 25 ms — du feutre, pas du marteau */
 function felt(f,o){
   if(!AC||!eng)return;o=o||{};
-  const t=AC.currentTime+(o.at||0),dur=o.dur||4.2,pk=o.gain||.08;
+  if(!take(3,(o.dur||4.2)+1))return;
+  const t=AC.currentTime+(o.at||0),dur=o.dur||4.2,pk=(o.gain||.08)*.85;
   const bus=AC.createGain();
-  [[1,1,'sine'],[2.001,.22,'sine'],[3.998,.05,'sine']].forEach(function(q){
-    const osc=AC.createOscillator();osc.type=q[2];
-    osc.frequency.value=f*q[0];osc.detune.value=(Math.random()-.5)*3.5;
-    const g=AC.createGain(),dd=dur*(q[0]>3?.35:1);
-    env(g,t,.018,pk*q[1],dd);
-    osc.connect(g);g.connect(bus);osc.start(t);osc.stop(t+dd+.15);
+  [[1,1],[2.0008,.19],[3.0025,.06],[4.006,.022]].forEach(function(q){
+    const osc=AC.createOscillator();osc.type='sine';
+    osc.frequency.value=f*q[0];osc.detune.value=(Math.random()-.5)*2.4;
+    const g=AC.createGain(),dd=dur*(q[0]>2.5?.32:1);
+    env(g,t,.025+q[0]*.004,pk*q[1],dd);
+    osc.connect(g);g.connect(bus);osc.start(t);osc.stop(t+dd+1.2);
   });
   const flt=AC.createBiquadFilter();flt.type='lowpass';
-  flt.frequency.setValueAtTime(o.cut||2200,t);
-  flt.frequency.exponentialRampToValueAtTime(520,t+dur);
+  flt.frequency.setValueAtTime(Math.min(o.cut||1900,2100),t);
+  flt.frequency.exponentialRampToValueAtTime(430,t+dur*.8);
+  flt.Q.value=.35;
   bus.connect(flt);flt.connect(o.dest||busUI);
 }
-/* accord plaqué serré — le block chord de Barry */
+/* accord plaque : les notes du bas legerement en avance et plus douces */
 function blockChord(freqs,o){
   o=o||{};
+  const n=freqs.length;
   freqs.forEach(function(f,i){
-    felt(f,{at:(o.at||0)+i*.012,gain:(o.gain||.07)*(i===0?1.25:0.8),
-      dur:o.dur||1.6,cut:o.cut||2300,dest:o.dest});
+    felt(f,{at:(o.at||0)+(n-1-i)*.016,
+      gain:(o.gain||.07)*(i===0?1.15:0.72-i*0.04),
+      dur:o.dur||1.8,cut:Math.min(o.cut||1900,1900),dest:o.dest});
   });
 }
+/* corde pincee : excitation adoucie (rampe, pas de creneau) et
+   amortissement bien plus bas — c'etait une source de durete */
 function pluckRaw(f,o){
   if(!AC||!eng)return;o=o||{};
+  if(!take(2,(o.dur||1.6)+1))return;
   const t=AC.currentTime+(o.at||0),dur=o.dur||1.6;
   const d=AC.createDelay(.2);d.delayTime.value=1/f;
-  const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=o.damp||2400;
-  const fb=AC.createGain();fb.gain.setValueAtTime(o.fb===undefined?.962:o.fb,t);
+  const lp=AC.createBiquadFilter();lp.type='lowpass';
+  lp.frequency.value=Math.min(o.damp||1500,1700);lp.Q.value=.4;
+  const fb=AC.createGain();fb.gain.setValueAtTime(o.fb===undefined?.955:o.fb,t);
   fb.gain.linearRampToValueAtTime(0,t+dur);
-  const og=AC.createGain();og.gain.value=o.gain||.1;
+  const og=AC.createGain();og.gain.value=(o.gain||.1)*.9;
   d.connect(lp);lp.connect(fb);fb.connect(d);lp.connect(og);
   const n=AC.createBufferSource();n.buffer=NB;
+  const nf=AC.createBiquadFilter();nf.type='lowpass';nf.frequency.value=1900;
   const ng=AC.createGain();
-  ng.gain.setValueAtTime(o.pick||.8,t);
-  ng.gain.exponentialRampToValueAtTime(.001,t+(o.exc||.01));
-  n.connect(ng);ng.connect(d);og.connect(o.dest||busUI);
-  n.start(t);n.stop(t+.04);
-  setTimeout(function(){try{og.disconnect();d.disconnect();lp.disconnect();fb.disconnect();}catch(e){}},(dur+.4)*1000);
+  ng.gain.setValueAtTime(.0001,t);
+  ng.gain.linearRampToValueAtTime(o.pick||.55,t+.004);
+  ng.gain.exponentialRampToValueAtTime(.001,t+(o.exc||.018));
+  n.connect(nf);nf.connect(ng);ng.connect(d);
+  const body=AC.createBiquadFilter();body.type='lowpass';
+  body.frequency.value=2000;body.Q.value=.4;
+  og.connect(body);body.connect(o.dest||busUI);
+  n.start(t);n.stop(t+.06);
+  setTimeout(function(){try{og.disconnect();d.disconnect();lp.disconnect();
+    fb.disconnect();body.disconnect();}catch(e){}},(dur+.6)*1000);
 }
+/* octaves Wes : l'octave grave porte, l'aigue effleure */
 function wes(f,o){
   o=o||{};
-  pluckRaw(f/2,{at:o.at,gain:(o.gain||.09)*1.05,dur:o.dur||1.5,damp:1700,dest:o.dest});
-  pluckRaw(f,{at:(o.at||0)+.008,gain:(o.gain||.09)*.8,dur:o.dur||1.5,damp:2100,dest:o.dest});
+  pluckRaw(f/2,{at:o.at,gain:(o.gain||.09)*1.1,dur:o.dur||1.5,damp:1250,dest:o.dest});
+  pluckRaw(f,{at:(o.at||0)+.011,gain:(o.gain||.09)*.55,dur:(o.dur||1.5)*.9,
+    damp:1600,dest:o.dest});
 }
 function chordMelody(top,voicing,o){
   o=o||{};
   voicing.forEach(function(f,i){
-    pluckRaw(f,{at:(o.at||0)+i*.014,gain:(o.gain||.07)*.6,dur:o.dur||2,damp:1900,dest:o.dest});
+    pluckRaw(f,{at:(o.at||0)+i*.018,gain:(o.gain||.07)*.5,dur:o.dur||2,
+      damp:1400,dest:o.dest});
   });
-  wes(top,{at:(o.at||0)+voicing.length*.014+.01,gain:(o.gain||.07)*1.15,
+  wes(top,{at:(o.at||0)+voicing.length*.018+.02,gain:(o.gain||.07)*1.1,
     dur:(o.dur||2)*1.2,dest:o.dest});
 }
+/* cuivres bouches : entree tres lente, sortie tres lente, plafond bas */
 function horns(fs,o){
   if(!AC||!eng)return;o=o||{};
+  if(!take(fs.length*2,(o.dur||6)+1))return;
   const t=AC.currentTime+(o.at||0),dur=o.dur||6;
   fs.forEach(function(f,i){
     const bus=AC.createGain();
-    [-4,4].forEach(function(dt2){
+    [-3.5,3.5].forEach(function(dt2){
       const osc=AC.createOscillator();osc.type='sine';
-      osc.frequency.setValueAtTime(f,t+i*.4);
+      osc.frequency.setValueAtTime(f,t+i*.55);
       if(o.glideTo&&o.glideTo[i])
-        osc.frequency.linearRampToValueAtTime(o.glideTo[i],t+i*.4+(o.glideAt||dur*.7));
+        osc.frequency.linearRampToValueAtTime(o.glideTo[i],t+i*.55+(o.glideAt||dur*.7));
       osc.detune.value=dt2;
       const g=AC.createGain();
-      env(g,t+i*.4,dur*.32,(o.gain||.045),dur*.7,'lin');
+      g.gain.setValueAtTime(.0001,t+i*.55);
+      g.gain.linearRampToValueAtTime((o.gain||.045)*.9,t+i*.55+dur*.42);
+      g.gain.linearRampToValueAtTime(.0001,t+i*.55+dur);
       osc.connect(g);g.connect(bus);
-      osc.start(t+i*.4);osc.stop(t+i*.4+dur+.3);
+      osc.start(t+i*.55);osc.stop(t+i*.55+dur+.4);
     });
-    const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1300;
+    const lp=AC.createBiquadFilter();lp.type='lowpass';
+    lp.frequency.value=980;lp.Q.value=.4;
     bus.connect(lp);lp.connect(o.dest||busUI);
   });
 }
+/* celesta : le 4e partiel etait la source du "piquant" — divise par 3
+   et filtre. Une cloche douce, pas un triangle. */
 function celeste(f,o){
   if(!AC||!eng)return;o=o||{};
+  if(!take(2,(o.dur||3)+1))return;
   const t=AC.currentTime+(o.at||0),dur=o.dur||3;
   const bus=AC.createGain();
-  [[1,1],[4,.12]].forEach(function(q){
+  [[1,1],[2,.10],[3.98,.035]].forEach(function(q){
     const osc=AC.createOscillator();osc.type='sine';osc.frequency.value=f*q[0];
-    const g=AC.createGain();env(g,t,.004,(o.gain||.06)*q[1],dur*(q[0]>2?.3:1));
-    osc.connect(g);g.connect(bus);osc.start(t);osc.stop(t+dur+.1);
+    const g=AC.createGain();
+    env(g,t,.014,(o.gain||.06)*q[1]*.85,dur*(q[0]>2?.28:1));
+    osc.connect(g);g.connect(bus);osc.start(t);osc.stop(t+dur+1);
   });
-  bus.connect(o.dest||busUI);
+  const lp=AC.createBiquadFilter();lp.type='lowpass';
+  lp.frequency.value=2700;lp.Q.value=.4;
+  bus.connect(lp);lp.connect(o.dest||busUI);
 }
+/* balai : un frottement grave et long. L'ancien etait un sifflement
+   a 1,8 kHz avec Q resonant — c'etait une des sources de douleur. */
 function brush(o){
   if(!AC||!eng)return;o=o||{};
-  const t=AC.currentTime+(o.at||0);
+  if(!take(1,.6))return;
+  const t=AC.currentTime+(o.at||0),dur=o.dur||.22;
   const n=AC.createBufferSource();n.buffer=NB;
-  const f=AC.createBiquadFilter();f.type='bandpass';
-  f.frequency.setValueAtTime(o.f||1800,t);
-  f.frequency.exponentialRampToValueAtTime((o.f||1800)*.6,t+(o.dur||.09));
-  f.Q.value=1.1;
+  const bp=AC.createBiquadFilter();bp.type='bandpass';
+  bp.frequency.setValueAtTime(Math.min(o.f||820,900),t);
+  bp.frequency.exponentialRampToValueAtTime(340,t+dur);
+  bp.Q.value=.55;
+  const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1500;
   const g=AC.createGain();
-  g.gain.setValueAtTime(o.gain||.04,t);
-  g.gain.exponentialRampToValueAtTime(.0001,t+(o.dur||.09));
-  n.connect(f);f.connect(g);g.connect(o.dest||busUI);
-  n.start(t);n.stop(t+.2);
+  g.gain.setValueAtTime(.0001,t);
+  g.gain.linearRampToValueAtTime((o.gain||.04)*.8,t+.02);
+  g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  n.connect(bp);bp.connect(lp);lp.connect(g);g.connect(o.dest||busUI);
+  n.start(t);n.stop(t+dur+.15);
 }
+/* l'ancien tick() etait un bruit resonant a 4600-5200 Hz : supprime.
+   Remplace par une petite frappe de bois, sourde et courte. */
 function tick(o){
   if(!AC||!eng)return;o=o||{};
+  if(!take(1,.5))return;
   const t=AC.currentTime+(o.at||0);
-  const n=AC.createBufferSource();n.buffer=NB;
-  const f=AC.createBiquadFilter();f.type='bandpass';
-  f.frequency.value=o.f||2400;f.Q.value=o.q||3;
+  const osc=AC.createOscillator();osc.type='sine';
+  osc.frequency.setValueAtTime(Math.min(o.f||280,340),t);
+  osc.frequency.exponentialRampToValueAtTime(150,t+.05);
   const g=AC.createGain();
-  g.gain.setValueAtTime(o.gain||.05,t);
-  g.gain.exponentialRampToValueAtTime(.0001,t+(o.dur||.03));
-  n.connect(f);f.connect(g);g.connect(o.dest||busUI);
-  n.start(t);n.stop(t+.08);
+  g.gain.setValueAtTime(.0001,t);
+  g.gain.linearRampToValueAtTime((o.gain||.05)*.55,t+.006);
+  g.gain.exponentialRampToValueAtTime(.0001,t+.11);
+  const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=900;
+  osc.connect(g);g.connect(lp);lp.connect(o.dest||busUI);
+  osc.start(t);osc.stop(t+.25);
 }
 function wood(o){
   if(!AC||!eng)return;o=o||{};
+  if(!take(1,.5))return;
   const t=AC.currentTime+(o.at||0);
   const osc=AC.createOscillator();osc.type='sine';
   osc.frequency.setValueAtTime(o.f||140,t);
-  osc.frequency.exponentialRampToValueAtTime((o.f||140)*.6,t+.08);
-  const g=AC.createGain();env(g,t,.002,o.gain||.07,.1);
-  osc.connect(g);g.connect(o.dest||busUI);osc.start(t);osc.stop(t+.22);
+  osc.frequency.exponentialRampToValueAtTime((o.f||140)*.62,t+.1);
+  const g=AC.createGain();env(g,t,.008,(o.gain||.07)*.8,.16);
+  const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=700;
+  osc.connect(g);g.connect(lp);lp.connect(o.dest||busUI);
+  osc.start(t);osc.stop(t+.5);
 }
 function footstep(dest,gain){
   if(!AC||!eng)return;
+  if(!take(1,.5))return;
   const t=AC.currentTime;
   const osc=AC.createOscillator();osc.type='sine';
-  osc.frequency.setValueAtTime(92+Math.random()*18,t);
-  osc.frequency.exponentialRampToValueAtTime(46,t+.09);
-  const g=AC.createGain();env(g,t,.002,gain,.12);
-  osc.connect(g);g.connect(dest);osc.start(t);osc.stop(t+.28);
+  osc.frequency.setValueAtTime(88+Math.random()*14,t);
+  osc.frequency.exponentialRampToValueAtTime(44,t+.1);
+  const g=AC.createGain();env(g,t,.008,gain*.8,.16);
+  osc.connect(g);g.connect(dest);osc.start(t);osc.stop(t+.5);
 }
 
 /* ============================================================
@@ -936,7 +1023,7 @@ function mvtI(vary){
     upright(NF.Bb1,{gain:.13,dur:5,dest:B()});
     felt(NF.Ab3,{gain:.05,dur:3,cut:1700,dest:P()});
     felt(NF.Db3,{at:.5,gain:.05,dur:4,cut:1600,dest:P()});
-    brush({at:1.2,f:1500,gain:.028,dur:.12,dest:D()});fl('bass');fl('comp');});
+    brush({at:1.2,f:780,gain:.03,dur:.24,dest:D()});fl('bass');fl('comp');});
 }
 /* ---------- II · LE THÈME (33 – 66 s) — Wes sur la grille ---------- */
 function mvtII(vary){
@@ -950,7 +1037,7 @@ function mvtII(vary){
   at(o+8,function(){setNow(V.Ab13,'II — backdoor',1,NF.C5,NF.F5);
     upright(NF.Ab2,{gain:.13,dur:4,dest:B()});
     V.Ab13.v.forEach(function(f,i){felt(f,{at:.4+i*.06,gain:.06,dur:4,cut:2000,dest:P()});});
-    brush({at:2.1,f:1800,gain:.03,dur:.1,dest:D()});fl('bass');fl('comp');});
+    brush({at:2.1,f:840,gain:.032,dur:.22,dest:D()});fl('bass');fl('comp');});
   at(o+12,function(){setNow(V.Dbmaj9,'II — the sweetness',1,NF.Eb5,NF.Eb5);
     upright(NF.Db2,{gain:.14,dur:5,dest:B()});
     V.Dbmaj9.v.forEach(function(f,i){felt(f,{at:.4+i*.07,gain:.065,dur:5,cut:2100,dest:P()});});
@@ -975,7 +1062,7 @@ function mvtII(vary){
   at(o+29.3,function(){setNow(V.F7s9,'II — dominant',1,NF.Ab4,NF.Ab4);
     upright(NF.F2,{gain:.14,dur:3.2,dest:B()});
     blockChord(V.F7s9.v.slice().reverse(),{gain:.07,dur:2.4,dest:P()});
-    brush({f:2100,gain:.04,dur:.08,dest:D()});fl('bass');fl('comp');fl('perc');});
+    brush({f:860,gain:.038,dur:.2,dest:D()});fl('bass');fl('comp');fl('perc');});
 }
 /* ---------- III · SIXTH DIMINISHED (66 – 106 s) — Barry ---------- */
 function mvtIII(vary){
@@ -985,10 +1072,10 @@ function mvtIII(vary){
   /* descente harmonisée n°1 : du sommet de la gamme vers le bas */
   at(o+1.2,function(){fl('comp');});
   (function(){
-    const start=7-(vary%2), n=8;
+    const start=7-(vary%2), n=6;
     for(let k=0;k<n;k++){
       const ix=((start-k)%8+8)%8;
-      at(o+1.2+k*0.55,function(){
+      at(o+1.2+k*0.86,function(){
         blockChord(barryChord(DB6DIM,ix),{gain:.066,dur:1.5,dest:P()});
         BYROLE.comp.flash=.8;
       });
@@ -1003,7 +1090,7 @@ function mvtIII(vary){
   (function(){
     for(let k=0;k<6;k++){
       const ix=((5-k)%8+8)%8;
-      at(o+12.4+k*0.7,function(){
+      at(o+12.4+k*0.95,function(){
         blockChord(barryChord(DB6DIM,ix),{gain:.06,dur:1.7,dest:P()});
         BYROLE.comp.flash=.7;
       });
@@ -1013,9 +1100,9 @@ function mvtIII(vary){
   at(o+18.5,function(){setNow(V.Bbm69,'III — B♭m6 diminished',2,NF.A4,NF.F5);
     upright(NF.Bb1,{gain:.15,dur:5.5,dest:B()});fl('bass');});
   (function(){
-    for(let k=0;k<8;k++){
+    for(let k=0;k<6;k++){
       const ix=((7-k)%8+8)%8;
-      at(o+19.4+k*0.62,function(){
+      at(o+19.4+k*0.9,function(){
         blockChord(barryChord(BBM6DIM,ix),{gain:.064,dur:1.6,dest:P()});
         BYROLE.comp.flash=.8;
       });
@@ -1026,7 +1113,7 @@ function mvtIII(vary){
     celeste(NF.A4,{at:.9,gain:.045,dur:2.6,dest:C()});
     celeste(NF.C5,{at:1.8,gain:.05,dur:3.2,dest:C()});fl('bell');});
   at(o+29.5,function(){upright(NF.F2,{gain:.12,dur:3,dest:B()});
-    brush({at:.4,f:1700,gain:.032,dur:.1,dest:D()});fl('bass');fl('perc');});
+    brush({at:.4,f:800,gain:.034,dur:.22,dest:D()});fl('bass');fl('perc');});
   /* demi-cadence tenue, puis résolution TROMPEUSE vers Mi */
   at(o+31.5,function(){setNow(V.F7s9,'III — half cadence',2,NF.Ab4,NF.Ab4);
     upright(NF.F2,{gain:.14,dur:4,dest:B()});
@@ -1047,26 +1134,26 @@ function mvtIV(vary){
     blockChord([NF.D5,NF.A4,NF.E4],{gain:.075,dur:2.2,cut:2400,dest:P()});fl('comp');});
   /* montée pentatonique rapide, célesta doublée Wes */
   at(o+2.6,function(){
-    EPENT.slice(0,6).forEach(function(f,i){
-      celeste(f,{at:i*.13,gain:.05,dur:1.6,dest:C()});
+    EPENT.slice(0,5).forEach(function(f,i){
+      celeste(f,{at:i*.26,gain:.042,dur:2.2,dest:C()});
     });
-    wes(NF.E5,{at:.82,gain:.075,dur:1.8,dest:W()});fl('bell');fl('answer');});
+    wes(NF.B4,{at:.9,gain:.07,dur:2.2,dest:W()});fl('bell');fl('answer');});
   at(o+4.1,function(){
-    blockChord([NF.E5,NF.B4,NF.Gb4],{gain:.07,dur:2.2,cut:2400,dest:P()});fl('comp');});
+    blockChord([NF.B4,NF.Gb4,NF.E4],{gain:.066,dur:2.6,cut:1800,dest:P()});fl('comp');});
   at(o+5.2,function(){horns([NF.Ab3,NF.E4],{gain:.04,dur:8,dest:H()});fl('pad');});
   at(o+8.1,function(){
-    blockChord([NF.G5,NF.D5,NF.A4],{gain:.066,dur:2.2,cut:2500,dest:P()});fl('comp');});
+    blockChord([NF.D5,NF.A4,NF.Gb4],{gain:.062,dur:2.6,cut:1800,dest:P()});fl('comp');});
   /* descente pentatonique en écho */
   at(o+9.3,function(){
     EPENT.slice(1,7).reverse().forEach(function(f,i){
-      celeste(f,{at:i*.15,gain:.045,dur:1.6,dest:C()});
+      celeste(f,{at:i*.28,gain:.04,dur:2.2,dest:C()});
     });fl('bell');});
   at(o+11.2,function(){
     blockChord([NF.D5,NF.A4,NF.E4],{gain:.07,dur:2.6,cut:2300,dest:P()});
     wes(NF.B4,{at:.6,gain:.07,dur:1.8,dest:W()});fl('comp');fl('answer');});
   at(o+13.4,function(){
     EPENT.slice(2,7).forEach(function(f,i){
-      celeste(f,{at:i*.11,gain:.048,dur:1.4,dest:C()});
+      celeste(f,{at:i*.24,gain:.04,dur:2,dest:C()});
     });fl('bell');});
   /* LA SORTIE — glissement chromatique : Mi → ii-V de D♭ */
   at(o+17,function(){setNow(V.Ebm9,'IV — the slide out',3,NF.F4,NF.Bb4);
@@ -1083,7 +1170,7 @@ function mvtIV(vary){
     V.Dbmaj9.v.forEach(function(f,i){felt(f,{at:.35+i*.08,gain:.068,dur:5.5,cut:2100,dest:P()});});
     celeste(NF.Eb5,{at:1.1,gain:.05,dur:3.6,dest:C()});
     fl('bass');fl('comp');fl('bell');});
-  at(o+29,function(){brush({f:1600,gain:.028,dur:.12,dest:D()});fl('perc',.6);});
+  at(o+29,function(){brush({f:760,gain:.03,dur:.26,dest:D()});fl('perc',.6);});
 }
 /* ---------- V · HOME (146 – 192 s) — le thème harmonisé, cadence finale, coda 6/9 ---------- */
 function mvtV(vary){
@@ -1125,7 +1212,7 @@ function mvtV(vary){
   at(o+22.3,function(){setNow(V.F7s9,'V — final cadences',4,NF.Ab4,NF.Ab4);
     upright(NF.F2,{gain:.14,dur:2.8,dest:B()});
     blockChord(V.F7s9.v.slice().reverse(),{gain:.068,dur:2.2,dest:P()});
-    brush({f:2000,gain:.036,dur:.09,dest:D()});fl('bass');fl('comp');fl('perc');});
+    brush({f:850,gain:.036,dur:.2,dest:D()});fl('bass');fl('comp');fl('perc');});
   /* L'ARRIVÉE : approche chromatique et la maison */
   at(o+25.4,function(){upright(NF.B1,{gain:.09,dur:.8,dest:B()});fl('bass',.7);});
   at(o+26.2,function(){setNow(V.Bbm9,'V — home',4,NF.F4,NF.C5);
@@ -1142,7 +1229,7 @@ function mvtV(vary){
     fl('bass');fl('comp');});
   at(o+37.5,function(){horns([NF.Db4,NF.Ab4],{gain:.032,dur:8,dest:H()});fl('pad');});
   at(o+39.5,function(){celeste(NF.F5,{gain:.045,dur:5,dest:C()});fl('bell');});
-  at(o+42,function(){brush({f:1300,gain:.02,dur:.16,dest:D()});fl('perc',.5);});
+  at(o+42,function(){brush({f:680,gain:.024,dur:.3,dest:D()});fl('perc',.5);});
 }
 /* ---------- le cycle : 5 mouvements, puis reprise variée ---------- */
 let vary=0;
@@ -1154,29 +1241,29 @@ function playIntro(){
   },196000));
 }
 
-const motion={src:null,bp:null,g:null};
+const motion={src:null,bp:null,lp:null,g:null};
 function updateMotion(spin,zoomV){
   if(!AC||!motion.g)return;
   const t=AC.currentTime;
-  motion.g.gain.setTargetAtTime(eng?Math.min(.08,spin*2.0+Math.abs(zoomV)*.07):0,t,.1);
-  motion.bp.frequency.setTargetAtTime(280+spin*2000+Math.abs(zoomV)*180,t,.13);
+  motion.g.gain.setTargetAtTime(eng?Math.min(.05,spin*1.4+Math.abs(zoomV)*.05):0,t,.14);
+  motion.bp.frequency.setTargetAtTime(230+spin*900+Math.abs(zoomV)*90,t,.18);
 }
 function sGrab(){wood({f:130,gain:.07});}
-function sRelease(spin){if(spin>.02)brush({f:900,gain:.028,dur:.14});}
+function sRelease(spin){if(spin>.02)brush({f:620,gain:.026,dur:.3});}
 /* les gestes s'accordent à NOW — toujours dans l'harmonie du moment */
 function sHover(p){
   const d=p._g||busUI;
-  tick({f:4600,q:2,gain:.02,dur:.018});
+  tick({f:260,gain:.035});
   if(p.role==='bass')upright(NOW.b,{gain:.09,dur:2.2,dest:d});
   else if(p.role==='comp')NOW.g.forEach(function(f,i){
     felt(f,{at:i*.05,gain:.05,dur:2.4,cut:2000,dest:d});});
   else if(p.role==='answer')wes(NOW.top,{gain:.06,dur:1.4,dest:d});
-  else if(p.role==='perc')brush({f:1900,gain:.04,dur:.1,dest:d});
+  else if(p.role==='perc')brush({f:820,gain:.036,dur:.22,dest:d});
   else if(p.role==='pad')horns([NOW.g[0]],{gain:.035,dur:2.6,dest:d});
   else celeste(NOW.bell,{gain:.045,dur:2.4,dest:d});
 }
 function sSelect(p){
-  tick({f:1600,q:1.2,gain:.05,dur:.04});
+  tick({f:300,gain:.045});
   upright(NOW.b,{gain:.12,dur:3.2,dest:BYROLE.bass._g});
   NOW.v.forEach(function(f,i){
     felt(f,{at:.18+i*.08,gain:.065,dur:3.8,cut:2100,dest:BYROLE.comp._g});
@@ -1187,14 +1274,14 @@ function sClose(){
   felt(NOW.g[1],{gain:.045,dur:2.2,cut:1600});
   felt(NOW.g[0],{at:.12,gain:.04,dur:2.4,cut:1500});
 }
-function sBtn(){tick({f:2800,q:3.4,gain:.04,dur:.022});}
+function sBtn(){tick({f:320,gain:.03});}
 function sBoot(){
   const order=['bass','comp','perc','pad','answer','bell'];
-  const when=[0,.7,1.5,2.1,2.9,3.6];
+  const when=[0,.34,.62,.9,1.18,1.46];
   order.forEach(function(role,i){
     setTimeout(function(){
       BYROLE[role].appearT=0;BYROLE[role].flash=1;
-    },when[i]*1000);
+    },when[i]*1000+700);
   });
 }
 
@@ -1295,7 +1382,7 @@ function frame(){
   T+=RM?0:0.016;
   cur.style.left=curX+'px';cur.style.top=curY+'px';
   prevAz=az;prevPol=pol;prevDist=dist;
-  az+=(tAz-az)*0.07;pol+=(tPol-pol)*0.07;dist+=(tDist-dist)*0.055;
+  az+=(tAz-az)*0.07;pol+=(tPol-pol)*0.07;dist+=(tDist-dist)*(dist>50?0.022:0.055);
   target.lerp(tTarget,0.05);
   updateMotion(Math.abs(az-prevAz)+Math.abs(pol-prevPol),dist-prevDist);
   const sp=Math.sin(pol);
@@ -1412,25 +1499,40 @@ addEventListener('resize',function(){
 const gate=document.getElementById('gate'),hint=document.getElementById('hint');
 function boot(){
   if(booted)return;booted=true;
-  try{buildAudio();sBoot();playIntro();}catch(e){eng=false;
-    PIECE.forEach(function(p){p.appearT=0;});}
+  /* la chute : on part de très loin et on tombe dans la salle */
+  dist=96;tDist=27;tPol=1.16;pol=1.16;
+  sBoot();
   gate.classList.add('gone');
-  setTimeout(function(){gate.remove();},1100);
+  setTimeout(function(){if(gate.parentNode)gate.remove();},1200);
   setTimeout(function(){hint.style.opacity='.25';},9000);
-  nextWalker=5;
+  nextWalker=7;
 }
-document.getElementById('stepin').addEventListener('click',boot);
+/* le son n'est plus lancé à l'entrée : il s'active à la demande */
+function startSound(){
+  if(AC)return true;
+  try{buildAudio();playIntro();}catch(e){return false;}
+  document.getElementById('score').style.opacity='1';
+  return true;
+}
+document.getElementById('enter').addEventListener('click',boot);
 gate.addEventListener('click',boot);
 addEventListener('keydown',function(e){
   if(!booted&&(e.key==='Enter'||e.key===' ')){e.preventDefault();boot();}
 });
 document.getElementById('eng').addEventListener('click',function(e){
-  e.stopPropagation();eng=!eng;
+  e.stopPropagation();
+  if(!AC){
+    eng=true;
+    if(startSound()){e.currentTarget.classList.add('on');}
+    else eng=false;
+    return;
+  }
+  eng=!eng;
   e.currentTarget.classList.toggle('on',eng);
-  if(AC){out.gain.setTargetAtTime(eng?.9:0,AC.currentTime,.05);if(eng)sBtn();}
+  out.gain.setTargetAtTime(eng?.85:0,AC.currentTime,.25);
+  document.getElementById('score').style.opacity=eng?'1':'0';
 });
-document.querySelector('.tr a').addEventListener('mouseenter',function(){if(booted)sBtn();});
-document.getElementById('eng').addEventListener('mouseenter',function(){if(booted)sBtn();});
+document.querySelector('.tr a').addEventListener('mouseenter',function(){if(AC&&eng)sBtn();});
 })();
 </script>
 </body>
